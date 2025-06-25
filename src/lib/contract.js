@@ -1,5 +1,5 @@
 import { ethers } from "ethers";
-import PaymentGatewayABI from "../../contracts/PaymentGateway.json";
+// import PaymentGatewayABI from "../../contracts/PaymentGateway.json";
 
 export function getContract(signerOrProvider) {
   return new ethers.Contract(
