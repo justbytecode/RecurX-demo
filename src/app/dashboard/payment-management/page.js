@@ -1,10 +1,10 @@
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import Sidebar from "@/components/Sidebar";
-import Navbar from "@/components/Navbar";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../../components/ui/table";
+import Sidebar from "../../../components/Sidebar";
+import Navbar from "../../../components/Navbar";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "../../api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
-import { prisma } from "@/lib/prisma";
+import { prisma } from "../../../lib/prisma";
 
 export default async function PaymentManagement() {
   const session = await getServerSession(authOptions);

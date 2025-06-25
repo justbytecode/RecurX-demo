@@ -1,10 +1,10 @@
-import { Button } from "@/components/ui/button";
-import Sidebar from "@/components/Sidebar";
-import Navbar from "@/components/Navbar";
+import { Button } from "../../../components/ui/button";
+import Sidebar from "../../../components/Sidebar";
+import Navbar from "../../../components/Navbar";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "../../api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
-import { prisma } from "@/lib/prisma";
+import { prisma } from "../../../lib/prisma";
 
 // Server action must be outside the component
 export async function generateApiKey() {

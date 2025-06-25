@@ -2,8 +2,8 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "../auth/[...nextauth]/route";
 import { ethers } from "ethers";
-import { getContract } from "@/lib/contract";
-import { prisma } from "@/lib/prisma";
+import { getContract } from "../../../lib/contract";
+import { prisma } from "../../../lib/prisma";
 
 export async function POST(request) {
   const session = await getServerSession(authOptions);
