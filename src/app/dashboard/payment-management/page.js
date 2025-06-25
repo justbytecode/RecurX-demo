@@ -2,7 +2,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from ".
 import Sidebar from "../../../components/Sidebar";
 import Navbar from "../../../components/Navbar";
 import { getServerSession } from "next-auth/next";
-import { authOptions } from "../../api/auth/[...nextauth]/route";
+import { authOptions } from "../../../lib/auth";
 import { redirect } from "next/navigation";
 import { prisma } from "../../../lib/prisma";
 

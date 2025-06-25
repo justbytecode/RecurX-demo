@@ -7,7 +7,7 @@ import {
 import Sidebar from "../../components/Sidebar";
 import Navbar from "../../components/Navbar";
 import { getServerSession } from "next-auth/next";
-import { authOptions } from "../api/auth/[...nextauth]/route";
+import { authOptions } from "../../lib/auth";
 import { redirect } from "next/navigation";
 import DashboardCharts from "../../components/DashboardCharts";
 
