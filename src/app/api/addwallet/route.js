@@ -12,7 +12,6 @@ export const POST = async (request) => {
     }
 
     const data = await request.json();
-    console.log(data)
     const wallet = data.wallet?.trim();
 
     if (!wallet) {
@@ -32,7 +31,7 @@ export const POST = async (request) => {
         where: { email: session.user.email },
         data: {
           wallet,
-          point: "250",
+          point:500,
         },
       });
 

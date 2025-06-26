@@ -16,5 +16,10 @@ export const authOptions = {
       session.user.id = user.id;
       return session;
     },
+
+    async signIn({ user, account, profile, email, credentials }) {
+      console.log("user",user);
+      return true
+    },
   },
 };

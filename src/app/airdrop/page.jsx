@@ -29,13 +29,13 @@ export default function AirdropPage() {
             increase your allocation.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-            <Link href="/wait-list" passHref>
+            <Link href="/signin" passHref>
               <Button className="bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900 text-lg px-8 py-6 transition-all duration-300 shadow-lg shadow-blue-600/20 hover:shadow-blue-700/40 group">
-                Join the Waitlist
+                Do 
                 <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </Button>
             </Link>
-            <Link href="https://t.me/recurxtoken2025" target="_blank" rel="noopener noreferrer" passHref>
+            <Link href="https://t.me/RecurXPay_Community" target="_blank" rel="noopener noreferrer" passHref>
               <Button variant="outline" className="border-blue-600 text-blue-400 hover:bg-gray-200 text-lg px-8 py-6 transition-all duration-300 group">
                 {/* <Send className="mr-2 h-5 w-5 group-hover:translate-x-1 transition-transform" /> */}
                 Join the Telegram Community
