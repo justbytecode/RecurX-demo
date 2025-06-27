@@ -22,7 +22,7 @@ export const authOptions = {
 
     async signIn({ user, account, profile, email, credentials }) {
       const cookieStore = await cookies();
-      const ref = cookieStore.get('ref')
+      const ref = cookieStore.get("ref");
 
       // No referral code — allow normal sign in
       if (!ref?.value) return true;
@@ -34,10 +34,10 @@ export const authOptions = {
         where: { referralCode },
       });
 
-      ID = referringUser.id;
       if (!referringUser || !user?.email) return true;
 
-     
+      // ✅ Only access id after null check
+      ID = referringUser.id;
 
       // Update referrer's point
       await prisma.user.update({
