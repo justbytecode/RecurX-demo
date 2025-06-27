@@ -280,6 +280,12 @@ export default function Navbar() {
                     </div>
                   )}
                 </div>
+                <Button
+                  onClick={() => signOut({ callbackUrl: "/signin" })}
+                  className="bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-700 hover:to-violet-700 text-white border-0 shadow-lg transition-all duration-200 flex items-center gap-2"
+                >
+                  Log Out
+                </Button>
               </>
             ) : (
               <div className="flex items-center gap-4">
@@ -313,7 +319,7 @@ export default function Navbar() {
                   <span className="sm:hidden">Connect</span>
                 </Button>
                 <Button
-                  onClick={()=>signOut({callbackUrl:"/signin"})}
+                  onClick={() => signOut({ callbackUrl: "/signin" })}
                   className="bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-700 hover:to-violet-700 text-white border-0 shadow-lg transition-all duration-200 flex items-center gap-2"
                 >
                   Log Out

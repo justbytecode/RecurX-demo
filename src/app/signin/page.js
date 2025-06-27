@@ -23,9 +23,9 @@ export default function SignIn() {
 
   useEffect(() => {
     setMounted(true);
-  const ref = searchParams.get("ref");
+    const ref = searchParams.get("ref");
     if (ref) {
-      Cookies.set("referral", JSON.stringify(ref), { expires: 7 });
+      Cookies.set("ref", JSON.stringify(ref), { expires: 7 });
     }
   }, [router.query]);
 
@@ -74,7 +74,11 @@ export default function SignIn() {
               </p>
             )}
             <Button
-              onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
+              onClick={() =>
+                signIn("google", {
+                  callbackUrl: "/dashboard"
+                })
+              }
               className="w-full bg-slate-700  text-white border border-purple-500/40 flex items-center justify-center gap-2 transition-all duration-200 hover:border-purple-400/60"
               variant="outline"
             >
