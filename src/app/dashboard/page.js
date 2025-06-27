@@ -4,8 +4,6 @@ import {
   CardHeader,
   CardTitle,
 } from "../../components/ui/card";
-import Sidebar from "../../components/Sidebar";
-import Navbar from "../../components/Navbar";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "../../lib/auth";
 import { redirect } from "next/navigation";
@@ -65,9 +63,7 @@ export default async function Dashboard() {
 
   return (
     <div className="flex bg-slate-900 min-h-screen">
-      <Sidebar />
       <div className="flex-1">
-        <Navbar />
         <div className="p-8 bg-slate-900 min-h-screen">
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-white mb-2">Dashboard</h1>

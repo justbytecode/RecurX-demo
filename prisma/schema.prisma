@@ -15,12 +15,15 @@ model User {
   emailVerified DateTime?
   wallet        String?
   apiKeys       ApiKey[]
-  point         Int? @default(0)
+  point         Int?          @default(0)
   transactions  Transaction[]
-  accounts      Account[]
-  sessions      Session[]
-  createdAt     DateTime      @default(now())
+  referralCode  String?          @unique
+  referredBy   Int?       
+  accounts  Account[]
+  sessions  Session[]
+  createdAt DateTime   @default(now())  
 }
+
 
 
 
