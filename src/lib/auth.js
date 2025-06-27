@@ -4,6 +4,8 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { prisma } from "./prisma";
 import { cookies } from "next/headers";
 
+let ID;
+
 export const authOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
@@ -19,8 +21,8 @@ export const authOptions = {
     },
 
     async signIn({ user, account, profile, email, credentials }) {
-      const cookieStore = cookies();
-      const ref = cookieStore.get("ref");
+      const cookieStore = await cookies();
+      const ref = cookieStore.get('ref')
 
       // No referral code — allow normal sign in
       if (!ref?.value) return true;
@@ -32,15 +34,10 @@ export const authOptions = {
         where: { referralCode },
       });
 
+      ID = referringUser.id;
       if (!referringUser || !user?.email) return true;
 
-      // Get the new user (who just signed in)
-      const newUser = await prisma.user.findUnique({
-        where: { email: user.email },
-      });
-
-      // If already referred by someone, skip setting referral
-      if (newUser?.referredBy !== null) return true;
+     
 
       // Update referrer's point
       await prisma.user.update({
@@ -53,17 +50,18 @@ export const authOptions = {
       });
 
       // Update new user with referredBy field
+
+      return true;
+    },
+  },
+  events: {
+    async signIn({ user, account }) {
       await prisma.user.update({
         where: { email: user.email },
         data: {
-          referredBy: referringUser.id,
+          referredBy: ID,
         },
       });
-
-      // Clear the cookie
-      cookieStore.delete("ref");
-
-      return true;
     },
   },
 };
