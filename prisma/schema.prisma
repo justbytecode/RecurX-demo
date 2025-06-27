@@ -8,19 +8,21 @@ datasource db {
 }
 
 model User {
-  id           Int           @id @default(autoincrement())
-  name         String?
-  email        String        @unique
-  image        String?
-  emailVerified  DateTime?
-  wallet       String?
-  apiKeys      ApiKey[]
-  point        String?
-  transactions Transaction[]
-  accounts     Account[]
-  sessions     Session[]
-  createdAt    DateTime      @default(now())
+  id            Int           @id @default(autoincrement())
+  name          String?
+  email         String        @unique
+  image         String?
+  emailVerified DateTime?
+  wallet        String?
+  apiKeys       ApiKey[]
+  point         Int? @default(0)
+  transactions  Transaction[]
+  accounts      Account[]
+  sessions      Session[]
+  createdAt     DateTime      @default(now())
 }
+
+
 
 model Account {
   id                String  @id @default(cuid())
