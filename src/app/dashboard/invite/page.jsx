@@ -2,11 +2,14 @@
 
 import React, { Suspense, useEffect, useState } from "react";
 import axios from "axios";
+import { ClipboardCopy, Share2 } from "lucide-react";
 
 function Page() {
   const [referralCode, setReferralCode] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [copied, setCopied] = useState(false);
+  const referralUrl = `https://www.recurx.xyz/signin?ref=${referralCode}`;
 
   const fetchReferralDetails = async () => {
     try {
@@ -32,6 +35,28 @@ function Page() {
     }
   };
 
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(referralUrl);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
+
+  const shareLink = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: "Join me on Recurx",
+          text: "Check this out and earn rewards!",
+          url: referralUrl,
+        });
+      } catch (err) {
+        console.error("Sharing failed:", err);
+      }
+    } else {
+      alert("Web Share API not supported in this browser.");
+    }
+  };
+
   useEffect(() => {
     fetchReferralDetails();
   }, []);
@@ -44,13 +69,29 @@ function Page() {
         </h2>
 
         <Suspense fallback={"Loading"}>
-          {referralCode != "Not Exists" ? (
+          {referralCode !== "Not Exists" ? (
             <div className="space-y-4">
               <div>
                 <p className="text-gray-300">Your referral code:</p>
-                <div className="bg-slate-700 text-purple-400 px-4 py-2 rounded-md font-mono text-lg mt-1">
-                  https://www.recurx.xyz/sigin?ref={referralCode}
+                <div className="bg-slate-700 text-purple-400 px-4 py-2 rounded-md font-mono text-lg mt-1 break-words">
+                  {referralUrl}
                 </div>
+              </div>
+              <div className="flex gap-4 mt-2">
+                <button
+                  onClick={copyToClipboard}
+                  className="flex items-center gap-2 bg-slate-600 hover:bg-slate-500 text-white px-4 py-2 rounded-md"
+                >
+                  <ClipboardCopy className="w-4 h-4" />
+                  {copied ? "Copied!" : "Copy"}
+                </button>
+                <button
+                  onClick={shareLink}
+                  className="flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-md"
+                >
+                  <Share2 className="w-4 h-4" />
+                  Share
+                </button>
               </div>
             </div>
           ) : (
