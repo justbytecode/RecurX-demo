@@ -10,6 +10,8 @@ import { ToastProvider } from "../components/ui/toast";
 // import { SpeedInsights } from "@vercel/speed-insights/next";
 import FaviconSwitcher from "../components/FaviconSwitcher";
 // import { icons } from "lucide-react";
+import { ThemeProvider } from "../context/themeContext";
+
 import PrivyContext from "../context/privyContext";
 import { Providers } from "../context/sessionContext";
 
@@ -39,18 +41,20 @@ export default async function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         suppressHydrationWarning
       >
-        <FaviconSwitcher />
-        <ToastProvider>
-          <ToastContainer />
-          <ToastContainer />
-          {!session && <Navbar />}
-          <Providers>
-            <PrivyContext>{children}</PrivyContext>
-          </Providers>
-          {/* <Analytics /> */}
-          {/* <SpeedInsights /> */}
-          {!session && <Footer />}
-        </ToastProvider>
+        <ThemeProvider>
+          <FaviconSwitcher />
+          <ToastProvider>
+            <ToastContainer />
+            <ToastContainer />
+            {!session && <Navbar />}
+            <Providers>
+              <PrivyContext>{children}</PrivyContext>
+            </Providers>
+            {/* <Analytics /> */}
+            {/* <SpeedInsights /> */}
+            {!session && <Footer />}
+          </ToastProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

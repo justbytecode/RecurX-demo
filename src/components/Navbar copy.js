@@ -1,28 +1,30 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import Link from "next/link"
-import { Button } from "./ui/button"
-import { motion } from "framer-motion"
-import { Menu, X } from "lucide-react"
-import Image from "next/image"
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { Button } from "./ui/button";
+import { motion } from "framer-motion";
+import { Menu, X } from "lucide-react";
+import Image from "next/image";
+
 
 export default function Navbar() {
-  const [isScrolled, setIsScrolled] = useState(false)
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 10) {
-        setIsScrolled(true)
+        setIsScrolled(true);
       } else {
-        setIsScrolled(false)
+        setIsScrolled(false);
       }
-    }
+    };
 
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <motion.header
@@ -40,7 +42,10 @@ export default function Navbar() {
           {/* Left: Logo */}
           <div className="flex-shrink-0">
             <Link href="/" className="flex items-center">
-              <motion.span whileHover={{ scale: 1.05 }} className="text-2xl font-bold bg-clip-text text-transparent bg-white">
+              <motion.span
+                whileHover={{ scale: 1.05 }}
+                className="text-2xl font-bold bg-clip-text text-transparent bg-white"
+              >
                 <Image
                   src="/logo_hor_transparent.png"
                   alt="RecurX"
@@ -58,11 +63,36 @@ export default function Navbar() {
             <div className="bg-[#1f1c2f] rounded-full px-4 xl:px-6 py-2 shadow-lg">
               <nav className="flex items-center space-x-4 xl:space-x-6 2xl:space-x-8">
                 {/* <NavLink href="/airdrop" className="text-white text-sm xl:text-base transition-transform duration-200 ease-in-out hover:scale-110 ">Airdrop</NavLink> */}
-                <NavLink href="/product" className="text-white text-sm xl:text-base transition-transform duration-200 ease-in-out hover:scale-110 ">Product</NavLink>
-                <NavLink href="/pricing" className="text-white text-sm xl:text-base transition-transform duration-200 ease-in-out hover:scale-110 ">Pricing</NavLink>
-                <NavLink href="/career" className="text-white text-sm xl:text-base transition-transform duration-200 ease-in-out hover:scale-110 ">Career</NavLink>
-                <NavLink href="/team" className="text-white text-sm xl:text-base transition-transform duration-200 ease-in-out hover:scale-110 ">About us</NavLink>
-                <NavLink href="/contact-us" className="text-white text-sm xl:text-base transition-transform duration-200 ease-in-out hover:scale-110 ">Contact us</NavLink>
+                <NavLink
+                  href="/product"
+                  className="text-white text-sm xl:text-base transition-transform duration-200 ease-in-out hover:scale-110 "
+                >
+                  Product
+                </NavLink>
+                <NavLink
+                  href="/pricing"
+                  className="text-white text-sm xl:text-base transition-transform duration-200 ease-in-out hover:scale-110 "
+                >
+                  Pricing
+                </NavLink>
+                <NavLink
+                  href="/career"
+                  className="text-white text-sm xl:text-base transition-transform duration-200 ease-in-out hover:scale-110 "
+                >
+                  Career
+                </NavLink>
+                <NavLink
+                  href="/team"
+                  className="text-white text-sm xl:text-base transition-transform duration-200 ease-in-out hover:scale-110 "
+                >
+                  About us
+                </NavLink>
+                <NavLink
+                  href="/contact-us"
+                  className="text-white text-sm xl:text-base transition-transform duration-200 ease-in-out hover:scale-110 "
+                >
+                  Contact us
+                </NavLink>
               </nav>
             </div>
           </div>
@@ -72,11 +102,21 @@ export default function Navbar() {
             <div className="bg-[#1f1c2f] rounded-full px-3 py-2 shadow-lg">
               <nav className="flex items-center space-x-3">
                 {/* <NavLink href="/airdrop" className="text-white text-xs">Airdrop</NavLink> */}
-                <NavLink href="/product" className="text-white text-xs">Product</NavLink>
-                <NavLink href="/pricing" className="text-white text-xs">Pricing</NavLink>
-                <NavLink href="/career" className="text-white text-xs">Career</NavLink>
-                <NavLink href="/team" className="text-white text-xs">About</NavLink>
-                <NavLink href="/contact-us" className="text-white text-xs">Contact</NavLink>
+                <NavLink href="/product" className="text-white text-xs">
+                  Product
+                </NavLink>
+                <NavLink href="/pricing" className="text-white text-xs">
+                  Pricing
+                </NavLink>
+                <NavLink href="/career" className="text-white text-xs">
+                  Career
+                </NavLink>
+                <NavLink href="/team" className="text-white text-xs">
+                  About
+                </NavLink>
+                <NavLink href="/contact-us" className="text-white text-xs">
+                  Contact
+                </NavLink>
               </nav>
             </div>
           </div>
@@ -100,7 +140,11 @@ export default function Navbar() {
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="text-gray-300 h-8 w-8 sm:h-10 sm:w-10"
             >
-              {isMobileMenuOpen ? <X className="h-4 w-4 sm:h-5 sm:w-5" /> : <Menu className="h-4 w-4 sm:h-5 sm:w-5" />}
+              {isMobileMenuOpen ? (
+                <X className="h-4 w-4 sm:h-5 sm:w-5" />
+              ) : (
+                <Menu className="h-4 w-4 sm:h-5 sm:w-5" />
+              )}
             </Button>
           </div>
         </div>
@@ -118,24 +162,42 @@ export default function Navbar() {
             {/* <MobileNavLink onClick={() => setIsMobileMenuOpen(false)} href="/airdrop">
               Airdrop
             </MobileNavLink> */}
-            <MobileNavLink onClick={() => setIsMobileMenuOpen(false)} href="/product">
+            <MobileNavLink
+              onClick={() => setIsMobileMenuOpen(false)}
+              href="/product"
+            >
               Product
             </MobileNavLink>
-            <MobileNavLink onClick={() => setIsMobileMenuOpen(false)} href="/pricing">
+            <MobileNavLink
+              onClick={() => setIsMobileMenuOpen(false)}
+              href="/pricing"
+            >
               Pricing
             </MobileNavLink>
-            <MobileNavLink onClick={() => setIsMobileMenuOpen(false)} href="/career">
+            <MobileNavLink
+              onClick={() => setIsMobileMenuOpen(false)}
+              href="/career"
+            >
               Career
             </MobileNavLink>
-            <MobileNavLink onClick={() => setIsMobileMenuOpen(false)} href="/team">
+            <MobileNavLink
+              onClick={() => setIsMobileMenuOpen(false)}
+              href="/team"
+            >
               About us
             </MobileNavLink>
-            <MobileNavLink onClick={() => setIsMobileMenuOpen(false)} href="/contact-us">
+            <MobileNavLink
+              onClick={() => setIsMobileMenuOpen(false)}
+              href="/contact-us"
+            >
               Contact us
             </MobileNavLink>
 
             <div className="pt-4 border-t border-gray-800 flex flex-col space-y-3">
-              <Button asChild className="w-full bg-blue-600 text-white hover:bg-blue-700 py-3 text-base">
+              <Button
+                asChild
+                className="w-full bg-blue-600 text-white hover:bg-blue-700 py-3 text-base"
+              >
                 <Link href="/signin" onClick={() => setIsMobileMenuOpen(false)}>
                   Go for demo
                 </Link>
@@ -145,15 +207,18 @@ export default function Navbar() {
         </motion.div>
       )}
     </motion.header>
-  )
+  );
 }
 
 function NavLink({ href, children, className }) {
   return (
-    <Link href={href} className={`${className} hover:text-white transition-colors duration-200 whitespace-nowrap`}>
+    <Link
+      href={href}
+      className={`${className} hover:text-white transition-colors duration-200 whitespace-nowrap`}
+    >
       {children}
     </Link>
-  )
+  );
 }
 
 function MobileNavLink({ href, onClick, children }) {
@@ -165,5 +230,5 @@ function MobileNavLink({ href, onClick, children }) {
     >
       {children}
     </Link>
-  )
+  );
 }

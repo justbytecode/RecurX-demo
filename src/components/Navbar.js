@@ -13,9 +13,11 @@ import {
   CreditCard,
 } from "lucide-react";
 import { signOut } from "next-auth/react";
+import { useTheme } from "../context/themeContext";
 
 export default function Navbar() {
   const { data: session } = useSession();
+  const { isDarkMode, toggleTheme, themeClasses } = useTheme();
   const { login, authenticated, user, logout } = usePrivy();
   const [points, setPoints] = useState("0");
   const [shouldAddWallet, setShouldAddWallet] = useState(false);
@@ -143,15 +145,17 @@ export default function Navbar() {
   }, []);
 
   return (
-    <nav className="shadow-lg">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <nav
+      className={`shadow-lg transition-colors ${themeClasses.background} ${themeClasses.textPrimary}`}
+    >
+      <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8`}>
         <div className="flex justify-between items-center h-16">
           {/* Logo/Brand Section */}
           <div className="flex items-center">
             {session?.user?.name && (
-              <div className="hidden sm:block ml-4 text-slate-300">
+              <div className={`hidden sm:block ml-4 ${themeClasses.textMuted}`}>
                 Welcome Back,{" "}
-                <span className="text-white font-medium">
+                <span className={`${themeClasses.textPrimary} font-medium`}>
                   {session.user.name}
                 </span>
               </div>
@@ -163,15 +167,15 @@ export default function Navbar() {
             {authenticated ? (
               <>
                 {/* Points Display */}
-                <div className="bg-slate-800/60 backdrop-blur-sm">
+                <div className={`${themeClasses.cardBackground} backdrop-blur-sm rounded-lg border ${themeClasses.border}`}>
                   <div className="flex items-center gap-2 px-4 py-2">
                     <Coins className="h-4 w-4 text-purple-400" />
-                    <span className="text-slate-300 text-sm font-medium">
+                    <span className={`${themeClasses.textMuted} text-sm font-medium`}>
                       {pointsLoading ? (
-                        <div className="animate-pulse bg-slate-600 h-4 w-12 rounded"></div>
+                        <div className={`animate-pulse ${themeClasses.border} h-4 w-12 rounded`}></div>
                       ) : (
                         <>
-                          <span className="text-white font-bold">
+                          <span className={`${themeClasses.textPrimary} font-bold`}>
                             {formatPoints(points)}
                           </span>
                           <span className="text-purple-300 ml-1">pts</span>
@@ -185,26 +189,26 @@ export default function Navbar() {
                 <div className="relative dropdown-container">
                   <button
                     onClick={() => setShowDropdown((prev) => !prev)}
-                    className="flex items-center gap-2 hover:bg-slate-800/50 rounded-lg px-2 py-1 transition-all duration-200 border border-transparent hover:border-purple-500/30"
+                    className={`flex items-center gap-2 hover:${themeClasses.cardBackground} rounded-lg px-2 py-1 transition-all duration-200 border border-transparent hover:border-purple-500/30`}
                   >
                     {renderProfileImage()}
                     <ChevronDown
-                      className={`h-4 w-4 text-slate-400 transition-transform duration-200 ${
+                      className={`h-4 w-4 ${themeClasses.textMuted} transition-transform duration-200 ${
                         showDropdown ? "rotate-180" : ""
                       }`}
                     />
                   </button>
 
                   {showDropdown && (
-                    <div className="absolute top-full mt-2 right-0 bg-slate-800/95 backdrop-blur-md text-white rounded-xl shadow-2xl border border-purple-500/20 min-w-80 z-50">
+                    <div className={`absolute top-full mt-2 right-0 ${themeClasses.cardBackground} backdrop-blur-md ${themeClasses.textPrimary} rounded-xl shadow-2xl border ${themeClasses.border} min-w-80 z-50`}>
                       {/* Profile Header */}
-                      <div className="flex items-center gap-3 p-4 border-b border-slate-700/50">
+                      <div className={`flex items-center gap-3 p-4 border-b ${themeClasses.border}`}>
                         {renderProfileImage()}
                         <div className="flex-1">
-                          <div className="font-semibold text-white">
+                          <div className={`font-semibold ${themeClasses.textPrimary}`}>
                             {session?.user?.name || "Wallet User"}
                           </div>
-                          <div className="text-sm text-slate-400">
+                          <div className={`text-sm ${themeClasses.textMuted}`}>
                             {user?.wallet?.address ? (
                               <>
                                 {user.wallet.address.slice(0, 6)}...
@@ -218,11 +222,11 @@ export default function Navbar() {
                       </div>
 
                       {/* Points Section */}
-                      <div className="p-4 border-b border-slate-700/50">
+                      <div className={`p-4 border-b ${themeClasses.border}`}>
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
                             <Coins className="h-5 w-5 text-purple-400" />
-                            <span className="text-slate-300">Total Points</span>
+                            <span className={themeClasses.textMuted}>Total Points</span>
                           </div>
                           <span className="text-xl font-bold text-purple-400">
                             {formatPoints(points)}
@@ -232,20 +236,20 @@ export default function Navbar() {
 
                       {/* Wallet Address Section */}
                       {user?.wallet?.address && (
-                        <div className="p-4 border-b border-slate-700/50">
-                          <div className="text-sm text-slate-400 mb-2 flex items-center gap-2">
+                        <div className={`p-4 border-b ${themeClasses.border}`}>
+                          <div className={`text-sm ${themeClasses.textMuted} mb-2 flex items-center gap-2`}>
                             <Wallet className="h-4 w-4" />
                             Wallet Address:
                           </div>
                           <div className="relative group">
-                            <div className="text-xs font-mono bg-slate-900/60 p-3 rounded-lg border border-slate-700/50 pr-12 break-all">
+                            <div className={`text-xs font-mono ${themeClasses.inputBackground} p-3 rounded-lg border ${themeClasses.border} pr-12 break-all ${themeClasses.textPrimary}`}>
                               {user.wallet.address}
                             </div>
                             <button
                               onClick={() =>
                                 copyToClipboard(user.wallet.address)
                               }
-                              className="absolute right-2 top-3 text-slate-400 hover:text-purple-400 transition-colors p-1 rounded hover:bg-slate-700/50"
+                              className={`absolute right-2 top-3 ${themeClasses.textMuted} hover:text-purple-400 transition-colors p-1 rounded hover:${themeClasses.cardBackground}`}
                               title="Copy address"
                             >
                               {copySuccess ? (
@@ -290,15 +294,15 @@ export default function Navbar() {
             ) : (
               <div className="flex items-center gap-4">
                 {/* Points Display for Non-authenticated Users */}
-                <div className="bg-slate-800/60 border-purple-500/30 backdrop-blur-sm">
+                <div className={`${themeClasses.cardBackground} border ${themeClasses.border} backdrop-blur-sm rounded-lg`}>
                   <div className="flex items-center gap-2 px-4 py-2">
                     <Coins className="h-4 w-4 text-purple-400" />
-                    <span className="text-slate-300 text-sm font-medium">
+                    <span className={`${themeClasses.textMuted} text-sm font-medium`}>
                       {pointsLoading ? (
-                        <div className="animate-pulse bg-slate-600 h-4 w-12 rounded"></div>
+                        <div className={`animate-pulse ${themeClasses.border} h-4 w-12 rounded`}></div>
                       ) : (
                         <>
-                          <span className="text-white font-bold">
+                          <span className={`${themeClasses.textPrimary} font-bold`}>
                             {formatPoints(points)}
                           </span>
                           <span className="text-purple-300 ml-1">pts</span>
