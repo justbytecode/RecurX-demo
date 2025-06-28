@@ -8,20 +8,22 @@ import {
   Medal,
   Award,
 } from "lucide-react";
-
-const getRankIcon = (rank) => {
-  if (rank === 1) return <Trophy className="w-5 h-5 text-yellow-500" />;
-  if (rank === 2) return <Medal className="w-5 h-5 text-gray-400" />;
-  if (rank === 3) return <Award className="w-5 h-5 text-orange-500" />;
-  return <span className="font-bold text-gray-100">#{rank}</span>;
-};
+import { useTheme } from "../../../context/themeContext";
 
 export default function UserLeaderboard() {
+  const { isDarkMode, toggleTheme, themeClasses } = useTheme();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
+
+  const getRankIcon = (rank) => {
+    if (rank === 1) return <Trophy className="w-5 h-5 text-yellow-500" />;
+    if (rank === 2) return <Medal className="w-5 h-5 text-gray-400" />;
+    if (rank === 3) return <Award className="w-5 h-5 text-orange-500" />;
+    return <span className={`font-bold ${themeClasses.textPrimary}`}>#{rank}</span>;
+  };
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -54,17 +56,21 @@ export default function UserLeaderboard() {
 
   if (loading) {
     return (
-      <div className="text-center text-white mt-10">Loading leaderboard...</div>
+      <div className={`text-center ${themeClasses.textPrimary} mt-10`}>
+        Loading leaderboard...
+      </div>
     );
   }
 
   if (error) {
-    return <div className="text-center text-red-400 mt-10">{error}</div>;
+    return (
+      <div className="text-center text-red-400 mt-10">{error}</div>
+    );
   }
 
   return (
-    <div className="min-h-screen p-6 text-slate-100">
-      <div className="bg-slate-800 rounded-lg shadow-lg overflow-hidden border border-slate-700">
+    <div className={`min-h-screen p-6 ${themeClasses.textPrimary}`}>
+      <div className={`${themeClasses.cardBackground} rounded-lg shadow-lg overflow-hidden border ${themeClasses.border}`}>
         {/* Header */}
         <div className="bg-gradient-to-r from-purple-800 to-indigo-900 px-6 py-4">
           <h2 className="text-2xl font-bold text-white flex items-center gap-2">
@@ -77,7 +83,7 @@ export default function UserLeaderboard() {
         {/* Table */}
         <div className="overflow-x-auto">
           <table className="w-full text-left">
-            <thead className="bg-slate-700 text-slate-300">
+            <thead className={`${themeClasses.hoverBackground} ${themeClasses.textMuted}`}>
               <tr>
                 <th className="px-6 py-3 text-xs font-medium uppercase tracking-wider">Rank</th>
                 <th className="px-6 py-3 text-xs font-medium uppercase tracking-wider">User</th>
@@ -88,22 +94,27 @@ export default function UserLeaderboard() {
               {currentUsers.map((user, index) => {
                 const globalRank = startIndex + index + 1;
                 return (
-                  <tr key={user.name} className="hover:bg-slate-700 transition-colors duration-150">
+                  <tr 
+                    key={user.name} 
+                    className={`hover:${themeClasses.hoverBackground} transition-colors duration-150`}
+                  >
                     <td className="px-6 py-4">
-                      <div className="flex items-center text-white">{getRankIcon(globalRank)}</div>
+                      <div className={`flex items-center ${themeClasses.textPrimary}`}>
+                        {getRankIcon(globalRank)}
+                      </div>
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex items-center">
                         <div className="h-10 w-10 rounded-full bg-gradient-to-br from-purple-600 to-indigo-700 flex items-center justify-center text-white font-semibold text-sm">
                           {user.name?.split(" ").map((s) => s[0]).join("")}
                         </div>
-                        <div className="ml-4 text-sm font-medium text-white">
+                        <div className={`ml-4 text-sm font-medium ${themeClasses.textPrimary}`}>
                           {user.name}
                         </div>
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <div className="text-sm font-bold text-indigo-300">
+                      <div className="text-sm font-bold text-indigo-400">
                         {user.point?.toLocaleString() || 0}
                       </div>
                     </td>
@@ -115,17 +126,17 @@ export default function UserLeaderboard() {
         </div>
 
         {/* Pagination */}
-        <div className="bg-slate-800 px-4 py-3 border-t border-slate-700 sm:px-6">
+        <div className={`${themeClasses.cardBackground} px-4 py-3 border-t ${themeClasses.border} sm:px-6`}>
           <div className="flex items-center justify-between">
             <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
               <div>
-                <p className="text-sm text-slate-400">
+                <p className={`text-sm ${themeClasses.textMuted}`}>
                   Showing{" "}
-                  <span className="font-medium text-white">{startIndex + 1}</span>{" "}
+                  <span className={`font-medium ${themeClasses.textPrimary}`}>{startIndex + 1}</span>{" "}
                   to{" "}
-                  <span className="font-medium text-white">{Math.min(endIndex, users.length)}</span>{" "}
+                  <span className={`font-medium ${themeClasses.textPrimary}`}>{Math.min(endIndex, users.length)}</span>{" "}
                   of{" "}
-                  <span className="font-medium text-white">{users.length}</span>{" "}
+                  <span className={`font-medium ${themeClasses.textPrimary}`}>{users.length}</span>{" "}
                   results
                 </p>
               </div>
@@ -134,7 +145,7 @@ export default function UserLeaderboard() {
                   <button
                     onClick={() => goToPage(currentPage - 1)}
                     disabled={currentPage === 1}
-                    className="px-2 py-2 rounded-l-md border border-slate-600 bg-slate-700 text-sm text-slate-400 hover:bg-slate-600 disabled:opacity-50"
+                    className={`px-2 py-2 rounded-l-md border ${themeClasses.border} ${themeClasses.hoverBackground} text-sm ${themeClasses.textMuted} hover:${themeClasses.cardBackground} disabled:opacity-50 transition-colors`}
                   >
                     <ChevronLeft className="h-5 w-5" />
                   </button>
@@ -144,10 +155,10 @@ export default function UserLeaderboard() {
                       <button
                         key={page}
                         onClick={() => goToPage(page)}
-                        className={`px-4 py-2 border text-sm font-medium ${
+                        className={`px-4 py-2 border text-sm font-medium transition-colors ${
                           currentPage === page
                             ? "bg-indigo-700 text-white border-indigo-500 z-10"
-                            : "bg-slate-700 text-slate-300 border-slate-600 hover:bg-slate-600"
+                            : `${themeClasses.hoverBackground} ${themeClasses.textMuted} border-${themeClasses.border} hover:${themeClasses.cardBackground}`
                         }`}
                       >
                         {page}
@@ -157,7 +168,7 @@ export default function UserLeaderboard() {
                   <button
                     onClick={() => goToPage(currentPage + 1)}
                     disabled={currentPage === totalPages}
-                    className="px-2 py-2 rounded-r-md border border-slate-600 bg-slate-700 text-sm text-slate-400 hover:bg-slate-600 disabled:opacity-50"
+                    className={`px-2 py-2 rounded-r-md border ${themeClasses.border} ${themeClasses.hoverBackground} text-sm ${themeClasses.textMuted} hover:${themeClasses.cardBackground} disabled:opacity-50 transition-colors`}
                   >
                     <ChevronRight className="h-5 w-5" />
                   </button>

@@ -19,14 +19,25 @@ import {
   BarChart,
   Bar,
 } from "recharts";
+import { useTheme } from "../context/themeContext"; // Adjust path as needed
 
 export default function DashboardCharts({ revenueData, dailyData }) {
-  // Custom tooltip for better formatting with dark theme
+  const { isDarkMode } = useTheme();
+
+  // Custom tooltip for better formatting with theme support
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
       return (
-        <div className="bg-slate-800 border border-slate-600 p-3 rounded-lg shadow-xl">
-          <p className="text-slate-300 text-sm">{`${label}`}</p>
+        <div className={`p-3 rounded-lg shadow-xl ${
+          isDarkMode 
+            ? 'bg-slate-800 border border-slate-600' 
+            : 'bg-white border border-gray-300'
+        }`}>
+          <p className={`text-sm ${
+            isDarkMode ? 'text-slate-300' : 'text-gray-600'
+          }`}>
+            {`${label}`}
+          </p>
           {payload.map((entry, index) => (
             <p key={index} className="text-sm font-medium" style={{ color: entry.color }}>
               {`${entry.dataKey === 'revenue' ? '$' : ''}${entry.value.toLocaleString()}`}
@@ -42,9 +53,17 @@ export default function DashboardCharts({ revenueData, dailyData }) {
   const DailyTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
       return (
-        <div className="bg-slate-800 border border-slate-600 p-3 rounded-lg shadow-xl">
-          <p className="text-slate-300 text-sm">{`${label}`}</p>
-          <p className="text-sm font-medium text-blue-400">
+        <div className={`p-3 rounded-lg shadow-xl ${
+          isDarkMode 
+            ? 'bg-slate-800 border border-slate-600' 
+            : 'bg-white border border-gray-300'
+        }`}>
+          <p className={`text-sm ${
+            isDarkMode ? 'text-slate-300' : 'text-gray-600'
+          }`}>
+            {`${label}`}
+          </p>
+          <p className="text-sm font-medium text-blue-500">
             ${payload[0].value.toLocaleString()}
           </p>
         </div>
@@ -53,15 +72,31 @@ export default function DashboardCharts({ revenueData, dailyData }) {
     return null;
   };
 
+  // Theme-based colors
+  const gridColor = isDarkMode ? '#475569' : '#E5E7EB';
+  const textColor = isDarkMode ? '#94A3B8' : '#6B7280';
+  const tooltipBg = isDarkMode ? '#1E293B' : '#FFFFFF';
+  const tooltipBorder = isDarkMode ? '#475569' : '#D1D5DB';
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       {/* Revenue Trend Chart */}
-      <Card className="col-span-1 lg:col-span-2 bg-slate-800 border-slate-700">
+      <Card className={`col-span-1 lg:col-span-2 ${
+        isDarkMode 
+          ? 'bg-slate-800 border-slate-700' 
+          : 'bg-white border-gray-200'
+      }`}>
         <CardHeader>
-          <CardTitle className="text-lg font-semibold text-white">
+          <CardTitle className={`text-lg font-semibold ${
+            isDarkMode ? 'text-white' : 'text-gray-900'
+          }`}>
             Revenue & Transaction Trends
           </CardTitle>
-          <p className="text-sm text-slate-300">Monthly performance overview</p>
+          <p className={`text-sm ${
+            isDarkMode ? 'text-slate-300' : 'text-gray-600'
+          }`}>
+            Monthly performance overview
+          </p>
         </CardHeader>
         <CardContent>
           <div className="h-80">
@@ -77,19 +112,19 @@ export default function DashboardCharts({ revenueData, dailyData }) {
                     <stop offset="95%" stopColor="#34D399" stopOpacity={0} />
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="#475569" />
+                <CartesianGrid strokeDasharray="3 3" stroke={gridColor} />
                 <XAxis 
                   dataKey="month" 
                   axisLine={false}
                   tickLine={false}
-                  tick={{ fill: '#94A3B8', fontSize: 12 }}
+                  tick={{ fill: textColor, fontSize: 12 }}
                 />
                 <YAxis 
                   yAxisId="revenue"
                   orientation="left"
                   axisLine={false}
                   tickLine={false}
-                  tick={{ fill: '#94A3B8', fontSize: 12 }}
+                  tick={{ fill: textColor, fontSize: 12 }}
                   tickFormatter={(value) => `$${(value / 1000).toFixed(0)}k`}
                 />
                 <YAxis 
@@ -97,7 +132,7 @@ export default function DashboardCharts({ revenueData, dailyData }) {
                   orientation="right"
                   axisLine={false}
                   tickLine={false}
-                  tick={{ fill: '#94A3B8', fontSize: 12 }}
+                  tick={{ fill: textColor, fontSize: 12 }}
                 />
                 <Tooltip content={<CustomTooltip />} />
                 <Area
@@ -126,12 +161,21 @@ export default function DashboardCharts({ revenueData, dailyData }) {
       </Card>
 
       {/* Daily Revenue Wave Chart */}
-      <Card className="bg-slate-800 border-slate-700">
+      <Card className={isDarkMode 
+        ? 'bg-slate-800 border-slate-700' 
+        : 'bg-white border-gray-200'
+      }>
         <CardHeader>
-          <CardTitle className="text-lg font-semibold text-white">
+          <CardTitle className={`text-lg font-semibold ${
+            isDarkMode ? 'text-white' : 'text-gray-900'
+          }`}>
             Daily Revenue
           </CardTitle>
-          <p className="text-sm text-slate-300">This week's performance</p>
+          <p className={`text-sm ${
+            isDarkMode ? 'text-slate-300' : 'text-gray-600'
+          }`}>
+            This week's performance
+          </p>
         </CardHeader>
         <CardContent>
           <div className="h-64">
@@ -143,17 +187,17 @@ export default function DashboardCharts({ revenueData, dailyData }) {
                     <stop offset="95%" stopColor="#A78BFA" stopOpacity={0.1} />
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="#475569" />
+                <CartesianGrid strokeDasharray="3 3" stroke={gridColor} />
                 <XAxis 
                   dataKey="day" 
                   axisLine={false}
                   tickLine={false}
-                  tick={{ fill: '#94A3B8', fontSize: 12 }}
+                  tick={{ fill: textColor, fontSize: 12 }}
                 />
                 <YAxis 
                   axisLine={false}
                   tickLine={false}
-                  tick={{ fill: '#94A3B8', fontSize: 12 }}
+                  tick={{ fill: textColor, fontSize: 12 }}
                   tickFormatter={(value) => `$${(value / 1000).toFixed(1)}k`}
                 />
                 <Tooltip content={<DailyTooltip />} />
@@ -173,37 +217,47 @@ export default function DashboardCharts({ revenueData, dailyData }) {
       </Card>
 
       {/* Transaction Volume Bar Chart */}
-      <Card className="bg-slate-800 border-slate-700">
+      <Card className={isDarkMode 
+        ? 'bg-slate-800 border-slate-700' 
+        : 'bg-white border-gray-200'
+      }>
         <CardHeader>
-          <CardTitle className="text-lg font-semibold text-white">
+          <CardTitle className={`text-lg font-semibold ${
+            isDarkMode ? 'text-white' : 'text-gray-900'
+          }`}>
             Transaction Volume
           </CardTitle>
-          <p className="text-sm text-slate-300">Weekly transaction count</p>
+          <p className={`text-sm ${
+            isDarkMode ? 'text-slate-300' : 'text-gray-600'
+          }`}>
+            Weekly transaction count
+          </p>
         </CardHeader>
         <CardContent>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={dailyData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#475569" />
+                <CartesianGrid strokeDasharray="3 3" stroke={gridColor} />
                 <XAxis 
                   dataKey="day" 
                   axisLine={false}
                   tickLine={false}
-                  tick={{ fill: '#94A3B8', fontSize: 12 }}
+                  tick={{ fill: textColor, fontSize: 12 }}
                 />
                 <YAxis 
                   axisLine={false}
                   tickLine={false}
-                  tick={{ fill: '#94A3B8', fontSize: 12 }}
+                  tick={{ fill: textColor, fontSize: 12 }}
                 />
                 <Tooltip 
                   formatter={(value) => [`${value}`, 'Transactions']}
-                  labelStyle={{ color: '#94A3B8' }}
+                  labelStyle={{ color: textColor }}
                   contentStyle={{
-                    backgroundColor: '#1E293B',
-                    border: '1px solid #475569',
+                    backgroundColor: tooltipBg,
+                    border: `1px solid ${tooltipBorder}`,
                     borderRadius: '8px',
-                    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.3)'
+                    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.3)',
+                    color: isDarkMode ? '#FFFFFF' : '#1F2937'
                   }}
                 />
                 <Bar 

@@ -1,26 +1,28 @@
+"use client";
+
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
 } from "../../components/ui/card";
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "../../lib/auth";
-import { redirect } from "next/navigation";
 import DashboardCharts from "../../components/DashboardCharts";
+import { useTheme } from "../../context/themeContext"; // Adjust path as needed
 
-export default async function Dashboard() {
-  const session = await getServerSession(authOptions);
-  if (!session) redirect("/sign-in");
+export default function Dashboard() {
+  const { isDarkMode } = useTheme();
 
+  // Note: You'll need to handle session check differently in client component
+  // Consider moving session logic to a separate server component or using useSession
+  
   // Dummy data for dashboard
   const dashboardData = {
-    totalTransactions: 1247,
-    activeSubscriptions: 89,
-    revenue: 45678.5,
-    revenueChange: +12.5, // percentage change
-    transactionChange: +8.2,
-    subscriptionChange: -2.1,
+    totalTransactions: 0,
+    activeSubscriptions: 0,
+    revenue: 0,
+    revenueChange: 0, // percentage change
+    transactionChange: 0,
+    subscriptionChange: 0,
 
     // Data for charts
     revenueData: [
@@ -62,21 +64,35 @@ export default async function Dashboard() {
   };
 
   return (
-    <div className="flex bg-slate-900 min-h-screen">
+    <div className={`flex min-h-screen ${
+      isDarkMode ? 'bg-slate-900' : 'bg-gray-50'
+    }`}>
       <div className="flex-1">
-        <div className="p-8 bg-slate-900 min-h-screen">
+        <div className={`p-8 min-h-screen ${
+          isDarkMode ? 'bg-slate-900' : 'bg-gray-50'
+        }`}>
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-white mb-2">Dashboard</h1>
-            <p className="text-slate-300">
+            <h1 className={`text-3xl font-bold mb-2 ${
+              isDarkMode ? 'text-white' : 'text-gray-900'
+            }`}>
+              Dashboard
+            </h1>
+            <p className={isDarkMode ? 'text-slate-300' : 'text-gray-600'}>
               Welcome back! Here's what's happening with your business today.
             </p>
           </div>
 
           {/* Stats Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <Card className="bg-slate-800 border-slate-700 hover:shadow-2xl hover:shadow-blue-500/20 transition-all duration-300">
+            <Card className={`transition-all duration-300 ${
+              isDarkMode 
+                ? 'bg-slate-800 border-slate-700 hover:shadow-2xl hover:shadow-blue-500/20' 
+                : 'bg-white border-gray-200 hover:shadow-xl hover:shadow-blue-500/10'
+            }`}>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium text-slate-300">
+                <CardTitle className={`text-sm font-medium ${
+                  isDarkMode ? 'text-slate-300' : 'text-gray-600'
+                }`}>
                   Total Transactions
                 </CardTitle>
                 <div className="h-4 w-4 text-blue-400">
@@ -93,22 +109,32 @@ export default async function Dashboard() {
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-white">0</div>
+                <div className={`text-2xl font-bold ${
+                  isDarkMode ? 'text-white' : 'text-gray-900'
+                }`}>
+                  {dashboardData.totalTransactions.toLocaleString()}
+                </div>
                 <p
                   className={`text-xs mt-1 ${
                     dashboardData.transactionChange >= 0
-                      ? "text-green-400"
-                      : "text-red-400"
+                      ? "text-green-500"
+                      : "text-red-500"
                   }`}
                 >
-                  0 from last month
+                  {formatPercentage(dashboardData.transactionChange)} from last month
                 </p>
               </CardContent>
             </Card>
 
-            <Card className="bg-slate-800 border-slate-700 hover:shadow-2xl hover:shadow-green-500/20 transition-all duration-300">
+            <Card className={`transition-all duration-300 ${
+              isDarkMode 
+                ? 'bg-slate-800 border-slate-700 hover:shadow-2xl hover:shadow-green-500/20' 
+                : 'bg-white border-gray-200 hover:shadow-xl hover:shadow-green-500/10'
+            }`}>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium text-slate-300">
+                <CardTitle className={`text-sm font-medium ${
+                  isDarkMode ? 'text-slate-300' : 'text-gray-600'
+                }`}>
                   Active Subscriptions
                 </CardTitle>
                 <div className="h-4 w-4 text-green-400">
@@ -127,22 +153,32 @@ export default async function Dashboard() {
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-white">0</div>
+                <div className={`text-2xl font-bold ${
+                  isDarkMode ? 'text-white' : 'text-gray-900'
+                }`}>
+                  {dashboardData.activeSubscriptions.toLocaleString()}
+                </div>
                 <p
                   className={`text-xs mt-1 ${
                     dashboardData.subscriptionChange >= 0
-                      ? "text-green-400"
-                      : "text-red-400"
+                      ? "text-green-500"
+                      : "text-red-500"
                   }`}
                 >
-                  0 from last month
+                  {formatPercentage(dashboardData.subscriptionChange)} from last month
                 </p>
               </CardContent>
             </Card>
 
-            <Card className="bg-slate-800 border-slate-700 hover:shadow-2xl hover:shadow-purple-500/20 transition-all duration-300">
+            <Card className={`transition-all duration-300 ${
+              isDarkMode 
+                ? 'bg-slate-800 border-slate-700 hover:shadow-2xl hover:shadow-purple-500/20' 
+                : 'bg-white border-gray-200 hover:shadow-xl hover:shadow-purple-500/10'
+            }`}>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium text-slate-300">
+                <CardTitle className={`text-sm font-medium ${
+                  isDarkMode ? 'text-slate-300' : 'text-gray-600'
+                }`}>
                   Revenue (USD)
                 </CardTitle>
                 <div className="h-4 w-4 text-purple-400">
@@ -160,15 +196,19 @@ export default async function Dashboard() {
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-white">0</div>
+                <div className={`text-2xl font-bold ${
+                  isDarkMode ? 'text-white' : 'text-gray-900'
+                }`}>
+                  {formatCurrency(dashboardData.revenue)}
+                </div>
                 <p
                   className={`text-xs mt-1 ${
                     dashboardData.revenueChange >= 0
-                      ? "text-green-400"
-                      : "text-red-400"
+                      ? "text-green-500"
+                      : "text-red-500"
                   }`}
                 >
-                  0 from last month
+                  {formatPercentage(dashboardData.revenueChange)} from last month
                 </p>
               </CardContent>
             </Card>
@@ -178,6 +218,7 @@ export default async function Dashboard() {
           <DashboardCharts
             revenueData={dashboardData.revenueData}
             dailyData={dashboardData.dailyData}
+            isDarkMode={isDarkMode}
           />
         </div>
       </div>
