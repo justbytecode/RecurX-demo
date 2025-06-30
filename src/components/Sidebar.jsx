@@ -13,12 +13,12 @@ export default function Sidebar() {
     {
       name: "Payment Management",
       href: "/dashboard/payment-management",
-      disabled: true,
+      disabled: false,
     },
     {
       name: "Subscription Management",
       href: "/dashboard/subscription-management",
-      disabled: true,
+      disabled: false,
     },
     {
       name: "Wallet Integration",

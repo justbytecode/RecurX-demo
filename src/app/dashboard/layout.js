@@ -4,6 +4,8 @@ import Popups from "../../components/ui/popup";
 import Navbar from "../../components/Navbar";
 import Sidebar from "../../components/Sidebar";
 import { useTheme } from "../../context/themeContext";
+import { TonConnectUIProvider } from '@tonconnect/ui-react';
+
 
 function Layout({ children }) {
     const { themeClasses } = useTheme();
@@ -14,7 +16,9 @@ function Layout({ children }) {
         <Sidebar />
         <main className="flex-1 p-4 overflow-auto">
           <Navbar />
+          <TonConnectUIProvider manifestUrl="https://localhost:3000/tonconnect-manifest.json">
           {children}
+          </TonConnectUIProvider>
         </main>
       </div>
       <Popups />

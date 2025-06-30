@@ -21,9 +21,18 @@ model User {
   referredBy   Int?       
   accounts  Account[]
   sessions  Session[]
+  wallets   Wallet[]
   createdAt DateTime   @default(now())  
 }
 
+
+model Wallet{
+  id String @id  @default(cuid())
+  walletName String?
+  walletAddress String @unique
+  userId Int
+  user User @relation(fields: [userId], references: [id])
+}
 
 
 
