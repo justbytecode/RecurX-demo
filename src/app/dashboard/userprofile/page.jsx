@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { useSession, signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { useTheme } from "../../../context/themeContext";
 import {
   Card,
@@ -40,10 +40,13 @@ import {
   Loader2,
 } from "lucide-react";
 import { usePrivy } from "@privy-io/react-auth";
+// import { TonConnectButton } from "@tonconnect/ui-react";
+import MassaWallet from "../../../massawallet/index"
+
 
 export default function UserProfile() {
   const { data: session, status } = useSession();
-  const { authenticated, user,} = usePrivy();
+  const { authenticated, user } = usePrivy();
   const { isDarkMode, toggleTheme, themeClasses } = useTheme();
   const [selectedChain, setSelectedChain] = useState("ethereum");
   const [connectedWallet, setConnectedWallet] = useState(null);
@@ -259,16 +262,6 @@ export default function UserProfile() {
                     </Button>
                   </div>
                 </div>
-                <div>
-                  <Label
-                    className={`text-sm font-medium ${themeClasses.textMuted}`}
-                  >
-                    Balance
-                  </Label>
-                  <p className="text-lg font-semibold text-green-400">
-                    {userInfo.balance}
-                  </p>
-                </div>
               </div>
               <Separator
                 className={`my-4 ${
@@ -419,40 +412,6 @@ export default function UserProfile() {
                   ))}
                 </SelectContent>
               </Select>
-
-              <div className="space-y-2">
-                <Label
-                  className={`text-sm font-medium ${themeClasses.textPrimary}`}
-                >
-                  Available Networks
-                </Label>
-                <div className="grid grid-cols-2 gap-2">
-                  {chains.map((chain) => (
-                    <div
-                      key={chain.id}
-                      className={`p-2 rounded-lg border cursor-pointer transition-colors ${
-                        selectedChain === chain.id
-                          ? "border-purple-500 bg-purple-600/20"
-                          : `${themeClasses.border} ${themeClasses.hover}`
-                      }`}
-                      onClick={() => setSelectedChain(chain.id)}
-                    >
-                      <div className="flex items-center gap-2">
-                        <div
-                          className={`w-6 h-6 rounded-full ${chain.color} flex items-center justify-center text-sm`}
-                        >
-                          {chain.icon}
-                        </div>
-                        <span
-                          className={`text-sm font-medium ${themeClasses.textPrimary}`}
-                        >
-                          {chain.name}
-                        </span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
             </CardContent>
           </Card>
 
@@ -471,45 +430,76 @@ export default function UserProfile() {
                 Connect and manage your crypto wallets
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
+
+            <CardContent className="space-y-6">
+              {/* Connected Wallet */}
               <div className="space-y-2">
                 <Label
                   className={`text-sm font-medium ${themeClasses.textPrimary}`}
                 >
                   Connected Wallet
                 </Label>
-                <div
-                  className={`p-3 rounded-lg border ${themeClasses.border} ${
-                    isDarkMode ? "bg-slate-700" : "bg-slate-50"
-                  }`}
-                >
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <span className="text-lg">
-                        {wallets.find((w) => w.id === connectedWallet)?.icon}
-                      </span>
-                      <span
-                        className={`font-medium ${themeClasses.textPrimary}`}
-                      >
-                        {wallets.find((w) => w.id === connectedWallet)?.name}
-                      </span>
+                {authenticated ? (
+                  <div
+                    className={`p-4 rounded-xl border shadow-sm transition-all duration-300 ${
+                      themeClasses.border
+                    } ${isDarkMode ? "bg-slate-800" : "bg-white"}`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <span className="text-2xl">
+                          {wallets.find((w) => w.id === connectedWallet)?.icon}
+                        </span>
+                        <div className="flex flex-col">
+                          <span
+                            className={`font-semibold text-base ${themeClasses.textPrimary}`}
+                          >
+                            {
+                              wallets.find((w) => w.id === connectedWallet)
+                                ?.name
+                            }
+                          </span>
+                          <span className="text-sm text-muted-foreground">
+                            Wallet connected successfully
+                          </span>
+                        </div>
+                      </div>
+                      <Badge className="bg-green-600 text-white text-sm px-3 py-1 rounded-full">
+                        Connected
+                      </Badge>
                     </div>
-                    <Badge
-                      variant="secondary"
-                      className="bg-green-600 text-white"
-                    >
-                      Connected
-                    </Badge>
                   </div>
-                </div>
+                ) : (
+                  <div
+                    className={`p-4 rounded-xl border-dashed border-2 text-center text-muted-foreground ${
+                      themeClasses.border
+                    } ${isDarkMode ? "bg-slate-800" : "bg-slate-50"}`}
+                  >
+                    <p className="text-sm">
+                      🔌 Connect your wallet to continue
+                    </p>
+                  </div>
+                )}
               </div>
 
+              {/* TON Wallet */}
+              {/* <div className="space-y-2">
+                <Label
+                  className={`text-sm font-medium ${themeClasses.textPrimary}`}
+                >
+                  Connect TON Wallet
+                </Label>
+                <TonConnectButton />
+              </div> */}
+
+              {/* Massa Wallet */}
               <div className="space-y-2">
                 <Label
                   className={`text-sm font-medium ${themeClasses.textPrimary}`}
                 >
-                  Switch Wallet
+                  Connect Massa Wallet
                 </Label>
+                <MassaWallet/>
               </div>
 
               <Button
