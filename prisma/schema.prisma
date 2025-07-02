@@ -16,23 +16,15 @@ model User {
   wallet        String?
   apiKeys       ApiKey[]
   point         Int?          @default(0)
+  subscription  Subscription[]
   transactions  Transaction[]
   referralCode  String?          @unique
   referredBy   Int?       
   accounts  Account[]
   sessions  Session[]
-  wallets   Wallet[]
   createdAt DateTime   @default(now())  
 }
 
-
-model Wallet{
-  id String @id  @default(cuid())
-  walletName String?
-  walletAddress String @unique
-  userId Int
-  user User @relation(fields: [userId], references: [id])
-}
 
 
 
@@ -90,4 +82,30 @@ model ApiKey {
   clientId     String   @unique
   clientSecret String   @unique
   createdAt    DateTime @default(now())
+}
+
+
+model Subscription{
+  id String @id @default(cuid())
+  name String 
+  description String
+  amount Float
+  billingTime Int
+  recurring Boolean
+  UserId Int 
+  user User @relation(fields: [UserId],references: [id])
+  subscriber Subscriber[]
+}
+
+
+
+model Subscriber{
+  id String @id @default(cuid())
+  name String
+  email String
+  phoneNumber String
+  address String?
+  subscriptionId String 
+  subscription Subscription @relation(fields: [subscriptionId],references: [id])
+   createdAt       DateTime @default(now())
 }

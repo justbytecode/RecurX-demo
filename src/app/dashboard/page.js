@@ -7,7 +7,7 @@ import {
   CardTitle,
 } from "../../components/ui/card";
 import DashboardCharts from "../../components/DashboardCharts";
-import { useTheme } from "../../context/themeContext"; // Adjust path as needed
+import { useTheme } from "../../context/themeContext";
 
 export default function Dashboard() {
   const { isDarkMode } = useTheme();

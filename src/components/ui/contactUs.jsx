@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Home, Phone, Mail, Send } from "lucide-react";
-import useSendEmail from "../../hooks/sendMail";
+// import useSendEmail from "../../hooks/sendMail";
 import { toast } from "react-toastify";
 import _ from "lodash";
 
@@ -14,7 +14,7 @@ const ContactUs = () => {
     message: "",
   });
 
-  const { sendEmail, loading, error, response } = useSendEmail();
+  // const { sendEmail, loading, error, response } = useSendEmail();
 
   const fadeInUp = {
     initial: { opacity: 0, y: 20 },
@@ -195,10 +195,10 @@ const ContactUs = () => {
                   >
                     <button
                       type="submit"
-                      disabled={loading}
+                      // disabled={loading}
                       className="w-full group rounded border border-blue-600 bg-blue-600 p-3 text-white transition hover:bg-blue-700 flex items-center justify-center gap-2 disabled:opacity-50"
                     >
-                      <span>{loading ? 'Sending...' : 'Send Message'}</span>
+                      {/* <span>{loading ? 'Sending...' : 'Send Message'}</span> */}
                       <Send size={16} className="group-hover:translate-x-1 transition-transform" />
                     </button>
                   </motion.div>
