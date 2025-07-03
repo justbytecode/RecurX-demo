@@ -21,7 +21,7 @@ export async function getProvider() {
 
   const provider = new ethers.BrowserProvider(eth);
   const signer = await provider.getSigner();
-  const contract = new ethers.Contract(contractAddress, PaymentGateWayABI.abi, signer);
+  const contract = new ethers.Contract(contractAddress, PaymentGateWayABI, signer);
 
   return contract;
 }

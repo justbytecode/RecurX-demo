@@ -23,7 +23,11 @@ import {
   Loader2,
 } from "lucide-react";
 import { Switch } from "../../../components/ui/switch";
-import { createSubscriptionPlan } from "../../../smartcontractsHelpers/index";
+import {
+  createSubscriptionPlan,
+  createPaymentLink,
+} from "../../../smartcontractsHelpers/index";
+import { usePrivy } from "@privy-io/react-auth";
 
 function Page() {
   const { themeClasses } = useTheme();
@@ -36,6 +40,8 @@ function Page() {
     interval: "",
     recurring: false,
   });
+
+  const { authenticated } = usePrivy();
 
   useEffect(() => {
     (async function fetchSubscription() {
@@ -76,6 +82,29 @@ function Page() {
 
     startTransition(async () => {
       try {
+        // Call smart contract functions
+        const planResult = await createSubscriptionPlan(
+          formData.amount,
+          formData.interval,
+          formData.name
+        );
+
+        if (!planResult) {
+          console.error("createSubscriptionPlan failed");
+          return;
+        }
+
+        const linkResult = await createPaymentLink(
+          formData.amount,
+          formData.name
+        );
+
+        if (!linkResult) {
+          console.error("createPaymentLink failed");
+          return;
+        }
+
+        // ✅ Only proceed if both succeeded
         const res = await fetch("/api/subscriptions", {
           method: "POST",
           headers: {
@@ -84,12 +113,6 @@ function Page() {
           body: JSON.stringify(formData),
         });
 
-        const resinfo = await createSubscriptionPlan(
-          formData.amount,
-          formData.interval,
-          formData.name
-        );
-
         if (!res.ok) {
           const errData = await res.json();
           throw new Error(errData.error || "Failed to create subscription");
@@ -97,10 +120,8 @@ function Page() {
 
         const newSubscription = await res.json();
 
-        // ✅ Add new subscription to state
         setSubscription((prev) => [...prev, newSubscription]);
 
-        // ✅ Reset form
         setFormData({
           name: "",
           description: "",
@@ -122,27 +143,6 @@ function Page() {
       change: "+12%",
       changeType: "positive",
     },
-    {
-      title: "Active Subscribers",
-      value: 1230,
-      icon: Users,
-      change: "+8%",
-      changeType: "positive",
-    },
-    {
-      title: "Monthly Revenue",
-      value: "$2,847",
-      icon: DollarSign,
-      change: "+23%",
-      changeType: "positive",
-    },
-    {
-      title: "Conversion Rate",
-      value: "12.5%",
-      icon: TrendingUp,
-      change: "-2%",
-      changeType: "negative",
-    },
   ];
 
   return (
@@ -157,54 +157,6 @@ function Page() {
         <p className={`${themeClasses.textSecondary} text-lg`}>
           Create and manage your subscription plans on the blockchain
         </p>
-      </div>
-
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        {stats.map((stat, index) => (
-          <Card
-            key={index}
-            className={`${themeClasses.cardBackground} ${themeClasses.cardBorder} border`}
-          >
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p
-                    className={`text-sm font-medium ${themeClasses.textSecondary}`}
-                  >
-                    {stat.title}
-                  </p>
-                  <p
-                    className={`text-2xl font-bold ${themeClasses.textPrimary}`}
-                  >
-                    {stat.value}
-                  </p>
-                </div>
-                <div
-                  className={`p-3 rounded-full ${themeClasses.cardBackground}`}
-                >
-                  <stat.icon
-                    className={`w-6 h-6 ${themeClasses.textSecondary}`}
-                  />
-                </div>
-              </div>
-              <div className="flex items-center mt-4">
-                <span
-                  className={`text-sm font-medium ${
-                    stat.changeType === "positive"
-                      ? "text-green-600"
-                      : "text-red-600"
-                  }`}
-                >
-                  {stat.change}
-                </span>
-                <span className={`text-sm ${themeClasses.textMuted} ml-1`}>
-                  from last month
-                </span>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -333,7 +285,7 @@ function Page() {
                 <Button
                   type="submit"
                   className="w-full mt-6"
-                  disabled={isPending}
+                  disabled={!authenticated || isPending}
                 >
                   {isPending ? (
                     <>
@@ -390,7 +342,7 @@ function Page() {
                       key={index}
                       className={`p-4 rounded-lg border ${themeClasses.cardBorder} ${themeClasses.hover} transition-colors`}
                     >
-                          <span>Subscription ID: {plan.id}</span>
+                      <span>Subscription ID: {plan.id}</span>
                       <div className="flex items-center justify-between mb-3">
                         <div className="flex items-center">
                           <CheckCircle2 className="w-5 h-5 text-green-500 mr-2" />
