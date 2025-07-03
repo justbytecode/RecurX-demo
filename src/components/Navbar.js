@@ -14,10 +14,11 @@ import {
 } from "lucide-react";
 import { signOut } from "next-auth/react";
 import { useTheme } from "../context/themeContext";
+import { addMerchants } from "../smartcontractsHelpers/index";
 
 export default function Navbar() {
   const { data: session } = useSession();
-  const { isDarkMode, toggleTheme, themeClasses } = useTheme();
+  const { themeClasses } = useTheme();
   const { login, authenticated, user, logout } = usePrivy();
   const [points, setPoints] = useState("0");
   const [shouldAddWallet, setShouldAddWallet] = useState(false);
@@ -48,8 +49,25 @@ export default function Navbar() {
     fetchPoints();
   }, []);
 
+  useEffect(() => {
+    if (shouldAddWallet && user?.wallet?.address) {
+      (async () => {
+        try {
+          console.log("Wallet available:", user.wallet.address);
+          const info = await addMerchants(user.wallet.address);
+          console.log("Merchant added:", info);
+        } catch (err) {
+          console.error("Error adding merchant:", err);
+        } finally {
+          setShouldAddWallet(false); // reset so it doesn't run again
+        }
+      })();
+    }
+  }, [shouldAddWallet, user?.wallet?.address]);
+
   const addWallet = async () => {
-    await login();
+    await login(); 
+    // index.js:61 0x300781c2725f238f909e5178bd671141e03affff9ce11b23d655deffefb7a9c2
     setShouldAddWallet(true);
   };
 
@@ -167,15 +185,23 @@ export default function Navbar() {
             {authenticated ? (
               <>
                 {/* Points Display */}
-                <div className={`${themeClasses.cardBackground} backdrop-blur-sm rounded-lg border ${themeClasses.border}`}>
+                <div
+                  className={`${themeClasses.cardBackground} backdrop-blur-sm rounded-lg border ${themeClasses.border}`}
+                >
                   <div className="flex items-center gap-2 px-4 py-2">
                     <Coins className="h-4 w-4 text-purple-400" />
-                    <span className={`${themeClasses.textMuted} text-sm font-medium`}>
+                    <span
+                      className={`${themeClasses.textMuted} text-sm font-medium`}
+                    >
                       {pointsLoading ? (
-                        <div className={`animate-pulse ${themeClasses.border} h-4 w-12 rounded`}></div>
+                        <div
+                          className={`animate-pulse ${themeClasses.border} h-4 w-12 rounded`}
+                        ></div>
                       ) : (
                         <>
-                          <span className={`${themeClasses.textPrimary} font-bold`}>
+                          <span
+                            className={`${themeClasses.textPrimary} font-bold`}
+                          >
                             {formatPoints(points)}
                           </span>
                           <span className="text-purple-300 ml-1">pts</span>
@@ -193,19 +219,27 @@ export default function Navbar() {
                   >
                     {renderProfileImage()}
                     <ChevronDown
-                      className={`h-4 w-4 ${themeClasses.textMuted} transition-transform duration-200 ${
+                      className={`h-4 w-4 ${
+                        themeClasses.textMuted
+                      } transition-transform duration-200 ${
                         showDropdown ? "rotate-180" : ""
                       }`}
                     />
                   </button>
 
                   {showDropdown && (
-                    <div className={`absolute top-full mt-2 right-0 ${themeClasses.cardBackground} backdrop-blur-md ${themeClasses.textPrimary} rounded-xl shadow-2xl border ${themeClasses.border} min-w-80 z-50`}>
+                    <div
+                      className={`absolute top-full mt-2 right-0 ${themeClasses.cardBackground} backdrop-blur-md ${themeClasses.textPrimary} rounded-xl shadow-2xl border ${themeClasses.border} min-w-80 z-50`}
+                    >
                       {/* Profile Header */}
-                      <div className={`flex items-center gap-3 p-4 border-b ${themeClasses.border}`}>
+                      <div
+                        className={`flex items-center gap-3 p-4 border-b ${themeClasses.border}`}
+                      >
                         {renderProfileImage()}
                         <div className="flex-1">
-                          <div className={`font-semibold ${themeClasses.textPrimary}`}>
+                          <div
+                            className={`font-semibold ${themeClasses.textPrimary}`}
+                          >
                             {session?.user?.name || "Wallet User"}
                           </div>
                           <div className={`text-sm ${themeClasses.textMuted}`}>
@@ -226,7 +260,9 @@ export default function Navbar() {
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
                             <Coins className="h-5 w-5 text-purple-400" />
-                            <span className={themeClasses.textMuted}>Total Points</span>
+                            <span className={themeClasses.textMuted}>
+                              Total Points
+                            </span>
                           </div>
                           <span className="text-xl font-bold text-purple-400">
                             {formatPoints(points)}
@@ -237,12 +273,16 @@ export default function Navbar() {
                       {/* Wallet Address Section */}
                       {user?.wallet?.address && (
                         <div className={`p-4 border-b ${themeClasses.border}`}>
-                          <div className={`text-sm ${themeClasses.textMuted} mb-2 flex items-center gap-2`}>
+                          <div
+                            className={`text-sm ${themeClasses.textMuted} mb-2 flex items-center gap-2`}
+                          >
                             <Wallet className="h-4 w-4" />
                             Wallet Address:
                           </div>
                           <div className="relative group">
-                            <div className={`text-xs font-mono ${themeClasses.inputBackground} p-3 rounded-lg border ${themeClasses.border} pr-12 break-all ${themeClasses.textPrimary}`}>
+                            <div
+                              className={`text-xs font-mono ${themeClasses.inputBackground} p-3 rounded-lg border ${themeClasses.border} pr-12 break-all ${themeClasses.textPrimary}`}
+                            >
                               {user.wallet.address}
                             </div>
                             <button
@@ -294,15 +334,23 @@ export default function Navbar() {
             ) : (
               <div className="flex items-center gap-4">
                 {/* Points Display for Non-authenticated Users */}
-                <div className={`${themeClasses.cardBackground} border ${themeClasses.border} backdrop-blur-sm rounded-lg`}>
+                <div
+                  className={`${themeClasses.cardBackground} border ${themeClasses.border} backdrop-blur-sm rounded-lg`}
+                >
                   <div className="flex items-center gap-2 px-4 py-2">
                     <Coins className="h-4 w-4 text-purple-400" />
-                    <span className={`${themeClasses.textMuted} text-sm font-medium`}>
+                    <span
+                      className={`${themeClasses.textMuted} text-sm font-medium`}
+                    >
                       {pointsLoading ? (
-                        <div className={`animate-pulse ${themeClasses.border} h-4 w-12 rounded`}></div>
+                        <div
+                          className={`animate-pulse ${themeClasses.border} h-4 w-12 rounded`}
+                        ></div>
                       ) : (
                         <>
-                          <span className={`${themeClasses.textPrimary} font-bold`}>
+                          <span
+                            className={`${themeClasses.textPrimary} font-bold`}
+                          >
                             {formatPoints(points)}
                           </span>
                           <span className="text-purple-300 ml-1">pts</span>

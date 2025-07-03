@@ -1,93 +1,62 @@
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../../components/ui/table";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../../components/ui/card";
+"use client";
+
+import { useEffect, useState } from "react";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "../../../components/ui/table";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../../../components/ui/card";
 import { Badge } from "../../../components/ui/badge";
 import { Button } from "../../../components/ui/button";
 import { Input } from "../../../components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../components/ui/select";
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "../../../lib/auth";
-import { redirect } from "next/navigation";
-import { Search, Filter, Download, Plus, Calendar, DollarSign, TrendingUp, Users } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../../../components/ui/select";
+import { Search, Download, Calendar, DollarSign, TrendingUp } from "lucide-react";
+import { getTransactions } from "../../../smartcontractsHelpers/index";
 
-export default async function PaymentManagement() {
-  const session = await getServerSession(authOptions);
-  if (!session) redirect("/sign-in");
+export default function PaymentManagement() {
+  const [transactions, setTransactions] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Sample data for demonstration
-  const transactions = [
-    {
-      id: "TXN-001",
-      amount: 1250.00,
-      status: "completed",
-      date: "2024-06-28",
-      customer: "John Doe",
-      method: "Credit Card"
-    },
-    {
-      id: "TXN-002",
-      amount: 850.50,
-      status: "pending",
-      date: "2024-06-28",
-      customer: "Jane Smith",
-      method: "Bank Transfer"
-    },
-    {
-      id: "TXN-003",
-      amount: 2100.00,
-      status: "completed",
-      date: "2024-06-27",
-      customer: "Acme Corp",
-      method: "PayPal"
-    },
-    {
-      id: "TXN-004",
-      amount: 450.75,
-      status: "failed",
-      date: "2024-06-27",
-      customer: "Tech Solutions",
-      method: "Credit Card"
-    },
-    {
-      id: "TXN-005",
-      amount: 3200.00,
-      status: "completed",
-      date: "2024-06-26",
-      customer: "Global Industries",
-      method: "Wire Transfer"
-    }
-  ];
-
-  const stats = [
-    {
-      title: "Total Revenue",
-      value: "$8,850.25",
-      change: "+12.5%",
-      icon: DollarSign,
-      color: "text-green-600"
-    },
-    {
-      title: "Transactions",
-      value: "156",
-      change: "+8.2%",
-      icon: TrendingUp,
-      color: "text-blue-600"
-    },
-    {
-      title: "This Month",
-      value: "$12,340",
-      change: "+15.8%",
-      icon: Calendar,
-      color: "text-orange-600"
-    }
-  ];
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const txns = await getTransactions();
+        console.log(txns)
+        setTransactions(txns);
+      } catch (err) {
+        console.error("Error fetching transactions:", err);
+        setError("Failed to load transactions.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
 
   const getStatusBadge = (status) => {
     const variants = {
       completed: "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300",
       pending: "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300",
-      failed: "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300"
+      failed: "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300",
     };
-    
+
     return (
       <Badge className={`${variants[status]} border-0 font-medium`}>
         {status.charAt(0).toUpperCase() + status.slice(1)}
@@ -96,24 +65,23 @@ export default async function PaymentManagement() {
   };
 
   const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric'
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
     });
   };
 
   const formatCurrency = (amount) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD'
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
     }).format(amount);
   };
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-6">
       <div className="max-w-7xl mx-auto space-y-6">
-        {/* Header */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
@@ -125,42 +93,11 @@ export default async function PaymentManagement() {
           </div>
           <div className="flex gap-3">
             <Button variant="outline" className="gap-2">
-              <Download className="h-4 w-4" />
-              Export
+              <Download className="h-4 w-4" /> Export
             </Button>
           </div>
         </div>
 
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-6">
-          {stats.map((stat, index) => {
-            const Icon = stat.icon;
-            return (
-              <Card key={index} className="border-0 shadow-sm bg-white dark:bg-gray-800">
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                        {stat.title}
-                      </p>
-                      <p className="text-2xl font-bold text-gray-900 dark:text-white mt-1">
-                        {stat.value}
-                      </p>
-                      <p className={`text-sm font-medium mt-1 ${stat.color}`}>
-                        {stat.change} from last month
-                      </p>
-                    </div>
-                    <div className={`p-3 rounded-full bg-gray-100 dark:bg-gray-700 ${stat.color}`}>
-                      <Icon className="h-6 w-6" />
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            );
-          })}
-        </div>
-
-        {/* Filters and Search */}
         <Card className="border-0 shadow-sm bg-white dark:bg-gray-800">
           <CardContent className="p-6">
             <div className="flex flex-col sm:flex-row gap-4">
@@ -197,7 +134,6 @@ export default async function PaymentManagement() {
           </CardContent>
         </Card>
 
-        {/* Transactions Table */}
         <Card className="border-0 shadow-sm bg-white dark:bg-gray-800">
           <CardHeader className="pb-4">
             <CardTitle className="text-xl font-semibold text-gray-900 dark:text-white">
@@ -212,93 +148,56 @@ export default async function PaymentManagement() {
               <Table>
                 <TableHeader>
                   <TableRow className="border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800">
-                    <TableHead className="font-semibold text-gray-900 dark:text-white px-6 py-4">
-                      Transaction ID
-                    </TableHead>
-                    <TableHead className="font-semibold text-gray-900 dark:text-white">
-                      Customer
-                    </TableHead>
-                    <TableHead className="font-semibold text-gray-900 dark:text-white">
-                      Amount
-                    </TableHead>
-                    <TableHead className="font-semibold text-gray-900 dark:text-white">
-                      Method
-                    </TableHead>
-                    <TableHead className="font-semibold text-gray-900 dark:text-white">
-                      Status
-                    </TableHead>
-                    <TableHead className="font-semibold text-gray-900 dark:text-white">
-                      Date
-                    </TableHead>
-                    <TableHead className="font-semibold text-gray-900 dark:text-white text-right pr-6">
-                      Actions
-                    </TableHead>
+                    <TableHead className="font-semibold text-gray-900 dark:text-white px-6 py-4">Transaction ID</TableHead>
+                    <TableHead className="font-semibold text-gray-900 dark:text-white">Customer</TableHead>
+                    <TableHead className="font-semibold text-gray-900 dark:text-white">Amount</TableHead>
+                    <TableHead className="font-semibold text-gray-900 dark:text-white">Method</TableHead>
+                    <TableHead className="font-semibold text-gray-900 dark:text-white">Status</TableHead>
+                    <TableHead className="font-semibold text-gray-900 dark:text-white">Date</TableHead>
+                    <TableHead className="font-semibold text-gray-900 dark:text-white text-right pr-6">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {transactions.map((tx) => (
-                    <TableRow 
-                      key={tx.id} 
-                      className="border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
-                    >
-                      <TableCell className="font-mono text-sm text-blue-600 dark:text-blue-400 px-6 py-4">
-                        {tx.id}
-                      </TableCell>
-                      <TableCell className="font-medium text-gray-900 dark:text-white">
-                        {tx.customer}
-                      </TableCell>
-                      <TableCell className="font-semibold text-gray-900 dark:text-white">
-                        {formatCurrency(tx.amount)}
-                      </TableCell>
-                      <TableCell className="text-gray-600 dark:text-gray-400">
-                        {tx.method}
-                      </TableCell>
-                      <TableCell>
-                        {getStatusBadge(tx.status)}
-                      </TableCell>
-                      <TableCell className="text-gray-600 dark:text-gray-400">
-                        {formatDate(tx.date)}
-                      </TableCell>
-                      <TableCell className="text-right pr-6">
-                        <Button 
-                          variant="ghost" 
-                          size="sm"
-                          className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
-                        >
-                          View Details
-                        </Button>
+                  {loading ? (
+                    <TableRow>
+                      <TableCell colSpan={7} className="text-center py-6 text-gray-500 dark:text-gray-400">
+                        Loading transactions...
                       </TableCell>
                     </TableRow>
-                  ))}
+                  ) : error ? (
+                    <TableRow>
+                      <TableCell colSpan={7} className="text-center py-6 text-red-500">
+                        {error}
+                      </TableCell>
+                    </TableRow>
+                  ) : transactions.length === 0 ? (
+                    <TableRow>
+                      <TableCell colSpan={7} className="text-center py-6 text-gray-500 dark:text-gray-400">
+                        No transactions found.
+                      </TableCell>
+                    </TableRow>
+                  ) : (
+                    transactions.map((tx) => (
+                      <TableRow key={tx.id} className="border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+                        <TableCell className="font-mono text-sm text-blue-600 dark:text-blue-400 px-6 py-4">{tx.id}</TableCell>
+                        <TableCell className="font-medium text-gray-900 dark:text-white">{tx.customer}</TableCell>
+                        <TableCell className="font-semibold text-gray-900 dark:text-white">{formatCurrency(tx.amount)}</TableCell>
+                        <TableCell className="text-gray-600 dark:text-gray-400">{tx.method}</TableCell>
+                        <TableCell>{getStatusBadge(tx.status)}</TableCell>
+                        <TableCell className="text-gray-600 dark:text-gray-400">{formatDate(tx.date)}</TableCell>
+                        <TableCell className="text-right pr-6">
+                          <Button variant="ghost" size="sm" className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
+                            View Details
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  )}
                 </TableBody>
               </Table>
             </div>
           </CardContent>
         </Card>
-
-        {/* Pagination */}
-        <div className="flex items-center justify-between">
-          <p className="text-sm text-gray-600 dark:text-gray-400">
-            Showing 1 to 5 of 156 transactions
-          </p>
-          <div className="flex gap-2">
-            <Button variant="outline" size="sm" disabled>
-              Previous
-            </Button>
-            <Button variant="outline" size="sm" className="bg-blue-50 text-blue-600 border-blue-200">
-              1
-            </Button>
-            <Button variant="outline" size="sm">
-              2
-            </Button>
-            <Button variant="outline" size="sm">
-              3
-            </Button>
-            <Button variant="outline" size="sm">
-              Next
-            </Button>
-          </div>
-        </div>
       </div>
     </div>
   );

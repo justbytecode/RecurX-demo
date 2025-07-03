@@ -24,7 +24,7 @@ import {
   MapPin,
   Crown,
 } from "lucide-react";
-import { sendMatic } from "../../../smartcontractsHelpers/index";
+import { processPayment } from "../../../smartcontractsHelpers/index";
 
 function Page() {
   const { handler } = useParams();
@@ -92,6 +92,13 @@ function Page() {
   const handlePurchase = async () => {
     try {
       setIsLoading(true);
+      const resProc = await processPayment();
+      if (!resProc) {
+        console.log("Payment failed");
+        setIsLoading(false)
+        return;
+      }
+      console.log(resProc);
       const response = await fetch("/api/subscribers", {
         method: "POST",
         body: JSON.stringify({
@@ -104,7 +111,7 @@ function Page() {
       });
       const data = await response.json();
       console.log(data);
-      await sendMatic(handler[1], subscriptionData.price);
+
       setIsLoading(false);
     } catch (error) {
       console.log(error);
