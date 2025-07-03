@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useTheme } from "../context/themeContext";
 
 export default function Sidebar() {
-  const { isDarkMode, toggleTheme, themeClasses } = useTheme();
+  const {  themeClasses } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
   const [showSettingsDropdown, setShowSettingsDropdown] = useState(false);
 
@@ -28,7 +28,7 @@ export default function Sidebar() {
     {
       name: "API Integration",
       href: "/dashboard/api-integration",
-      disabled: true,
+      disabled: false,
     },
     {
       name: "Security & Compliance",

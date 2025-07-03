@@ -41,18 +41,18 @@ import {
 } from "lucide-react";
 import { usePrivy } from "@privy-io/react-auth";
 // import { TonConnectButton } from "@tonconnect/ui-react";
-import MassaWallet from "../../../massawallet/index"
-
+import MassaWallet from "../../../massawallet/index";
 
 export default function UserProfile() {
   const { data: session, status } = useSession();
-  const { authenticated, user } = usePrivy();
+  const { authenticated, user, linkWallet, getUser } = usePrivy();
   const { isDarkMode, toggleTheme, themeClasses } = useTheme();
   const [selectedChain, setSelectedChain] = useState("ethereum");
   const [connectedWallet, setConnectedWallet] = useState(null);
 
   useEffect(() => {
     if (authenticated && user?.wallet?.walletClientType) {
+      console.log(user?.wallet?.walletClientType);
       setConnectedWallet(user.wallet.walletClientType);
     }
   }, [authenticated, user]);
@@ -118,8 +118,8 @@ export default function UserProfile() {
     { id: "ethereum", name: "Ethereum", icon: "⟠", color: "bg-blue-500" },
     { id: "polygon", name: "Polygon", icon: "⬟", color: "bg-purple-500" },
     { id: "bsc", name: "BSC", icon: "◊", color: "bg-yellow-500" },
-    { id: "arbitrum", name: "Arbitrum", icon: "◈", color: "bg-cyan-500" },
-    { id: "optimism", name: "Optimism", icon: "○", color: "bg-red-500" },
+    { id: "masa", name: "Massa", icon: "◈", color: "bg-cyan-500" },
+    { id: "monad", name: "Monad", icon: "○", color: "bg-red-500" },
   ];
 
   const wallets = [
@@ -143,36 +143,21 @@ export default function UserProfile() {
     );
   };
 
-  // const switchWallets = async () => {
-  //   if (!authenticated) return;
+  const switchWallets = async () => {
+    if (!authenticated) return;
 
-  //   try {
-  //     const currentAddress = user?.wallet?.address;
-  //     const numAccounts = user?.linkedAccounts?.length || 0;
+    try {
+      await linkWallet(); // links the new wallet
+      const updatedUser = await getUser(); // fetch fresh user data
+      const newAddress = updatedUser?.wallet?.address;
 
-  //     if (currentAddress && numAccounts > 1) {
-  //       await unlinkWallet(currentAddress);
-  //     }
-  //     await linkWallet();
+      // Update state properly
+      setConnectedWallet(newAddress);
+    } catch (error) {
+      console.error("Error switching wallet:", error);
+    }
+  };
 
-  //     const updatedUser = await getUser(); // ✅ fetch fresh user data
-  //     const newAddress = updatedUser?.wallet?.address;
-
-  //     if (newAddress) {
-  //       await fetch("/api/switchwallet", {
-  //         method: "POST",
-  //         body: JSON.stringify({
-  //           walletAddress: newAddress,
-  //         }),
-  //         headers: {
-  //           "Content-type": "application/json",
-  //         },
-  //       });
-  //     }
-  //   } catch (error) {
-  //     console.error("Error switching wallet:", error);
-  //   }
-  // };
   return (
     <div
       className={`min-h-screen transition-colors duration-300 ${themeClasses.background} ${themeClasses.textPrimary}`}
@@ -499,10 +484,11 @@ export default function UserProfile() {
                 >
                   Connect Massa Wallet
                 </Label>
-                <MassaWallet/>
+                <MassaWallet />
               </div>
 
               <Button
+                onClick={switchWallets}
                 variant="outline"
                 className="w-full border-purple-500 text-purple-400 hover:bg-purple-600/20"
               >
