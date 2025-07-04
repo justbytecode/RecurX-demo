@@ -25,6 +25,16 @@ import {
   Crown,
 } from "lucide-react";
 import { processPayment } from "../../../smartcontractsHelpers/index";
+import { processPaymentMassa } from "../../../massacontract";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+} from "../../../components/ui/select";
+import { Toaster } from "../../../components/ui/sonner";
 
 function Page() {
   const { handler } = useParams();
@@ -36,6 +46,12 @@ function Page() {
     phone: "",
     address: "",
   });
+  const [selectedBlockchain, setSelectedBlockchain] = useState("");
+
+  const handleChange = (value) => {
+    setSelectedBlockchain(value);
+    console.log("Selected:", value);
+  };
 
   useEffect(() => {
     (async function fetchSubscription() {
@@ -91,29 +107,45 @@ function Page() {
 
   const handlePurchase = async () => {
     try {
-      setIsLoading(true);
-      const resProc = await processPayment();
-      if (!resProc) {
-        console.log("Payment failed");
-        setIsLoading(false)
-        return;
-      }
-      console.log(resProc);
-      const response = await fetch("/api/subscribers", {
-        method: "POST",
-        body: JSON.stringify({
-          email: buyerInfo.email,
-          name: buyerInfo.name,
-          phonenumber: buyerInfo.phone,
-          address: buyerInfo.address,
-          subscriptionid: handler[0],
-        }),
-      });
-      const data = await response.json();
-      console.log(data);
+      if (selectedBlockchain == "massa") {
+        setIsLoading(true);
+        const res = await processPaymentMassa(
+          subscriptionData.price,
+          handler[1]
+        );
+        if (!res) {
+          alert("Payment failded");
+          setIsLoading(false);
+          return;
+        }
+        setIsLoading(false);
+        alert("Payment successful");
+      } else {
+        setIsLoading(true);
+        const resProc = await processPayment();
+        if (!resProc) {
+          console.log("Payment failed");
+          setIsLoading(false);
+          return;
+        }
+        console.log(resProc);
+        const response = await fetch("/api/subscribers", {
+          method: "POST",
+          body: JSON.stringify({
+            email: buyerInfo.email,
+            name: buyerInfo.name,
+            phonenumber: buyerInfo.phone,
+            address: buyerInfo.address,
+            subscriptionid: handler[0],
+          }),
+        });
+        const data = await response.json();
+        console.log(data);
 
-      setIsLoading(false);
+        setIsLoading(false);
+      }
     } catch (error) {
+      alert("Something went wrong");
       console.log(error);
     }
   };
@@ -339,6 +371,20 @@ function Page() {
                     </div>
                   </div>
                 </div>
+
+                <Separator />
+
+                <Select onValueChange={handleChange}>
+                  <SelectTrigger className="w-[200px]">
+                    <SelectValue placeholder="Select Blockchain" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectItem value="polygon">Polygon</SelectItem>
+                      <SelectItem value="massa">Massa</SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
 
                 {/* Purchase Button */}
                 <Button

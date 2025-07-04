@@ -52,14 +52,12 @@ export default function Navbar() {
   useEffect(() => {
     if (shouldAddWallet && user?.wallet?.address) {
       (async () => {
-        try {
-          console.log("Wallet available:", user.wallet.address);
+        try {        
           const info = await addMerchants(user.wallet.address);
-          console.log("Merchant added:", info);
         } catch (err) {
           console.error("Error adding merchant:", err);
         } finally {
-          setShouldAddWallet(false); // reset so it doesn't run again
+          setShouldAddWallet(false); 
         }
       })();
     }
@@ -67,7 +65,6 @@ export default function Navbar() {
 
   const addWallet = async () => {
     await login(); 
-    // index.js:61 0x300781c2725f238f909e5178bd671141e03affff9ce11b23d655deffefb7a9c2
     setShouldAddWallet(true);
   };
 
