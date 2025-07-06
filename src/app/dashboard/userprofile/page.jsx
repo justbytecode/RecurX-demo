@@ -41,7 +41,7 @@ import {
 } from "lucide-react";
 import { usePrivy } from "@privy-io/react-auth";
 // import { TonConnectButton } from "@tonconnect/ui-react";
-import MassaWallet from "../../../massawallet/index";
+import ConnectMassaWallet from "../../../massawallet/index";
 
 export default function UserProfile() {
   const { data: session, status } = useSession();
@@ -484,7 +484,7 @@ export default function UserProfile() {
                 >
                   Connect Massa Wallet
                 </Label>
-                <MassaWallet />
+                <ConnectMassaWallet />
               </div>
 
               <Button

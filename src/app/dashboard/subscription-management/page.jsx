@@ -28,6 +28,11 @@ import {
   createPaymentLink,
 } from "../../../smartcontractsHelpers/index";
 import { usePrivy } from "@privy-io/react-auth";
+import { web3 } from "@hicaru/bearby.js";
+import {
+  createPaymentLinkMassaWallet,
+  createSubscriptionPlanMassaWallet,
+} from "../../../massacontract";
 
 function Page() {
   const { themeClasses } = useTheme();
@@ -83,25 +88,47 @@ function Page() {
     startTransition(async () => {
       try {
         // Call smart contract functions
-        const planResult = await createSubscriptionPlan(
-          formData.amount,
-          formData.interval,
-          formData.name
-        );
+        // const planResult = await createSubscriptionPlan(
+        //   formData.amount,
+        //   formData.interval,
+        //   formData.name
+        // );
 
-        if (!planResult) {
-          console.error("createSubscriptionPlan failed");
-          return;
-        }
+        // if (!planResult) {
+        //   console.error("createSubscriptionPlan failed");
+        //   return;
+        // }
 
-        const linkResult = await createPaymentLink(
-          formData.amount,
-          formData.name
-        );
+        // const linkResult = await createPaymentLink(
+        //   formData.amount,
+        //   formData.name
+        // );
 
-        if (!linkResult) {
-          console.error("createPaymentLink failed");
-          return;
+        // if (!linkResult) {
+        //   console.error("createPaymentLink failed");
+        //   return;
+        // }
+
+        const w = web3.wallet.connect();
+        if (w) {
+          const planMassa = await createSubscriptionPlanMassaWallet(
+            formData.amount,
+            formData.interval,
+            formData.name
+          );
+          if (!planMassa) {
+            alert("Failed to create plan in massa chain");
+            return;
+          }
+
+          const paymentMassa = await createPaymentLinkMassaWallet(
+            formData.amount,
+            formData.name
+          );
+          if (!paymentMassa) {
+            alert("Failde to create payment link in massa chain");
+            return;
+          }
         }
 
         // ✅ Only proceed if both succeeded
@@ -134,16 +161,6 @@ function Page() {
       }
     });
   };
-
-  const stats = [
-    {
-      title: "Total Plans",
-      value: subscription.length,
-      icon: Package,
-      change: "+12%",
-      changeType: "positive",
-    },
-  ];
 
   return (
     <div className={`flex-1 p-8 ${themeClasses.background}`}>
