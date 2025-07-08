@@ -25,11 +25,11 @@ export default function Sidebar() {
       href: "/dashboard/wallet-tokens",
       disabled: false,
     },
-    {
-      name: "Wallet Integration",
-      href: "/dashboard/wallet-integration",
-      disabled: true,
-    },
+    // {
+    //   name: "Wallet Integration",
+    //   href: "/dashboard/wallet-integration",
+    //   disabled: false,
+    // },
     {
       name: "API Integration",
       href: "/dashboard/api-integration",

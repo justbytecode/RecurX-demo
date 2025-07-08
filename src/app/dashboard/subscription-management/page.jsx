@@ -365,7 +365,6 @@ function Page() {
                       <SelectContent>
                         <SelectItem value="polygon">🟣 Polygon</SelectItem>
                         <SelectItem value="massa">⚪ Massa</SelectItem>
-                        <SelectItem value="ethereum">⚫ Ethereum</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
