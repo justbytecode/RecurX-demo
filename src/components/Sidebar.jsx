@@ -20,11 +20,16 @@ export default function Sidebar() {
       href: "/dashboard/subscription-management",
       disabled: false,
     },
-    {
-      name: "Wallet Integration",
-      href: "/dashboard/wallet-integration",
-      disabled: true,
+      {
+      name: "Send and Recieve Tokens",
+      href: "/dashboard/wallet-tokens",
+      disabled: false,
     },
+    // {
+    //   name: "Wallet Integration",
+    //   href: "/dashboard/wallet-integration",
+    //   disabled: false,
+    // },
     {
       name: "API Integration",
       href: "/dashboard/api-integration",

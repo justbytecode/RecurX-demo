@@ -25,7 +25,11 @@ model User {
   createdAt DateTime   @default(now())  
 }
 
-
+model Wallet{
+  id String @id @default(cuid())
+  email String
+  walletAddress String @unique 
+}
 
 
 model Account {

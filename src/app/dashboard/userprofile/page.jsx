@@ -153,6 +153,13 @@ export default function UserProfile() {
 
       // Update state properly
       setConnectedWallet(newAddress);
+
+      await fetch("/api/connectwallet", {
+        method: "POST",
+        body: JSON.stringify({
+          address: newAddress,
+        }),
+      });
     } catch (error) {
       console.error("Error switching wallet:", error);
     }

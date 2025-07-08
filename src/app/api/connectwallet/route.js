@@ -3,25 +3,41 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "../../../lib/auth";
 import { prisma } from "../../../lib/prisma";
 
-
-
-export const GET = async () => {
+export const POST = async (request) => {
   try {
     const session = await getServerSession(authOptions);
-    if (!session)
+    if (!session) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    // find the wallet exists or not
-    const merchant = await prisma.user.findUnique({
-      where: { email: session.user.email },
+    }
+
+    const data = await request.json();
+    const { address } = data;
+
+    if (!address) {
+      return NextResponse.json({ message: "Wallet address required" }, { status: 400 });
+    }
+
+    // ✅ FIX: Correct use of findUnique with `where`
+    const getWalletInfo = await prisma.wallet.findUnique({
+      where: { walletAddress: address },
     });
 
-    if (!merchant) {
-      return NextResponse.json({ error: "Not Found" }, { status: 404 });
+    if (getWalletInfo) {
+      return NextResponse.json({ message: "success" }, { status: 200 });
     }
-    return NextResponse.json({ message: merchant.point }, { status: 200 });
+
+    await prisma.wallet.create({
+      data: {
+        email: session.user.email,
+        walletAddress: address,
+      },
+    });
+
+    return NextResponse.json({ message: "Wallet added successfully" }, { status: 200 });
   } catch (error) {
+    console.error("POST /api/wallet error:", error);
     return NextResponse.json(
-      { error: "Internal Server Eror" },
+      { error: "Internal Server Error" },
       { status: 500 }
     );
   }

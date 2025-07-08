@@ -26,8 +26,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../../components/ui/select";
-import { Search, Download, Calendar, DollarSign, TrendingUp } from "lucide-react";
+import { Search, Download } from "lucide-react";
 import { getTransactions } from "../../../smartcontractsHelpers/index";
+
 
 export default function PaymentManagement() {
   const [transactions, setTransactions] = useState([]);
@@ -38,7 +39,7 @@ export default function PaymentManagement() {
     const fetchData = async () => {
       try {
         const txns = await getTransactions();
-        console.log(txns)
+        console.log(txns);
         setTransactions(txns);
       } catch (err) {
         console.error("Error fetching transactions:", err);
@@ -52,8 +53,10 @@ export default function PaymentManagement() {
 
   const getStatusBadge = (status) => {
     const variants = {
-      completed: "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300",
-      pending: "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300",
+      completed:
+        "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300",
+      pending:
+        "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300",
       failed: "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300",
     };
 
@@ -90,11 +93,6 @@ export default function PaymentManagement() {
             <p className="text-gray-600 dark:text-gray-400 mt-1">
               Monitor and manage all your payment transactions
             </p>
-          </div>
-          <div className="flex gap-3">
-            <Button variant="outline" className="gap-2">
-              <Download className="h-4 w-4" /> Export
-            </Button>
           </div>
         </div>
 
@@ -148,45 +146,85 @@ export default function PaymentManagement() {
               <Table>
                 <TableHeader>
                   <TableRow className="border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800">
-                    <TableHead className="font-semibold text-gray-900 dark:text-white px-6 py-4">Transaction ID</TableHead>
-                    <TableHead className="font-semibold text-gray-900 dark:text-white">Customer</TableHead>
-                    <TableHead className="font-semibold text-gray-900 dark:text-white">Amount</TableHead>
-                    <TableHead className="font-semibold text-gray-900 dark:text-white">Method</TableHead>
-                    <TableHead className="font-semibold text-gray-900 dark:text-white">Status</TableHead>
-                    <TableHead className="font-semibold text-gray-900 dark:text-white">Date</TableHead>
-                    <TableHead className="font-semibold text-gray-900 dark:text-white text-right pr-6">Actions</TableHead>
+                    <TableHead className="font-semibold text-gray-900 dark:text-white px-6 py-4">
+                      Transaction ID
+                    </TableHead>
+                    <TableHead className="font-semibold text-gray-900 dark:text-white">
+                      Customer
+                    </TableHead>
+                    <TableHead className="font-semibold text-gray-900 dark:text-white">
+                      Amount
+                    </TableHead>
+                    <TableHead className="font-semibold text-gray-900 dark:text-white">
+                      Method
+                    </TableHead>
+                    <TableHead className="font-semibold text-gray-900 dark:text-white">
+                      Status
+                    </TableHead>
+                    <TableHead className="font-semibold text-gray-900 dark:text-white">
+                      Date
+                    </TableHead>
+                    <TableHead className="font-semibold text-gray-900 dark:text-white text-right pr-6">
+                      Actions
+                    </TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {loading ? (
                     <TableRow>
-                      <TableCell colSpan={7} className="text-center py-6 text-gray-500 dark:text-gray-400">
+                      <TableCell
+                        colSpan={7}
+                        className="text-center py-6 text-gray-500 dark:text-gray-400"
+                      >
                         Loading transactions...
                       </TableCell>
                     </TableRow>
                   ) : error ? (
                     <TableRow>
-                      <TableCell colSpan={7} className="text-center py-6 text-red-500">
+                      <TableCell
+                        colSpan={7}
+                        className="text-center py-6 text-red-500"
+                      >
                         {error}
                       </TableCell>
                     </TableRow>
                   ) : transactions.length === 0 ? (
                     <TableRow>
-                      <TableCell colSpan={7} className="text-center py-6 text-gray-500 dark:text-gray-400">
+                      <TableCell
+                        colSpan={7}
+                        className="text-center py-6 text-gray-500 dark:text-gray-400"
+                      >
                         No transactions found.
                       </TableCell>
                     </TableRow>
                   ) : (
                     transactions.map((tx) => (
-                      <TableRow key={tx.id} className="border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
-                        <TableCell className="font-mono text-sm text-blue-600 dark:text-blue-400 px-6 py-4">{tx.id}</TableCell>
-                        <TableCell className="font-medium text-gray-900 dark:text-white">{tx.customer}</TableCell>
-                        <TableCell className="font-semibold text-gray-900 dark:text-white">{formatCurrency(tx.amount)}</TableCell>
-                        <TableCell className="text-gray-600 dark:text-gray-400">{tx.method}</TableCell>
+                      <TableRow
+                        key={tx.id}
+                        className="border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
+                      >
+                        <TableCell className="font-mono text-sm text-blue-600 dark:text-blue-400 px-6 py-4">
+                          {tx.id}
+                        </TableCell>
+                        <TableCell className="font-medium text-gray-900 dark:text-white">
+                          {tx.customer}
+                        </TableCell>
+                        <TableCell className="font-semibold text-gray-900 dark:text-white">
+                          {formatCurrency(tx.amount)}
+                        </TableCell>
+                        <TableCell className="text-gray-600 dark:text-gray-400">
+                          {tx.method}
+                        </TableCell>
                         <TableCell>{getStatusBadge(tx.status)}</TableCell>
-                        <TableCell className="text-gray-600 dark:text-gray-400">{formatDate(tx.date)}</TableCell>
+                        <TableCell className="text-gray-600 dark:text-gray-400">
+                          {formatDate(tx.date)}
+                        </TableCell>
                         <TableCell className="text-right pr-6">
-                          <Button variant="ghost" size="sm" className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
+                          >
                             View Details
                           </Button>
                         </TableCell>

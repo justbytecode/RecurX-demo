@@ -52,20 +52,32 @@ export default function Navbar() {
   useEffect(() => {
     if (shouldAddWallet && user?.wallet?.address) {
       (async () => {
-        try {        
+        try {
           const info = await addMerchants(user.wallet.address);
+          if (response.ok) {
+            console.log("Wallet saved:", result.message);
+            setShouldAddWallet(true);
+          } else {
+            console.error(
+              "Error saving wallet:",
+              result.error || result.message
+            );
+          }
         } catch (err) {
           console.error("Error adding merchant:", err);
         } finally {
-          setShouldAddWallet(false); 
+          setShouldAddWallet(false);
         }
       })();
     }
   }, [shouldAddWallet, user?.wallet?.address]);
 
   const addWallet = async () => {
-    await login(); 
-    setShouldAddWallet(true);
+    try {
+      await login();
+    } catch (error) {
+      console.error("Failed to add wallet:", error);
+    }
   };
 
   useEffect(() => {
@@ -77,6 +89,17 @@ export default function Navbar() {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ wallet: user.wallet.address }),
           });
+           const response = await fetch("/api/connectwallet", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              address: walletAddress,
+            }),
+          });
+
+          const result = await response.json();
 
           if (!res.ok) {
             console.error("Failed to add wallet");

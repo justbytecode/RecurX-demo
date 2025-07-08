@@ -13,6 +13,15 @@ import { Badge } from "../../../components/ui/badge";
 import { useTheme } from "../../../context/themeContext";
 import { useEffect, useState, useTransition } from "react";
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../../../components/ui/select";
+import {
+  BadgeCheck,
+  Network,
   PlusCircle,
   Calendar,
   DollarSign,
@@ -44,6 +53,7 @@ function Page() {
     amount: "",
     interval: "",
     recurring: false,
+    network: "",
   });
 
   const { authenticated } = usePrivy();
@@ -87,77 +97,115 @@ function Page() {
 
     startTransition(async () => {
       try {
-        // Call smart contract functions
-        // const planResult = await createSubscriptionPlan(
-        //   formData.amount,
-        //   formData.interval,
-        //   formData.name
-        // );
-
-        // if (!planResult) {
-        //   console.error("createSubscriptionPlan failed");
-        //   return;
-        // }
-
-        // const linkResult = await createPaymentLink(
-        //   formData.amount,
-        //   formData.name
-        // );
-
-        // if (!linkResult) {
-        //   console.error("createPaymentLink failed");
-        //   return;
-        // }
-
-        const w = web3.wallet.connect();
-        if (w) {
-          const planMassa = await createSubscriptionPlanMassaWallet(
+        if (formData.network === "polygon") {
+          // Call smart contract functions
+          const planResult = await createSubscriptionPlan(
             formData.amount,
             formData.interval,
             formData.name
           );
-          if (!planMassa) {
-            alert("Failed to create plan in massa chain");
+
+          if (!planResult) {
+            alert("Failed to create Subscription plan")
+            
+            console.error("createSubscriptionPlan failed");
             return;
           }
 
-          const paymentMassa = await createPaymentLinkMassaWallet(
+          const linkResult = await createPaymentLink(
             formData.amount,
             formData.name
           );
-          if (!paymentMassa) {
-            alert("Failde to create payment link in massa chain");
+
+          if (!linkResult) {
+            alert("Failed to create Payment Link")
+            console.error("createPaymentLink failed");
+            return;
+          }
+          const res = await fetch("/api/subscriptions", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formData),
+          });
+
+          if (!res.ok) {
+            const errData = await res.json();
+            throw new Error(errData.error || "Failed to create subscription");
+          }
+
+          const newSubscription = await res.json();
+
+          setSubscription((prev) => [...prev, newSubscription]);
+
+          setFormData({
+            name: "",
+            description: "",
+            amount: "",
+            interval: "",
+            recurring: false,
+            network: "",
+          });
+          return;
+        }
+        if (formData.network === "massa") {
+          const w = web3.wallet.connect();
+          if (w) {
+            const planMassa = await createSubscriptionPlanMassaWallet(
+              formData.amount,
+              formData.interval,
+              formData.name
+            );
+            if (!planMassa) {
+              alert("Failed to create plan in massa chain");
+              return;
+            }
+
+            const paymentMassa = await createPaymentLinkMassaWallet(
+              formData.amount,
+              formData.name
+            );
+            if (!paymentMassa) {
+              alert("Failed to create payment link in massa chain");
+              return;
+            }
+
+            const res = await fetch("/api/subscriptions", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(formData),
+            });
+
+            if (!res.ok) {
+              const errData = await res.json();
+              throw new Error(errData.error || "Failed to create subscription");
+            }
+
+            const newSubscription = await res.json();
+
+            setSubscription((prev) => [...prev, newSubscription]);
+
+            setFormData({
+              name: "",
+              description: "",
+              amount: "",
+              interval: "",
+              recurring: false,
+              network: "",
+            });
             return;
           }
         }
 
         // ✅ Only proceed if both succeeded
-        const res = await fetch("/api/subscriptions", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        });
-
-        if (!res.ok) {
-          const errData = await res.json();
-          throw new Error(errData.error || "Failed to create subscription");
-        }
-
-        const newSubscription = await res.json();
-
-        setSubscription((prev) => [...prev, newSubscription]);
-
-        setFormData({
-          name: "",
-          description: "",
-          amount: "",
-          interval: "",
-          recurring: false,
-        });
       } catch (error) {
         console.error("Error creating subscription plan:", error);
+      }
+      finally{
+        
       }
     });
   };
@@ -237,7 +285,7 @@ function Page() {
                   <label
                     className={`text-sm font-medium ${themeClasses.textPrimary}`}
                   >
-                    Amount (MON)
+                    Amount (Should be more than 1 dollar)
                   </label>
                   <Input
                     name="amount"
@@ -297,6 +345,28 @@ function Page() {
                     <span className="text-sm text-muted-foreground">
                       {formData.recurring === "true" ? "Yes" : "No"}
                     </span>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label
+                      className={`text-sm font-medium ${themeClasses.textPrimary}`}
+                    >
+                      Choose Network
+                    </label>
+                    <Select
+                      value={formData.network}
+                      onValueChange={(value) =>
+                        setFormData((prev) => ({ ...prev, network: value }))
+                      }
+                    >
+                      <SelectTrigger className={themeClasses.input}>
+                        <SelectValue placeholder="Select a network" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="polygon">🟣 Polygon</SelectItem>
+                        <SelectItem value="massa">⚪ Massa</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
                 </div>
                 <Button
@@ -393,7 +463,7 @@ function Page() {
                             <span
                               className={`font-medium ${themeClasses.textPrimary}`}
                             >
-                              {plan.amount} MON
+                              {plan.amount}
                             </span>
                           </div>
                           <div className="flex items-center">
