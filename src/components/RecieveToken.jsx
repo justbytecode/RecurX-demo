@@ -32,7 +32,7 @@ export default function RecieveTokens() {
     return (
       <>
         <div className="flex items-center gap-2">
-          <Button variant="ghost"disabled>
+          <Button variant="ghost" disabled>
             Connect the wallet
           </Button>
         </div>
@@ -43,9 +43,12 @@ export default function RecieveTokens() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" className="gap-2">
+        <Button
+          variant="outline"
+          className="w-16 h-16 rounded-full p-0 flex flex-col items-center justify-center gap-1 text-xs"
+        >
           <QrCode className="h-4 w-4" />
-          Show QR
+          <span>Recieve</span>
         </Button>
       </DialogTrigger>
 

@@ -46,9 +46,9 @@ const Footer = () => {
             <LinkedInIcon className="h-7 w-7 text-white duration-300 font-semibold" />
 
             </a>
-            {/* <a href="#" className="text-white/70 hover:text-white transition-colors">
+            <a href="https://x.com/RecurXPay?t=E07dtuQqxIh0XIS9f339BA&s=09" target='_blank' className="text-white/70 hover:text-white transition-colors">
               <X size={20} />
-            </a> */}
+            </a>
           </motion.div>
         </div>
 

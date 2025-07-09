@@ -29,7 +29,7 @@ export default function Navbar() {
   const fetchPoints = async () => {
     try {
       setPointsLoading(true);
-      const res = await fetch("/api/connectwallet", {
+      const res = await fetch("/api/fetchpoints", {
         method: "GET",
       });
 

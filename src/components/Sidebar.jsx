@@ -21,7 +21,7 @@ export default function Sidebar() {
       disabled: false,
     },
       {
-      name: "Send and Recieve Tokens",
+      name: "Payments",
       href: "/dashboard/wallet-tokens",
       disabled: false,
     },
