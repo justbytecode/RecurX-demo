@@ -1,5 +1,5 @@
 import { ethers } from "ethers";
-
+import { web3 } from "@hicaru/bearby.js";
 export const Provider = async () => {
   if (window.ethereum) {
     const provider = new ethers.BrowserProvider(window.ethereum);
@@ -31,5 +31,59 @@ export const sendToken = async (toAddress, amount) => {
   } catch (error) {
     console.log(error);
     return false;
+  }
+};
+
+export const fetchAmountETH = async () => {
+  try {
+    const provider = new ethers.BrowserProvider(window.ethereum);
+    await provider.send("eth_requestAccounts", []);
+    const signer = await provider.getSigner();
+    const address = await signer.getAddress();
+
+    const balance = await provider.getBalance(address);
+    const ethBalance = ethers.formatEther(balance); // convert from wei
+
+    return ethBalance.toString();
+  } catch (error) {
+    console.error("Error fetching balance:", error);
+    return null;
+  }
+};
+
+export const fetchAmountMasa = async () => {
+  try {
+    const connected = await web3.wallet.connect();
+    if (!connected) {
+      throw new Error("Bearby wallet is not connect");
+    }
+    const res = await fetch("/api/fetchmassawalletamount", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ address: web3.wallet.account.base58 }),
+    });
+
+    const data = await res.json();
+    if (data.success) return data.balance;
+    return "0.0";
+  } catch (error) {
+    console.error("Error fetching Massa balance:", error);
+    return null;
+  }
+};
+
+export const sendTokenMassa = async (amount, address) => {
+  try {
+    const connected = await web3.wallet.connect();
+    if (!connected) {
+      throw new Error("Bearby wallet is not connect");
+    }
+
+    const txHash = await web3.massa.payment(amount, address);
+    console.log(txHash);
+  } catch (error) {
+    console.log(error);
   }
 };

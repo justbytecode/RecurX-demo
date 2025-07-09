@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import { Button } from "./ui/button"
-import { Input } from "./ui/input"
+import { useEffect, useState } from "react";
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
 import {
   Dialog,
   DialogTrigger,
@@ -10,60 +10,74 @@ import {
   DialogHeader,
   DialogTitle,
   DialogFooter,
-} from "./ui/dialog"
-import { DollarSign } from "lucide-react"
-import { sendToken } from "../lib/payment"
-import { usePrivy } from "@privy-io/react-auth"
+} from "./ui/dialog";
+import { TrendingUp } from "lucide-react";
+import { sendToken, sendTokenMassa } from "../lib/payment";
+import { usePrivy } from "@privy-io/react-auth";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "./ui/select";
 
 export default function SendToken({ address }) {
-  const [open, setOpen] = useState(false)
-  const [toAddress, setToAddress] = useState("")
-  const [amount, setAmount] = useState("")
-  const [loading, setLoading] = useState(false)
-  const { authenticated } = usePrivy()
+  const [open, setOpen] = useState(false);
+  const [toAddress, setToAddress] = useState("");
+  const [amount, setAmount] = useState("");
+  const [blockchain, setBlockchain] = useState("polygon");
+  const [loading, setLoading] = useState(false);
+  const { authenticated } = usePrivy();
 
   useEffect(() => {
     if (address) {
-      setToAddress(address)
+      setToAddress(address);
     }
-  }, [address])
+  }, [address]);
 
   const handleSend = async () => {
-    if (!toAddress || !amount) {
-      alert("Please enter address and amount")
-      return
+    if (!toAddress || !amount || !blockchain) {
+      alert("Please complete all fields");
+      return;
     }
-
     try {
-      setLoading(true)
-      await sendToken(toAddress, parseFloat(amount))
-      setOpen(false)
-      setToAddress("")
-      setAmount("")
+      setLoading(true);
+      if (blockchain === "polygon") {
+        await sendToken(toAddress, parseFloat(amount)); // assuming this signature
+        setOpen(false);
+      }
+      if (blockchain === "massa") {
+        await sendTokenMassa(amount, address);
+      }
+      setToAddress("");
+      setAmount("");
     } catch (err) {
-      console.error(err)
-      alert("❌ Error sending token")
+      console.error(err);
+      alert("❌ Error sending token");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
-  if (!authenticated) return null
+  if (!authenticated) return null;
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" className="gap-2">
-          <DollarSign className="h-4 w-4" />
-          Send
+        <Button
+          variant="outline"
+          className="w-16 h-16 rounded-full p-0 flex items-center justify-center"
+        >
+          <div className="flex flex-col items-center justify-center gap-1 text-xs">
+            <TrendingUp className="h-4 w-4" />
+            <span>Send</span>
+          </div>
         </Button>
       </DialogTrigger>
 
       <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle>Send Token</DialogTitle>
-        </DialogHeader>
-
+    
         <div className="grid gap-4 py-4">
           <div>
             <label className="text-sm font-medium">To Address</label>
@@ -82,14 +96,30 @@ export default function SendToken({ address }) {
               onChange={(e) => setAmount(e.target.value)}
             />
           </div>
+
+          <div>
+            <label className="text-sm font-medium">Blockchain</label>
+            <Select value={blockchain} onValueChange={setBlockchain}>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select Blockchain" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="polygon">Polygon</SelectItem>
+                <SelectItem value="massa">Massa</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
 
         <DialogFooter>
-          <Button onClick={handleSend} disabled={loading || !toAddress || !amount}>
+          <Button
+            onClick={handleSend}
+            disabled={loading || !toAddress || !amount}
+          >
             {loading ? "Sending..." : "Send Token"}
           </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
-  )
+  );
 }

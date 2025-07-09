@@ -23,13 +23,16 @@ export const POST = async (request) => {
           wallet: true,
         },
       });
-      if (!info) {
+      if (!info || info.length == 0) {
         return NextResponse.json(
           { message: "Address not found" },
-          { status: 200 }
+          { status: 404 }
         );
       }
-      return NextResponse.json({ message: info }, { status: 200 });
+      return NextResponse.json(
+        { message: "success", data: info },
+        { status: 200 }
+      );
     }
     if (data.option === "email") {
       const info = await prisma.user.findUnique({
@@ -44,13 +47,14 @@ export const POST = async (request) => {
       if (!info || info.length == 0) {
         return NextResponse.json(
           { message: "Email not found" },
-          { status: 200 }
+          { status: 404 }
         );
       }
-      return NextResponse.json({ message: info }, { status: 200 });
+      return NextResponse.json(
+        { message: "success", data: info },
+        { status: 200 }
+      );
     }
-
-    return NextResponse.json({ message: "success" }, { status: 200 });
   } catch (error) {
     return NextResponse.json(
       { error: "Internal Server Eror" },
