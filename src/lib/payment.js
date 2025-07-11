@@ -1,5 +1,11 @@
 import { ethers } from "ethers";
 import { web3 } from "@hicaru/bearby.js";
+import {
+  StellarWalletsKit,
+  WalletNetwork,
+  xBullModule,
+  XBULL_ID
+} from '@creit.tech/stellar-wallets-kit';
 export const Provider = async () => {
   if (window.ethereum) {
     const provider = new ethers.BrowserProvider(window.ethereum);
@@ -88,13 +94,36 @@ export const sendTokenMassa = async (amount, address) => {
   }
 };
 
-
-export const fetchAmountStellar = async()=>{
+export const fetchAmountStellar = async () => {
   try {
-    
-    
-  } catch (error) {
-    
-  }
+    // Initialize the kit once (singleton)
+    const kit = new StellarWalletsKit({
+      network: WalletNetwork.PUBLIC,         
+      selectedWalletId: XBULL_ID,
+      modules: [ new xBullModule() ],
+    });
 
-}
+    // Optionally show modal to let user pick/connect wallet
+    await kit.openModal({
+      onWalletSelected: async (option) => {
+        await kit.setWallet(option.id);
+      }
+    });
+
+    // Request public key (this automatically triggers xBull UI if needed)
+    const { address: publicKey } = await kit.getAddress();
+
+    const response = await fetch(`https://horizon-testnet.stellar.org/accounts/${publicKey}`);
+    
+    if (!response.ok) {
+      throw new Error("Failed to fetch account data from Horizon Testnet");
+    }
+
+    const data = await response.json();
+
+    return data?.balances[0]?.balance ?? null;
+  } catch (error) {
+    console.error("Error fetching Stellar balance via Stellar‑Wallets‑Kit:", error);
+    return null;
+  }
+};
