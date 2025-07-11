@@ -87,3 +87,14 @@ export const sendTokenMassa = async (amount, address) => {
     console.log(error);
   }
 };
+
+
+export const fetchAmountStellar = async()=>{
+  try {
+    
+    
+  } catch (error) {
+    
+  }
+
+}

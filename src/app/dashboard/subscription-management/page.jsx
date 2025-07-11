@@ -43,6 +43,8 @@ import {
   createSubscriptionPlanMassaWallet,
 } from "../../../massacontract";
 
+import { createSubscription } from "../../../stellarcontract/index";
+
 function Page() {
   const { themeClasses } = useTheme();
   const [subscription, setSubscription] = useState([]);
@@ -106,8 +108,8 @@ function Page() {
           );
 
           if (!planResult) {
-            alert("Failed to create Subscription plan")
-            
+            alert("Failed to create Subscription plan");
+
             console.error("createSubscriptionPlan failed");
             return;
           }
@@ -118,7 +120,7 @@ function Page() {
           );
 
           if (!linkResult) {
-            alert("Failed to create Payment Link")
+            alert("Failed to create Payment Link");
             console.error("createPaymentLink failed");
             return;
           }
@@ -199,13 +201,50 @@ function Page() {
             return;
           }
         }
+        if (formData.network === "stellar") {
+          
+          const stellarPlan = await createSubscription(
+            formData.amount,
+            formData.interval,
+            formData.name
+          );
+          if (!stellarPlan) {
+            alert("Failed to create plan");
+            return;
+          }
+
+          const res = await fetch("/api/subscriptions", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formData),
+          });
+
+          if (!res.ok) {
+            const errData = await res.json();
+            throw new Error(errData.error || "Failed to create subscription");
+          }
+
+          const newSubscription = await res.json();
+
+          setSubscription((prev) => [...prev, newSubscription]);
+
+          setFormData({
+            name: "",
+            description: "",
+            amount: "",
+            interval: "",
+            recurring: false,
+            network: "",
+          });
+          return;
+        }
 
         // ✅ Only proceed if both succeeded
       } catch (error) {
         console.error("Error creating subscription plan:", error);
-      }
-      finally{
-        
+      } finally {
       }
     });
   };
@@ -365,6 +404,7 @@ function Page() {
                       <SelectContent>
                         <SelectItem value="polygon">🟣 Polygon</SelectItem>
                         <SelectItem value="massa">⚪ Massa</SelectItem>
+                        <SelectItem value="stellar">⚪ Stellar</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
