@@ -13,7 +13,7 @@ import RecieveTokens from "../../../components/RecieveToken";
 import { Skeleton } from "../../../components/ui/skeleton";
 import { useTheme } from "../../../context/themeContext";
 import { Wallet, Search, User, Globe, TrendingUp } from "lucide-react";
-import { fetchAmountETH, fetchAmountMasa } from "../../../lib/payment";
+import { fetchAmountETH, fetchAmountMasa,fetchAmountStellar } from "../../../lib/payment";
 import {
   Select,
   SelectContent,
@@ -39,6 +39,9 @@ export default function Page() {
       } else if (chain === "massa") {
         const data = await fetchAmountMasa();
         if (data) setBalance(data);
+      } else if(chain === "stellar"){
+        const data = await fetchAmountStellar();
+        if(data) setBalance(data)
       }
     } catch (error) {
       console.error("Failed to fetch balance", error);
@@ -84,6 +87,8 @@ export default function Page() {
         return "🟣";
       case "massa":
         return "🟡";
+      case "stellar":
+        return "⚪"
       default:
         return "🌐";
     }
@@ -95,6 +100,8 @@ export default function Page() {
         return "Polygon";
       case "massa":
         return "Massa";
+      case "stellar":
+        return "Stellar"
       default:
         return "Unknown";
     }
@@ -174,6 +181,12 @@ export default function Page() {
                     <div className="flex items-center gap-2">
                       <span>🟡</span>
                       <span>Massa</span>
+                    </div>
+                  </SelectItem>
+                    <SelectItem value="stellar">
+                    <div className="flex items-center gap-2">
+                      <span>⚪</span>
+                      <span>Stellar</span>
                     </div>
                   </SelectItem>
                 </SelectContent>

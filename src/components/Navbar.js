@@ -4,6 +4,7 @@ import { usePrivy } from "@privy-io/react-auth";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import {
+  MessageCircleWarning,
   Wallet,
   Copy,
   Check,
@@ -89,7 +90,7 @@ export default function Navbar() {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ wallet: user.wallet.address }),
           });
-           const response = await fetch("/api/connectwallet", {
+          const response = await fetch("/api/connectwallet", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -186,6 +187,12 @@ export default function Navbar() {
     <nav
       className={`shadow-lg transition-colors ${themeClasses.background} ${themeClasses.textPrimary}`}
     >
+      <div className="flex items-center justify-center gap-2 p-2 rounded-md">
+        <MessageCircleWarning className="w-5 h-5" />
+        <span className="font-semibold">
+          Recurx is currently running on the testnet.
+        </span>
+      </div>
       <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8`}>
         <div className="flex justify-between items-center h-16">
           {/* Logo/Brand Section */}

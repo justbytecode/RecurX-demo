@@ -38,6 +38,7 @@ export default function PopupSequence() {
         setIsAnimating(false);
         setTimeout(() => {
           setPopupMessage("You're in the wishlist!");
+          setPopupMessage("Recurx is currently in maintenance mode. Some features may be temporarily unavailable.");
           setCurrentStep(2);
           setIsAnimating(true);
         }, 200);

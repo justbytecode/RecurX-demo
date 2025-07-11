@@ -42,6 +42,7 @@ import {
 import { usePrivy } from "@privy-io/react-auth";
 // import { TonConnectButton } from "@tonconnect/ui-react";
 import ConnectMassaWallet from "../../../massawallet/index";
+import ConnectStellarWallet from "../../../stellarwallet";
 
 export default function UserProfile() {
   const { data: session, status } = useSession();
@@ -364,48 +365,6 @@ export default function UserProfile() {
           </Card>
 
           {/* Chain Selection */}
-          <Card
-            className={`${themeClasses.cardBackground} ${themeClasses.cardBorder}`}
-          >
-            <CardHeader>
-              <CardTitle
-                className={`flex items-center gap-2 ${themeClasses.textPrimary}`}
-              >
-                <Link className="w-5 h-5" />
-                Blockchain Networks
-              </CardTitle>
-              <CardDescription className={themeClasses.textSecondary}>
-                Select your preferred blockchain network
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <Select value={selectedChain} onValueChange={setSelectedChain}>
-                <SelectTrigger className={`w-full ${themeClasses.input}`}>
-                  <SelectValue placeholder="Select a chain" />
-                </SelectTrigger>
-                <SelectContent
-                  className={`${themeClasses.cardBackground} ${themeClasses.cardBorder}`}
-                >
-                  {chains.map((chain) => (
-                    <SelectItem
-                      key={chain.id}
-                      value={chain.id}
-                      className={`${themeClasses.textPrimary} ${themeClasses.hover}`}
-                    >
-                      <div className="flex items-center gap-2">
-                        <div
-                          className={`w-4 h-4 rounded-full ${chain.color} flex items-center justify-center text-xs`}
-                        >
-                          {chain.icon}
-                        </div>
-                        {chain.name}
-                      </div>
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </CardContent>
-          </Card>
 
           {/* Wallet Management */}
           <Card
@@ -492,6 +451,14 @@ export default function UserProfile() {
                   Connect Massa Wallet
                 </Label>
                 <ConnectMassaWallet />
+              </div>
+              <div className="space-y-2">
+                <Label
+                  className={`text-sm font-medium ${themeClasses.textPrimary}`}
+                >
+                  Connect Stellar Wallet
+                </Label>
+                <ConnectStellarWallet />
               </div>
 
               <Button

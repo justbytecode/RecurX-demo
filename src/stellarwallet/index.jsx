@@ -1,25 +1,25 @@
-import { web3 } from "@hicaru/bearby.js";
 import React, { useEffect, useState } from "react";
 import { Button } from "../components/ui/button";
-import { Wallet } from "lucide-react";
-import { addMerchantMassaWallet } from "../massacontract";
+import {
+  connectStellarWallet,
+  disconnectWalletStellar,
+} from "../stellarcontract/wallet";
+import { addMerchantStellar } from "../stellarcontract/index";
 
-function ConnectMassaWallet() {
+function ConnectStellarWallet() {
   const [connected, setConnected] = useState(false);
   const [wallet, setWallet] = useState("");
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    checkWalletConnection();
-  }, []);
-
   async function checkWalletConnection() {
     try {
       setLoading(true);
-      const w = await web3.wallet.connect();
-      if (w) {
+      const address = await connectStellarWallet();
+      if (address) {
+        const res = await addMerchantStellar(address);
+        console.log(res);
+        setWallet(address);
         setConnected(true);
-        setWallet(web3.wallet.account.base58);
       }
     } catch (error) {
       setConnected(false);
@@ -32,15 +32,14 @@ function ConnectMassaWallet() {
   async function connectWallet() {
     try {
       setLoading(true);
-      const w = await web3.wallet.connect();
-      if (w) {
+      const address = await connectStellarWallet();
+      if (address) {
+        const res = await addMerchantStellar(address);
+        console.log(res);
+        setWallet(address);
         setConnected(true);
-        setWallet(web3.wallet.account.base58);
-        const res = await addMerchantMassaWallet(web3.wallet.account.base58);
-        if (!res) {
-          return;
-        }
       }
+      setWallet(address);
     } catch (error) {
       setConnected(false);
       setWallet("");
@@ -52,8 +51,7 @@ function ConnectMassaWallet() {
 
   async function disconnectWallet() {
     try {
-      const disconnected = await web3.wallet.disconnect();
-      console.log(disconnected);
+      const disconnected = await disconnectWalletStellar();
       setConnected(false);
       setWallet("");
     } catch (error) {
@@ -71,11 +69,19 @@ function ConnectMassaWallet() {
           <div className="bg-white border border-gray-200 rounded-lg p-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center">
-                  <Wallet className="w-5 h-5 text-orange-600" />
+                <div className="w-10 h-10 rounded-lg flex items-center justify-center">
+                  <img
+                    className="w-10 h-10"
+                    src={
+                      "https://developers.stellar.org/img/docusaurus/stellar-logo.svg"
+                    }
+                    alt="stellar"
+                  />
                 </div>
                 <div>
-                  <div className="font-medium text-gray-900">Massa Wallet</div>
+                  <div className="font-medium text-gray-900">
+                    Stellar Wallet
+                  </div>
                   <div className="text-sm text-gray-500">
                     Wallet connected successfully
                   </div>
@@ -99,7 +105,6 @@ function ConnectMassaWallet() {
 
       {/* Connect Section */}
       <div>
-       
         {!connected && (
           <Button
             onClick={connectWallet}
@@ -114,4 +119,4 @@ function ConnectMassaWallet() {
   );
 }
 
-export default ConnectMassaWallet;
+export default ConnectStellarWallet;

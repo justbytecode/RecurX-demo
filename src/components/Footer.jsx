@@ -38,7 +38,7 @@ const Footer = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <a href={URLS.X_RECURX} className="text-white/70 hover:text-white transition-colors">
+            <a href="https://x.com/RecurXPay?t=E07dtuQqxIh0XIS9f339BA&s=09" target='_blank' className="text-white/70 hover:text-white transition-colors">
             <XIcon className="h-7 w-7 text-white duration-300 font-semibold" />
 
             </a>
@@ -46,9 +46,7 @@ const Footer = () => {
             <LinkedInIcon className="h-7 w-7 text-white duration-300 font-semibold" />
 
             </a>
-            <a href="https://x.com/RecurXPay?t=E07dtuQqxIh0XIS9f339BA&s=09" target='_blank' className="text-white/70 hover:text-white transition-colors">
-              <X size={20} />
-            </a>
+            
           </motion.div>
         </div>
 

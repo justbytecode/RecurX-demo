@@ -77,6 +77,11 @@ export default function Sidebar() {
       href: "/dashboard/invite",
       disabled: false,
     },
+    {
+      name: "Add Test Net",
+      href: "/dashboard/test-net",
+      disabled: false,
+    }
   ];
 
   return (

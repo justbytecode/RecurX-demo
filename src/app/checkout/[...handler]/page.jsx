@@ -35,6 +35,8 @@ import {
   SelectItem,
 } from "../../../components/ui/select";
 import { Toaster } from "../../../components/ui/sonner";
+import { processSubscriptionPayment } from "../../../stellarcontract/index";
+import { connectStellarWallet } from "../../../stellarcontract/wallet";
 
 function Page() {
   const { handler } = useParams();
@@ -120,7 +122,35 @@ function Page() {
         }
         setIsLoading(false);
         alert("Payment successful");
-      } else {
+      }
+
+      if (selectedBlockchain === "stellar") {
+        setIsLoading(true);
+        const address = await connectStellarWallet();
+        if (address) {
+          const res = await processSubscriptionPayment(address);
+          if (!res) {
+            alert("Payment failed");
+            return;
+          }
+          const response = await fetch("/api/subscribers", {
+            method: "POST",
+            body: JSON.stringify({
+              email: buyerInfo.email,
+              name: buyerInfo.name,
+              phonenumber: buyerInfo.phone,
+              address: buyerInfo.address,
+              subscriptionid: handler[0],
+            }),
+          });
+          const data = await response.json();
+          console.log(data);
+
+          setIsLoading(false);
+        }
+      }
+
+      if (selectedBlockchain === "polygon") {
         setIsLoading(true);
         const resProc = await processPayment();
         if (!resProc) {
