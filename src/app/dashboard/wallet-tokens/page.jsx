@@ -13,7 +13,11 @@ import RecieveTokens from "../../../components/RecieveToken";
 import { Skeleton } from "../../../components/ui/skeleton";
 import { useTheme } from "../../../context/themeContext";
 import { Wallet, Search, User, Globe, TrendingUp } from "lucide-react";
-import { fetchAmountETH, fetchAmountMasa,fetchAmountStellar } from "../../../lib/payment";
+import {
+  fetchAmountETH,
+  fetchAmountMasa,
+  fetchAmountStellar,
+} from "../../../lib/payment";
 import {
   Select,
   SelectContent,
@@ -39,9 +43,9 @@ export default function Page() {
       } else if (chain === "massa") {
         const data = await fetchAmountMasa();
         if (data) setBalance(data);
-      } else if(chain === "stellar"){
+      } else if (chain === "stellar") {
         const data = await fetchAmountStellar();
-        if(data) setBalance(data)
+        if (data) setBalance(data);
       }
     } catch (error) {
       console.error("Failed to fetch balance", error);
@@ -67,7 +71,7 @@ export default function Page() {
         ),
       });
       const result = await res.json();
-      console.log(result)
+      console.log(result);
       if (res.status == 404) {
         setIsFounded(result.message);
         setData("");
@@ -88,7 +92,7 @@ export default function Page() {
       case "massa":
         return "🟡";
       case "stellar":
-        return "⚪"
+        return "⚪";
       default:
         return "🌐";
     }
@@ -101,7 +105,7 @@ export default function Page() {
       case "massa":
         return "Massa";
       case "stellar":
-        return "Stellar"
+        return "Stellar";
       default:
         return "Unknown";
     }
@@ -133,7 +137,13 @@ export default function Page() {
                     {balance}
                   </span>
                   <span className="text-lg font-semibold text-muted-foreground">
-                    {selectedChain === "polygon" ? "MATIC" : "MAS"}
+                    {selectedChain === "polygon"
+                      ? "MATIC"
+                      : selectedChain === "massa"
+                      ? "MAS"
+                      : selectedChain === "stellar"
+                      ? "XLM"
+                      : ""}
                   </span>
                 </div>
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -183,7 +193,7 @@ export default function Page() {
                       <span>Massa</span>
                     </div>
                   </SelectItem>
-                    <SelectItem value="stellar">
+                  <SelectItem value="stellar">
                     <div className="flex items-center gap-2">
                       <span>⚪</span>
                       <span>Stellar</span>
