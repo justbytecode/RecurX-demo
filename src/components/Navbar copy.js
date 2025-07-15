@@ -7,9 +7,7 @@ import { motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import Image from "next/image";
 
-
 export default function Navbar() {
-
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -68,6 +66,12 @@ export default function Navbar() {
                   className="text-white text-sm xl:text-base transition-transform duration-200 ease-in-out hover:scale-110 "
                 >
                   Product
+                </NavLink>
+                <NavLink
+                  href="/airdrop"
+                  className="text-white text-sm xl:text-base transition-transform duration-200 ease-in-out hover:scale-110 "
+                >
+                  Airdrop
                 </NavLink>
                 <NavLink
                   href="/pricing"
