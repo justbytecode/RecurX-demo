@@ -127,10 +127,10 @@ export default function Sidebar() {
       {/* Sidebar */}
       <aside
         className={`
-          fixed lg:static inset-y-0 left-0 z-40
+          fixed lg:static inset-y-0 left-1 z-40 rounded-4xl
           w-64 ${
-            themeClasses.background
-          } min-h-screen p-4 shadow-lg border-r ${themeClasses.border}
+            themeClasses.cardBackground
+          } min-h-full p-4 shadow-lg border-r ${themeClasses.border}
           transform transition-transform duration-300 ease-in-out
           ${isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
         `}

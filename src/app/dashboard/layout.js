@@ -14,10 +14,10 @@ function Layout({ children }) {
     <div
       className={`flex flex-col min-h-screen ${themeClasses.background}  ${themeClasses.textPrimary} ${themeClasses.textMuted}`}
     >
-      
-
       <div className="flex flex-1 flex-row">
+        <div className="my-2">
         <Sidebar />
+        </div>
         <main className="flex-1 p-4 overflow-auto">
           <Navbar />
           <TonConnectUIProvider manifestUrl="https://localhost:3000/tonconnect-manifest.json">
