@@ -7,6 +7,7 @@ import { useTheme } from "../../context/themeContext";
 import { TonConnectUIProvider } from "@tonconnect/ui-react";
 import { MessageCircleWarning } from "lucide-react";
 
+
 function Layout({ children }) {
   const { themeClasses } = useTheme();
 
