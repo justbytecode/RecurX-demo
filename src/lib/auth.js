@@ -58,17 +58,24 @@ export const authOptions = {
       const cookieStore = await cookies();
       const role = cookieStore.get("role");
       const roleInfo = JSON.parse(role.value);
-
-      // update the user role
-      await prisma.user.update({
+      const findRoleExists = await prisma.user.findUnique({
         where: {
           email: user.email,
         },
-        data: {
-          role: roleInfo,
-        },
       });
-
+      if (roleInfo != findRoleExists.role) {
+        await prisma.user.update({
+          where: {
+            email: user.email,
+          },
+          data: {
+            role: roleInfo,
+          },
+        });
+      }else{
+        return false
+      }
+      
       await prisma.user.update({
         where: { email: user.email },
         data: {
