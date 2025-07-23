@@ -1,18 +1,26 @@
-"use client"
+"use client";
 // import Coin3D from "@/components/Coin3D"
-import { ShieldCheck } from 'lucide-react';
-import { useEffect, useState } from "react"
-import Link from "next/link"
-import { motion, AnimatePresence } from "framer-motion"
-import { ArrowRight, Shield, RefreshCw, Zap, Globe, Lock, CreditCard } from "lucide-react"
-import FeatureComponent from "../components/FeatureComponent"
-import InfiniteMovingCards from "../components/InfiniteMovingCards"
-import SupportedTokens from "../components/SupportedTokens"
+import { ShieldCheck } from "lucide-react";
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  ArrowRight,
+  Shield,
+  RefreshCw,
+  Zap,
+  Globe,
+  Lock,
+  CreditCard,
+} from "lucide-react";
+import FeatureComponent from "../components/FeatureComponent";
+import InfiniteMovingCards from "../components/InfiniteMovingCards";
+import SupportedTokens from "../components/SupportedTokens";
 // import TawkMessengerReact from "@tawk.to/tawk-messenger-react"
 // import TokenDisplay from "@/components/token-display"
 import Image from "next/image";
 // Docs component removed as requested
-const randomDecimal = () => (Math.random() * 0.99 + 0.01).toFixed(2)
+const randomDecimal = () => (Math.random() * 0.99 + 0.01).toFixed(2);
 
 const particlesAnimationArray = [
   {
@@ -60,72 +68,84 @@ const particlesAnimationArray = [
     img: "/supportedCoins/tether.svg",
     amt: randomDecimal(),
   },
-]
+];
 
 export default function Page() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
-  const [activeFeature, setActiveFeature] = useState(0)
-  const [isVisible, setIsVisible] = useState(true)
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [activeFeature, setActiveFeature] = useState(0);
+  const [isVisible, setIsVisible] = useState(true);
 
-  const features = ["Decentralized Payments", "Zero Transaction Fees", "Blockchain Security", "Multi-chain Support"]
+  const features = [
+    "Decentralized Payments",
+    "Zero Transaction Fees",
+    "Blockchain Security",
+    "Multi-chain Support",
+  ];
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setIsVisible(false)
+      setIsVisible(false);
       setTimeout(() => {
-        setActiveFeature((prev) => (prev + 1) % features.length)
-        setIsVisible(true)
-      }, 500)
-    }, 3000)
+        setActiveFeature((prev) => (prev + 1) % features.length);
+        setIsVisible(true);
+      }, 500);
+    }, 3000);
 
-    return () => clearInterval(interval)
-  }, [features.length])
+    return () => clearInterval(interval);
+  }, [features.length]);
 
   useEffect(() => {
-    const script = document.createElement("script")
-    script.src = "https://embed.tawk.to/67e50a774040b31908c84848/default"
-    script.async = true
-    script.charset = "UTF-8"
-    script.setAttribute("crossorigin", "*")
-    document.body.appendChild(script)
+    const script = document.createElement("script");
+    script.src = "https://embed.tawk.to/67e50a774040b31908c84848/default";
+    script.async = true;
+    script.charset = "UTF-8";
+    script.setAttribute("crossorigin", "*");
+    document.body.appendChild(script);
 
     return () => {
-      document.body.removeChild(script) // Cleanup on unmount
-    }
-  }, [])
+      document.body.removeChild(script); // Cleanup on unmount
+    };
+  }, []);
 
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const response = await fetch("/api/auth/session")
-        const session = await response.json()
+        const response = await fetch("/api/auth/session");
+        const session = await response.json();
+        console.log(session.user);
         if (session && session.user) {
-          setIsAuthenticated(true)
-          window.location.href = "/dashboard"
+          setIsAuthenticated(true);
+          if (session.user.role === "user") {
+            window.location.href = "/userdashboard";
+            return;
+          } else {
+            window.location.href = "/dashboard";
+            return;
+          }
         }
       } catch (error) {
-        console.error("Auth check failed:", error)
+        console.error("Auth check failed:", error);
       }
-    }
+    };
 
-    checkAuth()
-  }, [])
+    checkAuth();
+  }, []);
 
   // Track mouse position for the gradient effect
   useEffect(() => {
     const handleMouseMove = (e) => {
-      setMousePosition({ x: e.clientX, y: e.clientY })
-    }
+      setMousePosition({ x: e.clientX, y: e.clientY });
+    };
 
-    window.addEventListener("mousemove", handleMouseMove)
+    window.addEventListener("mousemove", handleMouseMove);
 
     return () => {
-      window.removeEventListener("mousemove", handleMouseMove)
-    }
-  }, [])
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, []);
   const handleButtonClick = () => {
-    navigate('/wait-list'); 
+    navigate("/wait-list");
   };
 
   return (
@@ -186,86 +206,85 @@ export default function Page() {
 
       {/* Hero Section */}
       <header className="mx-auto pl-[5%] py-20 relative z-10">
-      
         <motion.img
-          src="/new_background.png" 
+          src="/new_background.png"
           className="absolute right-0 top-0 z-[-10] max-sm:hidden"
           height={900}
           width={900}
-          initial={{ 
+          initial={{
             opacity: 0, // Use a value between 0 (transparent) and 1 (opaque)
             filter: "blur(10px) brightness(0.5)",
-            transform: "translateX(5px)"
+            transform: "translateX(5px)",
           }}
-          animate={{ 
+          animate={{
             opacity: 0.8, // Final opacity value
             filter: "blur(0px) brightness(1)",
-            transform: "translateX(0px) scale(1)"
+            transform: "translateX(0px) scale(1)",
           }}
           transition={{
             duration: 1.5,
             delay: 0.3,
-            ease: "easeOut"
+            ease: "easeOut",
           }}
           whileHover={{
             opacity: 1,
             filter: "blur(0px) brightness(1.2)",
-            transition: { duration: 0.3 }
+            transition: { duration: 0.3 },
           }}
         />
         <motion.img
-            src="/featureSection/light.png" 
-            className="absolute right-20 top-0 z-[-10] max-sm:hidden"
-            height={900}
-            width={900}
-            initial={{ 
-              opacity: 0, // Use a value between 0 (transparent) and 1 (opaque)
-              filter: "blur(10px) brightness(0.5)",
-              transform: "translateX(5px)"
-            }}
-            animate={{ 
-              opacity: 0.8, // Final opacity value
-              filter: "blur(0px) brightness(1)",
-              transform: "translateX(0px) scale(1)"
-            }}
-            transition={{
-              duration: 1.5,
-              delay: 0.3,
-              ease: "easeOut"
-            }}
-            whileHover={{
-              opacity: 1,
-              filter: "blur(0px) brightness(1.2)",
-              transition: { duration: 0.3 }
-            }}
-            />
-            {/* mobile view light  */}
+          src="/featureSection/light.png"
+          className="absolute right-20 top-0 z-[-10] max-sm:hidden"
+          height={900}
+          width={900}
+          initial={{
+            opacity: 0, // Use a value between 0 (transparent) and 1 (opaque)
+            filter: "blur(10px) brightness(0.5)",
+            transform: "translateX(5px)",
+          }}
+          animate={{
+            opacity: 0.8, // Final opacity value
+            filter: "blur(0px) brightness(1)",
+            transform: "translateX(0px) scale(1)",
+          }}
+          transition={{
+            duration: 1.5,
+            delay: 0.3,
+            ease: "easeOut",
+          }}
+          whileHover={{
+            opacity: 1,
+            filter: "blur(0px) brightness(1.2)",
+            transition: { duration: 0.3 },
+          }}
+        />
+        {/* mobile view light  */}
         <motion.img
-            src="/featureSection/light.png" 
-            className="absolute right-[10%] top-0 z-[-10] sm:hidden"
-            height={900}
-            width={900}
-            initial={{ 
-              opacity: 0, // Use a value between 0 (transparent) and 1 (opaque)
-              filter: "blur(10px) brightness(0.5)",
-              transform: "translateX(5px)"
-            }}
-            animate={{ 
-              opacity: 0.8, // Final opacity value
-              filter: "blur(0px) brightness(1)",
-              transform: "translateX(0px) scale(1)"
-            }}
-            transition={{
-              duration: 1.5,
-              delay: 0.3,
-              ease: "easeOut"
-            }}
-            whileHover={{
-              opacity: 1,
-              filter: "blur(0px) brightness(1.2)",
-              transition: { duration: 0.3 }
-            }}
-            />
+          src="/featureSection/light.png"
+          className="absolute right-[10%] top-0 z-[-10] sm:hidden"
+          height={900}
+          width={900}
+          initial={{
+            opacity: 0, // Use a value between 0 (transparent) and 1 (opaque)
+            filter: "blur(10px) brightness(0.5)",
+            transform: "translateX(5px)",
+          }}
+          animate={{
+            opacity: 0.8, // Final opacity value
+            filter: "blur(0px) brightness(1)",
+            transform: "translateX(0px) scale(1)",
+          }}
+          transition={{
+            duration: 1.5,
+            delay: 0.3,
+            ease: "easeOut",
+          }}
+          whileHover={{
+            opacity: 1,
+            filter: "blur(0px) brightness(1.2)",
+            transition: { duration: 0.3 },
+          }}
+        />
 
         <div className="flex flex-col lg:flex-row items-center justify-between ml:20 mt-10 md:mt-24 gap-8 md:gap-12">
           {/* Left side content */}
@@ -276,7 +295,6 @@ export default function Page() {
             className="flex-1 max-w-2xl"
           >
             {/* Logo/Brand */}
-           
 
             {/* Heading */}
             <motion.h1
@@ -290,13 +308,15 @@ export default function Page() {
               </span> */}
               <div className="flex items-center gap-2 mb-4">
                 <div className="flex ">
-                {<ShieldCheck className="h-5.6 w-5.63 text-emerald-400" />}
+                  {<ShieldCheck className="h-5.6 w-5.63 text-emerald-400" />}
                 </div>
                 <div className="text-sm text-gray-400  font-normal tracking-wide ">
-                Trusted by <span className="text-blue-400 font-medium">1,000+</span> Merchants worldwide
+                  Trusted by{" "}
+                  <span className="text-blue-400 font-medium">1,000+</span>{" "}
+                  Merchants worldwide
                 </div>
               </div>
-              
+
               <span className="text-white">The Future of</span>
               <br />
               <AnimatePresence mode="wait">
@@ -324,7 +344,9 @@ export default function Page() {
             >
               Create and manage your payments with RecurX, with
               <span className="relative inline-block mx-1">
-                <span className="font-extrabold text-white">0% Transaction fee</span>
+                <span className="font-extrabold text-white">
+                  0% Transaction fee
+                </span>
                 <motion.span
                   className="absolute -bottom-1 left-0 w-full h-[2px] bg-gradient-to-r from-blue-500 to-emerald-400"
                   initial={{ width: 0 }}
@@ -336,53 +358,59 @@ export default function Page() {
             </motion.p>
 
             {/* CTA Button - moved to top */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.6 }}
+              className="mb-12 flex justify-start"
+            >
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: 0.6 }}
-                className="mb-12 flex justify-start"
-              >
-                <motion.div
-                  whileHover={{ scale: 1.05, boxShadow: "0 0 20px rgba(59, 130, 246, 0.5)" }}
-                  whileTap={{ scale: 0.95 }}
-                  className="relative group"
-                >
-                  <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-600 to-emerald-600 rounded-xl blur opacity-60 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-pulse"></div>
-                  <Link
-                    href="/wait-list"
-                    className="relative flex items-center justify-center gap-2 bg-gradient-to-br from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl shadow-lg transition-all duration-300 text-base sm:text-lg font-medium"
-                  >
-                    Join waitlist
-                    <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
-                  </Link>
-                </motion.div>
-              </motion.div>
-              <motion.img
-                src="/new_background.png" 
-                className="  z-20] sm:hidden"
-                height={900}
-                width={900}
-                initial={{ 
-                  opacity: 0, // Use a value between 0 (transparent) and 1 (opaque)
-                  filter: "blur(10px) brightness(0.5)",
-                  transform: "translateX(5px)"
-                }}
-                animate={{ 
-                  opacity: 0.8, // Final opacity value
-                  filter: "blur(0px) brightness(1)",
-                  transform: "translateX(0px) scale(1)"
-                }}
-                transition={{
-                  duration: 1.5,
-                  delay: 0.3,
-                  ease: "easeOut"
-                }}
                 whileHover={{
-                  opacity: 1,
-                  filter: "blur(0px) brightness(1.2)",
-                  transition: { duration: 0.3 }
+                  scale: 1.05,
+                  boxShadow: "0 0 20px rgba(59, 130, 246, 0.5)",
                 }}
-              />
+                whileTap={{ scale: 0.95 }}
+                className="relative group"
+              >
+                <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-600 to-emerald-600 rounded-xl blur opacity-60 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-pulse"></div>
+                <Link
+                  href="/wait-list"
+                  className="relative flex items-center justify-center gap-2 bg-gradient-to-br from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl shadow-lg transition-all duration-300 text-base sm:text-lg font-medium"
+                >
+                  Join waitlist
+                  <ArrowRight
+                    size={18}
+                    className="transition-transform group-hover:translate-x-1"
+                  />
+                </Link>
+              </motion.div>
+            </motion.div>
+            <motion.img
+              src="/new_background.png"
+              className="  z-20] sm:hidden"
+              height={900}
+              width={900}
+              initial={{
+                opacity: 0, // Use a value between 0 (transparent) and 1 (opaque)
+                filter: "blur(10px) brightness(0.5)",
+                transform: "translateX(5px)",
+              }}
+              animate={{
+                opacity: 0.8, // Final opacity value
+                filter: "blur(0px) brightness(1)",
+                transform: "translateX(0px) scale(1)",
+              }}
+              transition={{
+                duration: 1.5,
+                delay: 0.3,
+                ease: "easeOut",
+              }}
+              whileHover={{
+                opacity: 1,
+                filter: "blur(0px) brightness(1.2)",
+                transition: { duration: 0.3 },
+              }}
+            />
             {/* from here only in desktop view */}
             {/* Feature icons in horizontal layout */}
             {/* large devices */}
@@ -401,9 +429,8 @@ export default function Page() {
                   <Shield className="h-6 w-6 text-emerald-400" />
                 </div>
                 <p className="text-white text-sm leading-relaxed ">
-                Enterprise-grade security with blockchain technology
+                  Enterprise-grade security with blockchain technology
                 </p>
-
               </motion.div>
 
               {/* Speed Feature */}
@@ -433,7 +460,7 @@ export default function Page() {
               </motion.div>
             </motion.div>
             {/* small devices */}
-             
+
             {/* Trust indicators
             <motion.div
               initial={{ opacity: 0 }}
@@ -446,7 +473,6 @@ export default function Page() {
             </motion.div> */}
           </motion.div>
 
-          
           {/* Right side - 3D visualization */}
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
@@ -454,8 +480,6 @@ export default function Page() {
             transition={{ duration: 0.7, delay: 0.5 }}
             className="flex-1 relative"
           >
-           
-            
             {/* Content Layer */}
             <div className="relative z-10 w-full h-[0px] flex flex-col justify-center items-center">
               {/* <motion.h2
@@ -467,13 +491,13 @@ export default function Page() {
                 Seamless payments for better Future
               </motion.h2> 
               */}
-              
+
               {/* token goes here  */}
               {/* <Coin3D /> */}
-              
+
               {/* uncomment afterwards coin display*/}
               {/* <TokenDisplay /> */}
-             
+
               {/* <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -488,7 +512,10 @@ export default function Page() {
               </motion.div> */}
 
               {/* Connection lines */}
-              <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 5 }}>
+              <svg
+                className="absolute inset-0 w-full h-full pointer-events-none"
+                style={{ zIndex: 5 }}
+              >
                 <motion.path
                   d="M200,250 C250,150 350,150 400,250"
                   stroke="url(#blueGradient)"
@@ -508,12 +535,24 @@ export default function Page() {
                   transition={{ duration: 2, delay: 1.5 }}
                 />
                 <defs>
-                  <linearGradient id="blueGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <linearGradient
+                    id="blueGradient"
+                    x1="0%"
+                    y1="0%"
+                    x2="100%"
+                    y2="0%"
+                  >
                     <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.2" />
                     <stop offset="50%" stopColor="#3b82f6" stopOpacity="0.8" />
                     <stop offset="100%" stopColor="#3b82f6" stopOpacity="0.2" />
                   </linearGradient>
-                  <linearGradient id="purpleGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <linearGradient
+                    id="purpleGradient"
+                    x1="0%"
+                    y1="0%"
+                    x2="100%"
+                    y2="0%"
+                  >
                     <stop offset="0%" stopColor="#8b5cf6" stopOpacity="0.2" />
                     <stop offset="50%" stopColor="#8b5cf6" stopOpacity="0.8" />
                     <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0.2" />
@@ -557,7 +596,8 @@ export default function Page() {
           <h2
             className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 tracking-tight"
             style={{
-              background: "linear-gradient(to right, #3b82f6, #8b5cf6, #10b981)",
+              background:
+                "linear-gradient(to right, #3b82f6, #8b5cf6, #10b981)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
             }}
@@ -565,8 +605,8 @@ export default function Page() {
             Why Choose RecurX ?
           </h2>
           <p className="text-gray-300 max-w-3xl mx-auto text-xl max-sm:hidden">
-            Our platform combines the best of blockchain technology with user-friendly design to revolutionize
-            subscription payments.
+            Our platform combines the best of blockchain technology with
+            user-friendly design to revolutionize subscription payments.
           </p>
           <p className="text-gray-300 max-w-3xl mx-auto text-xl sm:hidden">
             Zero‑Fee, Decentralized Subscriptions Powered by Blockchain.
@@ -579,11 +619,15 @@ export default function Page() {
       {/*skip subscription fees */}
       <section className="w-full flex flex-col items-center justify-center text-center py-12 px-4 bg-[#000000]">
         <h2 className="text-3xl sm:text-4xl font-bold text-white mb-2">
-          Own Your Subscriptions.<br />
+          Own Your Subscriptions.
+          <br />
           <span className="text-blue-400">Skip the Fees</span>
         </h2>
         <p className="text-gray-400 max-w-md mx-auto mb-6 text-sm sm:text-base">
-          RecurX blends blockchain security with one-click subscription automation — paying or <span className="text-white font-medium">getting paid</span> has never been easier.
+          RecurX blends blockchain security with one-click subscription
+          automation — paying or{" "}
+          <span className="text-white font-medium">getting paid</span> has never
+          been easier.
         </p>
         <img
           src="/featureSection/stacked_tokens.png"
@@ -592,10 +636,8 @@ export default function Page() {
         />
       </section>
 
-
       {/* Supported Coin Section */}
       <section className="container mx-auto px-4  relative z-10">
-        
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -605,7 +647,8 @@ export default function Page() {
           <h2
             className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 tracking-tight"
             style={{
-              background: "linear-gradient(to right, #3b82f6, #8b5cf6, #10b981)",
+              background:
+                "linear-gradient(to right, #3b82f6, #8b5cf6, #10b981)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
             }}
@@ -613,8 +656,8 @@ export default function Page() {
             Supported Tokens ?
           </h2>
           <p className="text-gray-300 max-w-3xl mx-auto text-xl">
-            Our platform supports a wide range of cryptocurrencies, making subscription payments accessible and flexible
-            for users worldwide.
+            Our platform supports a wide range of cryptocurrencies, making
+            subscription payments accessible and flexible for users worldwide.
           </p>
         </motion.div>
 
@@ -622,53 +665,59 @@ export default function Page() {
       </section>
 
       {/* new section- pre sale access */}
-       <section className="bg-black text-white py-16 px-6 md:px-20">
-      <div className="flex flex-col md:flex-row items-center justify-between gap-12">
-        {/* Left Image */}
-        <div className="w-full md:w-1/2 flex justify-center">
-          <Image
-            src="/featureSection/page_token.png"
-            alt="RecurX Token Illustration"
-            width={500}
-            height={500}
-            className="w-full max-w-sm md:max-w-md object-contain"
-            priority
-          />
-        </div>
+      <section className="bg-black text-white py-16 px-6 md:px-20">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-12">
+          {/* Left Image */}
+          <div className="w-full md:w-1/2 flex justify-center">
+            <Image
+              src="/featureSection/page_token.png"
+              alt="RecurX Token Illustration"
+              width={500}
+              height={500}
+              className="w-full max-w-sm md:max-w-md object-contain"
+              priority
+            />
+          </div>
 
-        {/* Right Text Content */}
-        <div className="w-full md:w-1/2 flex flex-col justify-center gap-6">
-          <h2 className="text-3xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
-            Introducing our Token <br></br> Powering Fee-Free Crypto Subscriptions
-          </h2>
+          {/* Right Text Content */}
+          <div className="w-full md:w-1/2 flex flex-col justify-center gap-6">
+            <h2 className="text-3xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
+              Introducing our Token <br></br> Powering Fee-Free Crypto
+              Subscriptions
+            </h2>
 
-          <p className="text-gray-400 text-base md:text-lg leading-relaxed">
-            Decentralized, Automated Billing Now Tokenized.<br></br> Join The Future Of Subscription Finance <br></br> With <span className="text-white font-semibold">RecurX</span>
-          </p>
+            <p className="text-gray-400 text-base md:text-lg leading-relaxed">
+              Decentralized, Automated Billing Now Tokenized.<br></br> Join The
+              Future Of Subscription Finance <br></br> With{" "}
+              <span className="text-white font-semibold">RecurX</span>
+            </p>
 
-          <div>
-            <button 
-              onClick={handleButtonClick}
-              className="mt-2 px-6 py-3 rounded-lg bg-gradient-to-r from-blue-600 to-blue-400 text-white font-medium hover:from-blue-700 hover:to-blue-500 hover:cursor-pointer transition-all flex items-center gap-2"
-            >
-              Pre-Sale Access
-            </button>
+            <div>
+              <button
+                onClick={handleButtonClick}
+                className="mt-2 px-6 py-3 rounded-lg bg-gradient-to-r from-blue-600 to-blue-400 text-white font-medium hover:from-blue-700 hover:to-blue-500 hover:cursor-pointer transition-all flex items-center gap-2"
+              >
+                Pre-Sale Access
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
       {/* Floating blockchain elements - simplified */}
       <div className="absolute top-1/4 -left-20 opacity-10 animate-pulse">
         <BlockchainElement />
       </div>
-      <div className="absolute bottom-1/4 -right-20 opacity-10 animate-pulse" style={{ animationDelay: "1s" }}>
+      <div
+        className="absolute bottom-1/4 -right-20 opacity-10 animate-pulse"
+        style={{ animationDelay: "1s" }}
+      >
         <BlockchainElement />
       </div>
 
       {/* Feature Component */}
       <FeatureComponent />
     </div>
-  )
+  );
 }
 
 function FeatureBullet({ icon, text }) {
@@ -684,7 +733,7 @@ function FeatureBullet({ icon, text }) {
       </div>
       <span className="text-gray-300 text-sm md:text-base">{text}</span>
     </motion.div>
-  )
+  );
 }
 
 // Orbiting Element Component
@@ -694,8 +743,17 @@ function OrbitingElement({ icon, size, distance, duration, delay, label }) {
       className="absolute top-1/2 left-1/2"
       initial={{ rotate: delay * 18 }}
       animate={{ rotate: [delay * 18, delay * 18 + 360] }}
-      transition={{ duration, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
-      style={{ width: distance * 2, height: distance * 2, marginLeft: -distance, marginTop: -distance }}
+      transition={{
+        duration,
+        repeat: Number.POSITIVE_INFINITY,
+        ease: "linear",
+      }}
+      style={{
+        width: distance * 2,
+        height: distance * 2,
+        marginLeft: -distance,
+        marginTop: -distance,
+      }}
     >
       <motion.div
         className="absolute"
@@ -715,7 +773,7 @@ function OrbitingElement({ icon, size, distance, duration, delay, label }) {
         </div>
       </motion.div>
     </motion.div>
-  )
+  );
 }
 
 // Floating Transaction Card
@@ -735,7 +793,7 @@ function FloatingTransactionCard({ amount, status, top, left, delay }) {
       <div className="text-lg font-bold text-white mb-1">{amount}</div>
       <div className="text-xs text-green-400">{status}</div>
     </motion.div>
-  )
+  );
 }
 
 // Floating Particles
@@ -769,7 +827,7 @@ function FloatingParticles() {
         />
       ))}
     </div>
-  )
+  );
 }
 
 // Secure Payment Badge
@@ -777,11 +835,33 @@ function FloatingParticles() {
 // Blockchain Element - Simplified
 function BlockchainElement() {
   return (
-    <svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect x="45" y="45" width="90" height="90" rx="8" stroke="white" strokeWidth="1.5" />
-      <rect x="65" y="65" width="50" height="50" rx="4" stroke="white" strokeWidth="1.5" />
+    <svg
+      width="180"
+      height="180"
+      viewBox="0 0 180 180"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <rect
+        x="45"
+        y="45"
+        width="90"
+        height="90"
+        rx="8"
+        stroke="white"
+        strokeWidth="1.5"
+      />
+      <rect
+        x="65"
+        y="65"
+        width="50"
+        height="50"
+        rx="4"
+        stroke="white"
+        strokeWidth="1.5"
+      />
       <line x1="45" y1="90" x2="180" y2="90" stroke="white" strokeWidth="1.5" />
       <line x1="90" y1="45" x2="90" y2="180" stroke="white" strokeWidth="1.5" />
     </svg>
-  )
+  );
 }

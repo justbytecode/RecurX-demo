@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@chaingpt/ainews": "^0.0.9",
+    "@chaingpt/generalchat": "^0.0.17",
     "@creit.tech/stellar-wallets-kit": "^1.7.6",
     "@hicaru/bearby.js": "^0.6.1",
     "@hookform/resolvers": "^5.1.1",

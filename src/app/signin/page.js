@@ -21,6 +21,16 @@ export default function SignIn() {
   const searchParams = useSearchParams();
   const error = searchParams.get("error");
 
+  const handleRole = (role) => {
+    if (role === "merchant") {
+      Cookies.set("role", JSON.stringify("merchant"), { expires: 2 });
+      return;
+    } else {
+      Cookies.set("role", JSON.stringify("user"), { expires: 2 });
+      return;
+    }
+  };
+
   useEffect(() => {
     setMounted(true);
     const ref = searchParams.get("ref");
@@ -74,11 +84,12 @@ export default function SignIn() {
               </p>
             )}
             <Button
-              onClick={() =>
+              onClick={() => {
+                handleRole("user");
                 signIn("google", {
-                  callbackUrl: "/dashboard"
-                })
-              }
+                  callbackUrl: "/userdashboard",
+                });
+              }}
               className="w-full bg-slate-700  text-white border border-purple-500/40 flex items-center justify-center gap-2 transition-all duration-200 hover:border-purple-400/60"
               variant="outline"
             >
@@ -89,6 +100,24 @@ export default function SignIn() {
                 height={20}
               />
               Sign in with Google
+            </Button>
+            <Button
+              onClick={() => {
+                handleRole("merchant");
+                signIn("google", {
+                  callbackUrl: "/dashboard",
+                });
+              }}
+              className="w-full bg-slate-700  text-white border border-purple-500/40 flex items-center justify-center gap-2 transition-all duration-200 hover:border-purple-400/60"
+              variant="outline"
+            >
+              <Image
+                src="https://www.svgrepo.com/show/303108/google-icon-logo.svg"
+                alt="Google"
+                width={20}
+                height={20}
+              />
+              Sign in as a Merchant
             </Button>
             <div className="text-center text-sm text-slate-300">
               Don&apos;t have an account?{" "}

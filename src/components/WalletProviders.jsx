@@ -14,43 +14,39 @@ import { Card, CardContent } from "./ui/card";
 import { MetaMaskWallet, MassaWallet, StellarWallet } from "../lib/wallets";
 import { useTheme } from "../context/themeContext";
 import { useSession } from "next-auth/react";
-import {
-  Wallet,
-  Copy,
-  Check,
-  LogOut,
-  ChevronDown,
-} from "lucide-react";
+import { Wallet, Copy, Check, LogOut, ChevronDown } from "lucide-react";
 
 function WalletProviders() {
-  const [loading, setLoading] = useState(false);
   const [address, setAddress] = useState("");
+  const [isConnect, setIsConnected] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
-  const [copySuccess, setCopySuccess] = useState(false); 
+  const [copySuccess, setCopySuccess] = useState(false);
   const { themeClasses } = useTheme();
   const { data: session } = useSession();
 
   const handleWalletConnect = async (walletName) => {
-    setLoading(false);
-    if (walletName === "MetaMask") {
-      const ad = await MetaMaskWallet();
-      console.log(ad)
+    try {
+      let ad = "";
+      if (walletName === "MetaMask") {
+        ad = await MetaMaskWallet();
+      } else if (walletName === "Massa") {
+        ad = await MassaWallet();
+      } else if (walletName === "Stellar") {
+        ad = await StellarWallet();
+      }
       setAddress(ad);
-      setLoading(true);
-      return;
-    }
-    if (walletName === "Massa") {
-      const ad = await MassaWallet();
-      setAddress(ad);
-      console.log(ad)
-      setLoading(true);
-      return;
-    }
-    if (walletName === "Stellar") {
-      const ad = await StellarWallet();
-      setAddress(ad);
-      setLoading(true);
-      return;
+      setIsConnected(true);
+
+      if (address.length > 0) {
+        await fetch("/api/addwallet", {
+          method: "POST",
+          body: JSON.stringify({ wallet: ad }),
+        });
+        setAddress(ad);
+        setIsConnected(true);
+      }
+    } catch (err) {
+      console.error("Wallet connect failed:", err);
     }
   };
 
@@ -65,7 +61,7 @@ function WalletProviders() {
     }
   };
 
-   const generateAvatar = (address) => {
+  const generateAvatar = (address) => {
     if (!address) return null;
     const colors = [
       "from-blue-500 to-blue-600",
@@ -100,13 +96,13 @@ function WalletProviders() {
     return generateAvatar(address);
   };
 
-  if (loading) {
+  if (isConnect) {
     return (
       <>
         <div className="relative dropdown-container">
           <button
             onClick={() => setShowDropdown((prev) => !prev)}
-            className={`flex items-center gap-2 hover:${themeClasses.cardBackground} rounded-lg px-2 py-1 transition-all duration-200 border border-transparent hover:border-purple-500/30`}
+            className={`flex items-center gap-2 hover:${themeClasses.cardBackground} rounded-lg px-2 py-1 transition-all duration-200 border border-transparent`}
           >
             {renderProfileImage()}
             <ChevronDown
@@ -183,7 +179,7 @@ function WalletProviders() {
                 <button
                   onClick={() => {
                     setAddress("");
-                    setLoading(false);
+                    setIsConnected(false);
                     setShowDropdown(false);
                   }}
                   className="w-full bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-4 py-3 rounded-lg transition-all duration-200 flex items-center justify-center gap-2 font-medium shadow-lg"
@@ -200,7 +196,9 @@ function WalletProviders() {
   }
 
   return (
-    <div className="flex items-center justify-center  bg-gray-50">
+    <div
+      className={`flex items-center justify-center ${themeClasses.cardBackground}  ${themeClasses.textPrimary}`}
+    >
       <Dialog>
         <DialogTrigger asChild>
           <Button variant="outline" className="px-6 py-3">
@@ -216,7 +214,7 @@ function WalletProviders() {
           </DialogHeader>
 
           <div className="space-y-3 py-4">
-            <Card className="cursor-pointer hover:bg-gray-50 transition-colors p-1">
+            <Card className="cursor-pointer transition-colors p-1">
               <CardContent className="p-4">
                 <div
                   className="flex items-center gap-4"
@@ -237,7 +235,7 @@ function WalletProviders() {
               </CardContent>
             </Card>
 
-            <Card className="cursor-pointer hover:bg-gray-50 transition-colors p-1">
+            <Card className="cursor-pointer  transition-colors p-1">
               <CardContent className="p-4">
                 <div
                   className="flex items-center gap-4"
@@ -258,7 +256,7 @@ function WalletProviders() {
               </CardContent>
             </Card>
 
-            <Card className="cursor-pointer hover:bg-gray-50 transition-colors p-1">
+            <Card className="cursor-pointer  transition-colors p-1">
               <CardContent className="p-4">
                 <div
                   className="flex items-center gap-4"
@@ -278,8 +276,8 @@ function WalletProviders() {
                 </div>
               </CardContent>
             </Card>
+            <div className="text-center mt-5">Powered by Recurx</div>
           </div>
-
           <DialogFooter>
             <DialogClose asChild>
               <Button variant="outline" className="w-full">

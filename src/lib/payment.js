@@ -4,8 +4,8 @@ import {
   StellarWalletsKit,
   WalletNetwork,
   xBullModule,
-  XBULL_ID
-} from '@creit.tech/stellar-wallets-kit';
+  XBULL_ID,
+} from "@creit.tech/stellar-wallets-kit";
 export const Provider = async () => {
   if (window.ethereum) {
     const provider = new ethers.BrowserProvider(window.ethereum);
@@ -42,13 +42,14 @@ export const sendToken = async (toAddress, amount) => {
 
 export const fetchAmountETH = async () => {
   try {
+
     const provider = new ethers.BrowserProvider(window.ethereum);
     await provider.send("eth_requestAccounts", []);
     const signer = await provider.getSigner();
     const address = await signer.getAddress();
 
     const balance = await provider.getBalance(address);
-    const ethBalance = ethers.formatEther(balance); // convert from wei
+    const ethBalance = ethers.formatEther(balance);
 
     return ethBalance.toString();
   } catch (error) {
@@ -98,23 +99,25 @@ export const fetchAmountStellar = async () => {
   try {
     // Initialize the kit once (singleton)
     const kit = new StellarWalletsKit({
-      network: WalletNetwork.PUBLIC,         
+      network: WalletNetwork.PUBLIC,
       selectedWalletId: XBULL_ID,
-      modules: [ new xBullModule() ],
+      modules: [new xBullModule()],
     });
 
     // Optionally show modal to let user pick/connect wallet
     await kit.openModal({
       onWalletSelected: async (option) => {
         await kit.setWallet(option.id);
-      }
+      },
     });
 
     // Request public key (this automatically triggers xBull UI if needed)
     const { address: publicKey } = await kit.getAddress();
 
-    const response = await fetch(`https://horizon-testnet.stellar.org/accounts/${publicKey}`);
-    
+    const response = await fetch(
+      `https://horizon-testnet.stellar.org/accounts/${publicKey}`
+    );
+
     if (!response.ok) {
       throw new Error("Failed to fetch account data from Horizon Testnet");
     }
@@ -123,7 +126,10 @@ export const fetchAmountStellar = async () => {
 
     return data?.balances[0]?.balance ?? null;
   } catch (error) {
-    console.error("Error fetching Stellar balance via Stellar‑Wallets‑Kit:", error);
+    console.error(
+      "Error fetching Stellar balance via Stellar‑Wallets‑Kit:",
+      error
+    );
     return null;
   }
 };
