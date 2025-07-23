@@ -67,6 +67,12 @@ export default function Navbar() {
                 >
                   Product
                 </NavLink>
+                 <NavLink
+                  href="/news"
+                  className="text-white text-sm xl:text-base transition-transform duration-200 ease-in-out hover:scale-110 "
+                >
+                  News
+                </NavLink>
                 <NavLink
                   href="/airdrop"
                   className="text-white text-sm xl:text-base transition-transform duration-200 ease-in-out hover:scale-110 "

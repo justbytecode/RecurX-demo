@@ -2,11 +2,11 @@
 import React, { useEffect } from "react";
 import Popups from "../../components/ui/popup";
 import Navbar from "../../components/Navbar";
-import Sidebar from "../../components/Sidebar";
+import UserSidebar from "../../components/usersidebar";
 import { useTheme } from "../../context/themeContext";
 import { TonConnectUIProvider } from "@tonconnect/ui-react";
-import Chatbot from "../../components/chatbot";
 import { useRouter } from "next/navigation";
+import Chatbot from "../../components/chatbot";
 
 function Layout({ children }) {
   const router = useRouter();
@@ -41,7 +41,7 @@ function Layout({ children }) {
     >
       <div className="flex flex-1 flex-row">
         <div className="my-2">
-          <Sidebar />
+          <UserSidebar />
         </div>
         <main className="flex-1 p-4 overflow-auto">
           <Navbar />

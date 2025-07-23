@@ -1,11 +1,9 @@
-// src/lib/auth.js (or src/lib/authOptions.js)
 import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { prisma } from "./prisma";
 import { cookies } from "next/headers";
 
 let ID;
-
 export const authOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
@@ -17,6 +15,7 @@ export const authOptions = {
   callbacks: {
     async session({ session, user }) {
       session.user.id = user.id;
+      session.user.role = user.role;
       return session;
     },
 
@@ -43,19 +42,33 @@ export const authOptions = {
       await prisma.user.update({
         where: { id: referringUser.id },
         data: {
+          role: role,
           point: {
             increment: 75,
           },
         },
       });
-
       // Update new user with referredBy field
-
       return true;
     },
+    secret: process.env.NEXTAUTH_SECRET,
   },
   events: {
     async signIn({ user, account }) {
+      const cookieStore = await cookies();
+      const role = cookieStore.get("role");
+      const roleInfo = JSON.parse(role.value);
+
+      // update the user role
+      await prisma.user.update({
+        where: {
+          email: user.email,
+        },
+        data: {
+          role: roleInfo,
+        },
+      });
+
       await prisma.user.update({
         where: { email: user.email },
         data: {

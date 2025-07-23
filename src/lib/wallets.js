@@ -14,11 +14,7 @@ export const MetaMaskWallet = async () => {
       throw new Error("MetaMask not found");
     }
     await provider.request({ method: "eth_requestAccounts" });
-
     const wallet = new ethers.BrowserProvider(provider);
-    if (!wallet) {
-      throw new Error("Failed to get the wallet");
-    }
     const signer = await wallet.getSigner();
     const address = await signer.getAddress();
     return address;
