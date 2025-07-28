@@ -22,10 +22,7 @@ export default function SignIn() {
   const error = searchParams.get("error");
 
   const handleRole = (role) => {
-    if (role === "merchant") {
-      Cookies.set("role", JSON.stringify("merchant"), { expires: 2 });
-      return;
-    } else {
+    if (role === "user") {
       Cookies.set("role", JSON.stringify("user"), { expires: 2 });
       return;
     }
@@ -103,7 +100,6 @@ export default function SignIn() {
             </Button>
             <Button
               onClick={() => {
-                handleRole("merchant");
                 signIn("google", {
                   callbackUrl: "/dashboard",
                 });

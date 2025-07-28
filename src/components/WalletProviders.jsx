@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Dialog,
   DialogClose,
@@ -23,6 +23,20 @@ function WalletProviders() {
   const [copySuccess, setCopySuccess] = useState(false);
   const { themeClasses } = useTheme();
   const { data: session } = useSession();
+
+  useEffect(() => {
+    async function addWalletAddress() {
+      try {
+        await fetch("/api/addwallet", {
+          method: "POST",
+          body: JSON.stringify({ wallet: address }),
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    addWalletAddress();
+  }, [address]);
 
   const handleWalletConnect = async (walletName) => {
     try {
