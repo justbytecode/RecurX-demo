@@ -83,6 +83,15 @@ export default function Page() {
     "Multi-chain Support",
   ];
 
+  const blockchainLogos = [
+    { name: "Ethereum", color: "bg-blue-500" },
+    { name: "Bitcoin", color: "bg-orange-500" },
+    { name: "Polygon", color: "bg-purple-500" },
+    { name: "Solana", color: "bg-green-500" },
+    { name: "Avalanche", color: "bg-red-500" },
+    { name: "BSC", color: "bg-yellow-500" },
+  ];
+
   useEffect(() => {
     const interval = setInterval(() => {
       setIsVisible(false);
@@ -206,7 +215,7 @@ export default function Page() {
 
       {/* Hero Section */}
       <header className="mx-auto pl-[5%] py-20 relative z-10">
-        <motion.img
+        {/* <motion.img
           src="/new_background.png"
           className="absolute right-0 top-0 z-[-10] max-sm:hidden"
           height={900}
@@ -231,8 +240,8 @@ export default function Page() {
             filter: "blur(0px) brightness(1.2)",
             transition: { duration: 0.3 },
           }}
-        />
-        <motion.img
+        /> */}
+        {/* <motion.img
           src="/featureSection/light.png"
           className="absolute right-20 top-0 z-[-10] max-sm:hidden"
           height={900}
@@ -257,9 +266,201 @@ export default function Page() {
             filter: "blur(0px) brightness(1.2)",
             transition: { duration: 0.3 },
           }}
-        />
+        /> */}
+        <div className="absolute right-0 top-0 z-[-10] max-sm:hidden">
+          <svg
+            width="794"
+            height="1024"
+            viewBox="0 0 494 1024"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              opacity="0.6"
+              d="M221 598L29.6083 487.5L29.6084 266.5L221 156L412.392 266.5L412.392 487.5L221 598Z"
+              stroke="#06171C"
+              stroke-width="10"
+            />
+            <mask id="path-2-inside-1_5_4433" fill="white">
+              <path d="M100 222.869L100 -103.044L382.248 -266L664.497 -103.044L664.497 222.869L382.248 385.825L100 222.869ZM601.105 186.5L601.105 -66.4998L382 -193L162.896 -66.4999L162.896 186.5L382 313L601.105 186.5Z" />
+            </mask>
+            <path
+              d="M100 222.869L100 -103.044L382.248 -266L664.497 -103.044L664.497 222.869L382.248 385.825L100 222.869ZM601.105 186.5L601.105 -66.4998L382 -193L162.896 -66.4999L162.896 186.5L382 313L601.105 186.5Z"
+              fill="#131517"
+              fill-opacity="0.01"
+            />
+            <path
+              d="M100 222.869L99 222.869L99 223.447L99.5 223.735L100 222.869ZM100 -103.044L99.5 -103.91L99 -103.621L99 -103.044L100 -103.044ZM382.248 -266L382.748 -266.866L382.248 -267.155L381.748 -266.866L382.248 -266ZM664.497 -103.044L665.497 -103.044L665.497 -103.621L664.997 -103.91L664.497 -103.044ZM664.497 222.869L664.997 223.735L665.497 223.447L665.497 222.869L664.497 222.869ZM382.248 385.825L381.748 386.691L382.248 386.98L382.748 386.691L382.248 385.825ZM601.105 186.5L601.605 187.366L602.105 187.078L602.105 186.5L601.105 186.5ZM601.105 -66.4998L602.105 -66.4998L602.105 -67.0772L601.605 -67.3659L601.105 -66.4998ZM382 -193L382.5 -193.866L382 -194.155L381.5 -193.866L382 -193ZM162.896 -66.4999L162.396 -67.3659L161.896 -67.0772L161.896 -66.4999L162.896 -66.4999ZM162.896 186.5L161.896 186.5L161.896 187.077L162.396 187.366L162.896 186.5ZM382 313L381.5 313.866L382 314.155L382.5 313.866L382 313ZM100 222.869L101 222.869L101 -103.044L100 -103.044L99 -103.044L99 222.869L100 222.869ZM100 -103.044L100.5 -102.178L382.748 -265.134L382.248 -266L381.748 -266.866L99.5 -103.91L100 -103.044ZM382.248 -266L381.748 -265.134L663.997 -102.178L664.497 -103.044L664.997 -103.91L382.748 -266.866L382.248 -266ZM664.497 -103.044L663.497 -103.044L663.497 222.869L664.497 222.869L665.497 222.869L665.497 -103.044L664.497 -103.044ZM664.497 222.869L663.997 222.003L381.748 384.959L382.248 385.825L382.748 386.691L664.997 223.735L664.497 222.869ZM382.248 385.825L382.748 384.959L100.5 222.003L100 222.869L99.5 223.735L381.748 386.691L382.248 385.825ZM601.105 186.5L602.105 186.5L602.105 -66.4998L601.105 -66.4998L600.105 -66.4998L600.105 186.5L601.105 186.5ZM601.105 -66.4998L601.605 -67.3659L382.5 -193.866L382 -193L381.5 -192.134L600.605 -65.6338L601.105 -66.4998ZM382 -193L381.5 -193.866L162.396 -67.3659L162.896 -66.4999L163.396 -65.6338L382.5 -192.134L382 -193ZM162.896 -66.4999L161.896 -66.4999L161.896 186.5L162.896 186.5L163.896 186.5L163.896 -66.4999L162.896 -66.4999ZM162.896 186.5L162.396 187.366L381.5 313.866L382 313L382.5 312.134L163.396 185.634L162.896 186.5ZM382 313L382.5 313.866L601.605 187.366L601.105 186.5L600.605 185.634L381.5 312.134L382 313Z"
+              fill="url(#paint0_linear_5_4433)"
+              mask="url(#path-2-inside-1_5_4433)"
+            />
+            <g opacity="0.1">
+              <path
+                d="M392.294 624.104L340.767 648.188L340.767 768.044"
+                stroke="#1C75DD"
+                stroke-width="10"
+              />
+              <defs>
+                <filter
+                  id="blurFilter"
+                  x="-50%"
+                  y="-50%"
+                  width="200%"
+                  height="200%"
+                >
+                  <feGaussianBlur in="SourceGraphic" stdDeviation="5" />
+                </filter>
+              </defs>
+
+              <ellipse
+                cx="32.08"
+                cy="96.3949"
+                rx="32.08"
+                ry="96.3949"
+                transform="matrix(0.489754 0.871861 0.871861 -0.489754 301 607.419)"
+                fill="#1C75DD"
+                filter="url(#blurFilter)"
+              />
+
+              <mask id="path-6-inside-2_5_4433" fill="white">
+                <path d="M287 618.058V951.766L576 1118.62L865 951.766V618.058L576 451.204L287 618.058ZM793.223 659.109V910.584L575.439 1036.32L357.656 910.584V659.109L575.439 533.372L793.223 659.109Z" />
+              </mask>
+              <path
+                d="M287 618.058V951.766L576 1118.62L865 951.766V618.058L576 451.204L287 618.058ZM793.223 659.109V910.584L575.439 1036.32L357.656 910.584V659.109L575.439 533.372L793.223 659.109Z"
+                fill="#131517"
+                fill-opacity="0.01"
+              />
+              <path
+                d="M287 618.058H286V617.481L286.5 617.192L287 618.058ZM287 951.766L286.5 952.633L286 952.344V951.766H287ZM576 1118.62L576.5 1119.49L576 1119.78L575.5 1119.49L576 1118.62ZM865 951.766H866V952.344L865.5 952.633L865 951.766ZM865 618.058L865.5 617.192L866 617.481V618.058H865ZM576 451.204L575.5 450.338L576 450.049L576.5 450.338L576 451.204ZM793.223 659.109L793.723 658.243L794.223 658.532V659.109H793.223ZM793.223 910.584H794.223V911.161L793.723 911.45L793.223 910.584ZM575.439 1036.32L575.939 1037.19L575.439 1037.48L574.939 1037.19L575.439 1036.32ZM357.656 910.584L357.156 911.45L356.656 911.161V910.584H357.656ZM357.656 659.109H356.656V658.532L357.156 658.243L357.656 659.109ZM575.439 533.372L574.939 532.506L575.439 532.217L575.939 532.506L575.439 533.372ZM287 618.058H288V951.766H287H286V618.058H287ZM287 951.766L287.5 950.9L576.5 1117.75L576 1118.62L575.5 1119.49L286.5 952.633L287 951.766ZM576 1118.62L575.5 1117.75L864.5 950.9L865 951.766L865.5 952.633L576.5 1119.49L576 1118.62ZM865 951.766H864V618.058H865H866V951.766H865ZM865 618.058L864.5 618.924L575.5 452.07L576 451.204L576.5 450.338L865.5 617.192L865 618.058ZM576 451.204L576.5 452.07L287.5 618.924L287 618.058L286.5 617.192L575.5 450.338L576 451.204ZM793.223 659.109H794.223V910.584H793.223H792.223V659.109H793.223ZM793.223 910.584L793.723 911.45L575.939 1037.19L575.439 1036.32L574.939 1035.46L792.723 909.718L793.223 910.584ZM575.439 1036.32L574.939 1037.19L357.156 911.45L357.656 910.584L358.156 909.718L575.939 1035.46L575.439 1036.32ZM357.656 910.584H356.656V659.109H357.656H358.656V910.584H357.656ZM357.656 659.109L357.156 658.243L574.939 532.506L575.439 533.372L575.939 534.238L358.156 659.975L357.656 659.109ZM575.439 533.372L575.939 532.506L793.723 658.243L793.223 659.109L792.723 659.975L574.939 534.238L575.439 533.372Z"
+                fill="url(#paint1_linear_5_4433)"
+                mask="url(#path-6-inside-2_5_4433)"
+              />
+            </g>
+            <defs>
+              <linearGradient
+                id="paint0_linear_5_4433"
+                x1="664.497"
+                y1="235.277"
+                x2="264.137"
+                y2="-195.689"
+                gradientUnits="userSpaceOnUse"
+              >
+                <stop stop-color="#1C75DD" stop-opacity="0.7" />
+                <stop offset="1" stop-color="#1C75DD" stop-opacity="0" />
+              </linearGradient>
+              <linearGradient
+                id="paint1_linear_5_4433"
+                x1="865"
+                y1="605.354"
+                x2="455.064"
+                y2="1046.63"
+                gradientUnits="userSpaceOnUse"
+              >
+                <stop stop-color="#1C75DD" stop-opacity="0.7" />
+                <stop offset="1" stop-color="#1C75DD" stop-opacity="0" />
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+
+        <div className="absolute left-0 top-0 z-[-10] lg:hidden">
+          <svg
+            width="794"
+            height="1024"
+            viewBox="0 0 494 1024"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              opacity="0.6"
+              d="M221 598L29.6083 487.5L29.6084 266.5L221 156L412.392 266.5L412.392 487.5L221 598Z"
+              stroke="#06171C"
+              stroke-width="10"
+            />
+            <mask id="path-2-inside-1_5_4433" fill="white">
+              <path d="M100 222.869L100 -103.044L382.248 -266L664.497 -103.044L664.497 222.869L382.248 385.825L100 222.869ZM601.105 186.5L601.105 -66.4998L382 -193L162.896 -66.4999L162.896 186.5L382 313L601.105 186.5Z" />
+            </mask>
+            <path
+              d="M100 222.869L100 -103.044L382.248 -266L664.497 -103.044L664.497 222.869L382.248 385.825L100 222.869ZM601.105 186.5L601.105 -66.4998L382 -193L162.896 -66.4999L162.896 186.5L382 313L601.105 186.5Z"
+              fill="#131517"
+              fill-opacity="0.01"
+            />
+            <path
+              d="M100 222.869L99 222.869L99 223.447L99.5 223.735L100 222.869ZM100 -103.044L99.5 -103.91L99 -103.621L99 -103.044L100 -103.044ZM382.248 -266L382.748 -266.866L382.248 -267.155L381.748 -266.866L382.248 -266ZM664.497 -103.044L665.497 -103.044L665.497 -103.621L664.997 -103.91L664.497 -103.044ZM664.497 222.869L664.997 223.735L665.497 223.447L665.497 222.869L664.497 222.869ZM382.248 385.825L381.748 386.691L382.248 386.98L382.748 386.691L382.248 385.825ZM601.105 186.5L601.605 187.366L602.105 187.078L602.105 186.5L601.105 186.5ZM601.105 -66.4998L602.105 -66.4998L602.105 -67.0772L601.605 -67.3659L601.105 -66.4998ZM382 -193L382.5 -193.866L382 -194.155L381.5 -193.866L382 -193ZM162.896 -66.4999L162.396 -67.3659L161.896 -67.0772L161.896 -66.4999L162.896 -66.4999ZM162.896 186.5L161.896 186.5L161.896 187.077L162.396 187.366L162.896 186.5ZM382 313L381.5 313.866L382 314.155L382.5 313.866L382 313ZM100 222.869L101 222.869L101 -103.044L100 -103.044L99 -103.044L99 222.869L100 222.869ZM100 -103.044L100.5 -102.178L382.748 -265.134L382.248 -266L381.748 -266.866L99.5 -103.91L100 -103.044ZM382.248 -266L381.748 -265.134L663.997 -102.178L664.497 -103.044L664.997 -103.91L382.748 -266.866L382.248 -266ZM664.497 -103.044L663.497 -103.044L663.497 222.869L664.497 222.869L665.497 222.869L665.497 -103.044L664.497 -103.044ZM664.497 222.869L663.997 222.003L381.748 384.959L382.248 385.825L382.748 386.691L664.997 223.735L664.497 222.869ZM382.248 385.825L382.748 384.959L100.5 222.003L100 222.869L99.5 223.735L381.748 386.691L382.248 385.825ZM601.105 186.5L602.105 186.5L602.105 -66.4998L601.105 -66.4998L600.105 -66.4998L600.105 186.5L601.105 186.5ZM601.105 -66.4998L601.605 -67.3659L382.5 -193.866L382 -193L381.5 -192.134L600.605 -65.6338L601.105 -66.4998ZM382 -193L381.5 -193.866L162.396 -67.3659L162.896 -66.4999L163.396 -65.6338L382.5 -192.134L382 -193ZM162.896 -66.4999L161.896 -66.4999L161.896 186.5L162.896 186.5L163.896 186.5L163.896 -66.4999L162.896 -66.4999ZM162.896 186.5L162.396 187.366L381.5 313.866L382 313L382.5 312.134L163.396 185.634L162.896 186.5ZM382 313L382.5 313.866L601.605 187.366L601.105 186.5L600.605 185.634L381.5 312.134L382 313Z"
+              fill="url(#paint0_linear_5_4433)"
+              mask="url(#path-2-inside-1_5_4433)"
+            />
+            <g opacity="0.1">
+              <path
+                d="M392.294 624.104L340.767 648.188L340.767 768.044"
+                stroke="#1C75DD"
+                stroke-width="10"
+              />
+              <defs>
+                <filter
+                  id="blurFilter"
+                  x="-50%"
+                  y="-50%"
+                  width="200%"
+                  height="200%"
+                >
+                  <feGaussianBlur in="SourceGraphic" stdDeviation="5" />
+                </filter>
+              </defs>
+
+              <ellipse
+                cx="32.08"
+                cy="96.3949"
+                rx="32.08"
+                ry="96.3949"
+                transform="matrix(0.489754 0.871861 0.871861 -0.489754 301 607.419)"
+                fill="#1C75DD"
+                filter="url(#blurFilter)"
+              />
+
+              <mask id="path-6-inside-2_5_4433" fill="white">
+                <path d="M287 618.058V951.766L576 1118.62L865 951.766V618.058L576 451.204L287 618.058ZM793.223 659.109V910.584L575.439 1036.32L357.656 910.584V659.109L575.439 533.372L793.223 659.109Z" />
+              </mask>
+              <path
+                d="M287 618.058V951.766L576 1118.62L865 951.766V618.058L576 451.204L287 618.058ZM793.223 659.109V910.584L575.439 1036.32L357.656 910.584V659.109L575.439 533.372L793.223 659.109Z"
+                fill="#131517"
+                fill-opacity="0.01"
+              />
+              <path
+                d="M287 618.058H286V617.481L286.5 617.192L287 618.058ZM287 951.766L286.5 952.633L286 952.344V951.766H287ZM576 1118.62L576.5 1119.49L576 1119.78L575.5 1119.49L576 1118.62ZM865 951.766H866V952.344L865.5 952.633L865 951.766ZM865 618.058L865.5 617.192L866 617.481V618.058H865ZM576 451.204L575.5 450.338L576 450.049L576.5 450.338L576 451.204ZM793.223 659.109L793.723 658.243L794.223 658.532V659.109H793.223ZM793.223 910.584H794.223V911.161L793.723 911.45L793.223 910.584ZM575.439 1036.32L575.939 1037.19L575.439 1037.48L574.939 1037.19L575.439 1036.32ZM357.656 910.584L357.156 911.45L356.656 911.161V910.584H357.656ZM357.656 659.109H356.656V658.532L357.156 658.243L357.656 659.109ZM575.439 533.372L574.939 532.506L575.439 532.217L575.939 532.506L575.439 533.372ZM287 618.058H288V951.766H287H286V618.058H287ZM287 951.766L287.5 950.9L576.5 1117.75L576 1118.62L575.5 1119.49L286.5 952.633L287 951.766ZM576 1118.62L575.5 1117.75L864.5 950.9L865 951.766L865.5 952.633L576.5 1119.49L576 1118.62ZM865 951.766H864V618.058H865H866V951.766H865ZM865 618.058L864.5 618.924L575.5 452.07L576 451.204L576.5 450.338L865.5 617.192L865 618.058ZM576 451.204L576.5 452.07L287.5 618.924L287 618.058L286.5 617.192L575.5 450.338L576 451.204ZM793.223 659.109H794.223V910.584H793.223H792.223V659.109H793.223ZM793.223 910.584L793.723 911.45L575.939 1037.19L575.439 1036.32L574.939 1035.46L792.723 909.718L793.223 910.584ZM575.439 1036.32L574.939 1037.19L357.156 911.45L357.656 910.584L358.156 909.718L575.939 1035.46L575.439 1036.32ZM357.656 910.584H356.656V659.109H357.656H358.656V910.584H357.656ZM357.656 659.109L357.156 658.243L574.939 532.506L575.439 533.372L575.939 534.238L358.156 659.975L357.656 659.109ZM575.439 533.372L575.939 532.506L793.723 658.243L793.223 659.109L792.723 659.975L574.939 534.238L575.439 533.372Z"
+                fill="url(#paint1_linear_5_4433)"
+                mask="url(#path-6-inside-2_5_4433)"
+              />
+            </g>
+            <defs>
+              <linearGradient
+                id="paint0_linear_5_4433"
+                x1="664.497"
+                y1="235.277"
+                x2="264.137"
+                y2="-195.689"
+                gradientUnits="userSpaceOnUse"
+              >
+                <stop stop-color="#1C75DD" stop-opacity="0.7" />
+                <stop offset="1" stop-color="#1C75DD" stop-opacity="0" />
+              </linearGradient>
+              <linearGradient
+                id="paint1_linear_5_4433"
+                x1="865"
+                y1="605.354"
+                x2="455.064"
+                y2="1046.63"
+                gradientUnits="userSpaceOnUse"
+              >
+                <stop stop-color="#1C75DD" stop-opacity="0.7" />
+                <stop offset="1" stop-color="#1C75DD" stop-opacity="0" />
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+
         {/* mobile view light  */}
-        <motion.img
+        {/* <motion.img
           src="/featureSection/light.png"
           className="absolute right-[10%] top-0 z-[-10] sm:hidden"
           height={900}
@@ -284,7 +485,7 @@ export default function Page() {
             filter: "blur(0px) brightness(1.2)",
             transition: { duration: 0.3 },
           }}
-        />
+        /> */}
 
         <div className="flex flex-col lg:flex-row items-center justify-between ml:20 mt-10 md:mt-24 gap-8 md:gap-12">
           {/* Left side content */}
@@ -308,7 +509,7 @@ export default function Page() {
               </span> */}
               <div className="flex items-center gap-2 mb-4">
                 <div className="flex ">
-                  {<ShieldCheck className="h-5.6 w-5.63 text-emerald-400" />}
+                  <span className="bg-[#43CF94] w-3 h-3 rounded-full blur-[7.3]"></span>
                 </div>
                 <div className="text-sm text-gray-400  font-normal tracking-wide ">
                   Trusted by{" "}
@@ -319,20 +520,7 @@ export default function Page() {
 
               <span className="text-white">The Future of</span>
               <br />
-              <AnimatePresence mode="wait">
-                {isVisible && (
-                  <motion.span
-                    key={activeFeature}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                    transition={{ duration: 0.5 }}
-                    className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-500 to-emerald-400"
-                  >
-                    {features[activeFeature]}
-                  </motion.span>
-                )}
-              </AnimatePresence>
+              <span className="text-white">Onchain Payments</span>
             </motion.h1>
 
             {/* Tagline */}
@@ -344,15 +532,9 @@ export default function Page() {
             >
               Create and manage your payments with RecurX, with
               <span className="relative inline-block mx-1">
-                <span className="font-extrabold text-white">
+                <span className="font-extrabold text-[#1C75DD]">
                   0% Transaction fee
                 </span>
-                <motion.span
-                  className="absolute -bottom-1 left-0 w-full h-[2px] bg-gradient-to-r from-blue-500 to-emerald-400"
-                  initial={{ width: 0 }}
-                  animate={{ width: "100%" }}
-                  transition={{ delay: 1, duration: 0.8 }}
-                />
               </span>
               powered by blockchain technology.
             </motion.p>
@@ -372,105 +554,107 @@ export default function Page() {
                 whileTap={{ scale: 0.95 }}
                 className="relative group"
               >
-                <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-600 to-emerald-600 rounded-xl blur opacity-60 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-pulse"></div>
+                <div className="absolute -inset-0.5 bg-[#1C75DD]"></div>
                 <Link
                   href="/wait-list"
-                  className="relative flex items-center justify-center gap-2 bg-gradient-to-br from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl shadow-lg transition-all duration-300 text-base sm:text-lg font-medium"
+                  className="relative flex items-center justify-center gap-2 bg-[#1C75DD] hover:from-blue-500 hover:to-blue-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-2xl shadow-lg transition-all duration-300 text-base sm:text-lg font-medium"
                 >
                   Join waitlist
-                  <ArrowRight
-                    size={18}
-                    className="transition-transform group-hover:translate-x-1"
-                  />
                 </Link>
               </motion.div>
             </motion.div>
-            <motion.img
-              src="/new_background.png"
-              className="  z-20] sm:hidden"
-              height={900}
-              width={900}
-              initial={{
-                opacity: 0, // Use a value between 0 (transparent) and 1 (opaque)
-                filter: "blur(10px) brightness(0.5)",
-                transform: "translateX(5px)",
-              }}
-              animate={{
-                opacity: 0.8, // Final opacity value
-                filter: "blur(0px) brightness(1)",
-                transform: "translateX(0px) scale(1)",
-              }}
-              transition={{
-                duration: 1.5,
-                delay: 0.3,
-                ease: "easeOut",
-              }}
-              whileHover={{
-                opacity: 1,
-                filter: "blur(0px) brightness(1.2)",
-                transition: { duration: 0.3 },
-              }}
-            />
-            {/* from here only in desktop view */}
-            {/* Feature icons in horizontal layout */}
-            {/* large devices */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.8 }}
-              className="flex   justify-center items-center gap-8 md:gap-12 lg:gap-16 max-sm:hidden "
-            >
-              {/* Security Feature */}
-              <motion.div
-                whileHover={{ scale: 1.1 }}
-                className="flex flex-col items-center text-center max-w-[250px] w-full sm:w-auto"
-              >
-                <div className="bg-emerald-500/20 p-4 rounded-full mb-4 border border-emerald-500/30">
-                  <Shield className="h-6 w-6 text-emerald-400" />
-                </div>
-                <p className="text-white text-sm leading-relaxed ">
-                  Enterprise-grade security with blockchain technology
-                </p>
-              </motion.div>
 
-              {/* Speed Feature */}
-              <motion.div
-                whileHover={{ scale: 1.1 }}
-                className="flex flex-col items-center text-center max-w-xs"
+            <div className="absolute left-2 top-[30rem] flex max-sm:hidden z-[-10]">
+              <svg
+                width="209"
+                height="453"
+                viewBox="0 0 209 453"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
               >
-                <div className="bg-yellow-500/20 p-4 rounded-full mb-4 border border-yellow-500/30">
-                  <Zap className="h-6 w-6 text-yellow-400" />
-                </div>
-                <p className="text-white text-sm leading-relaxed">
-                  Lightning-fast transactions across multiple chains
-                </p>
-              </motion.div>
-
-              {/* Global Feature */}
-              <motion.div
-                whileHover={{ scale: 1.1 }}
-                className="flex flex-col items-center text-center max-w-xs"
-              >
-                <div className="bg-blue-500/20 p-4 rounded-full mb-4 border border-blue-500/30">
-                  <Globe className="h-6 w-6 text-blue-400" />
-                </div>
-                <p className="text-white text-sm leading-relaxed">
-                  Global payments with no borders or limitations
-                </p>
-              </motion.div>
-            </motion.div>
-            {/* small devices */}
-
-            {/* Trust indicators
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1.2, duration: 0.7 }}
-              className="mt-10 flex items-center gap-2"
-            >
-              
-              
-            </motion.div> */}
+                <path
+                  opacity="0.6"
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M208.677 1L166.335 1L166.335 289.569L-47 416.09L-25.4013 452.509L208.677 313.686L208.677 1Z"
+                  fill="url(#paint0_linear_5_4397)"
+                />
+                <foreignObject
+                  x="-117.274"
+                  y="-69.2"
+                  width="396.151"
+                  height="591.983"
+                >
+                  <div
+                    xmlns="http://www.w3.org/1999/xhtml"
+                    style={{
+                      backdropFilter: "blur(35px)",
+                      clipPath: "url(#bgblur_0_5_4397_clip_path)",
+                      height: "100%",
+                      width: "100%",
+                    }}
+                  ></div>
+                </foreignObject>
+                <path
+                  data-figma-bg-blur-radius="70"
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M208.677 1L166.335 1L166.335 289.569L-47 416.09L-25.4013 452.509L208.677 313.686L208.677 1Z"
+                  stroke="url(#paint1_linear_5_4397)"
+                  stroke-width="0.4"
+                />
+                <defs>
+                  <clipPath
+                    id="bgblur_0_5_4397_clip_path"
+                    transform="translate(117.274 69.2)"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      clipRule="evenodd"
+                      d="M208.677 1L166.335 1L166.335 289.569L-47 416.09L-25.4013 452.509L208.677 313.686L208.677 1Z"
+                    />
+                  </clipPath>
+                  <linearGradient
+                    id="paint0_linear_5_4397"
+                    x1="183.272"
+                    y1="47.5761"
+                    x2="6.12537"
+                    y2="297.392"
+                    gradientUnits="userSpaceOnUse"
+                  >
+                    <stop offset="0.0262068" stop-color="#0C0C0C" />
+                    <stop offset="0.400772" stop-color="#06171C" />
+                    <stop offset="0.676921" stop-color="#06161B" />
+                    <stop offset="1" stop-color="#0C0C0C" />
+                  </linearGradient>
+                  <linearGradient
+                    id="paint1_linear_5_4397"
+                    x1="173.5"
+                    y1="144"
+                    x2="124"
+                    y2="343.5"
+                    gradientUnits="userSpaceOnUse"
+                  >
+                    <stop
+                      offset="0.0818655"
+                      stop-color="#14AEDE"
+                      stop-opacity="0"
+                    />
+                    <stop offset="0.304614" stop-color="#1C75DD" />
+                    <stop
+                      offset="0.855026"
+                      stop-color="#14AEDE"
+                      stop-opacity="0"
+                    />
+                    <stop
+                      offset="0.983172"
+                      stop-color="#14AEDE"
+                      stop-opacity="0"
+                    />
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
           </motion.div>
 
           {/* Right side - 3D visualization */}
@@ -512,7 +696,7 @@ export default function Page() {
               </motion.div> */}
 
               {/* Connection lines */}
-              <svg
+              {/* <svg
                 className="absolute inset-0 w-full h-full pointer-events-none"
                 style={{ zIndex: 5 }}
               >
@@ -558,7 +742,7 @@ export default function Page() {
                     <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0.2" />
                   </linearGradient>
                 </defs>
-              </svg>
+              </svg> */}
             </div>
           </motion.div>
         </div>
@@ -583,6 +767,33 @@ export default function Page() {
             />
           </motion.div>
         </motion.div> */}
+
+        <div className="flex flex-col items-center justify-center">
+          <div className="border-t border-gray-800 pt-8">
+            <p className="text-gray-400 text-sm mb-6 text-center">
+              Supported by
+            </p>
+
+            {/* Blockchain Logos */}
+            <div className="flex flex-wrap items-center gap-6">
+              {blockchainLogos.map((chain, index) => (
+                <div
+                  key={chain.name}
+                  className="flex items-center space-x-3 opacity-60 hover:opacity-100 transition-opacity cursor-pointer"
+                >
+                  <div
+                    className={`w-8 h-8 ${chain.color} rounded-full flex items-center justify-center`}
+                  >
+                    <div className="w-4 h-4 bg-white rounded-full opacity-80"></div>
+                  </div>
+                  <span className="text-gray-300 font-medium">
+                    {chain.name}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       </header>
 
       {/* Features Section */}

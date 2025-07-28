@@ -44,14 +44,24 @@ export default function Navbar() {
                 whileHover={{ scale: 1.05 }}
                 className="text-2xl font-bold bg-clip-text text-transparent bg-white"
               >
-                <Image
-                  src="/logo_hor_transparent.png"
-                  alt="RecurX"
-                  width={180}
-                  height={70}
-                  priority
-                  className="object-contain h-13 sm:h-13 md:h-13 lg:h-14 xl:h-16 w-auto"
-                />
+                <svg
+                  width="22"
+                  height="26"
+                  viewBox="0 0 22 26"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M22 0H9.43669V17.6813H22V0Z" fill="#1C75DD" />
+                  <path
+                    d="M7.95862 0C6.91347 0 5.87856 0.229265 4.91297 0.674704C3.94738 1.12014 3.07003 1.77303 2.331 2.5961C1.59197 3.41916 1.00574 4.39628 0.60578 5.47167C0.20582 6.54706 -3.8147e-05 7.69965 -3.8147e-05 8.86364C-3.8147e-05 10.0276 0.20582 11.1802 0.60578 12.2556C1.00574 13.331 1.59197 14.3081 2.331 15.1312C3.07003 15.9542 3.94738 16.6071 4.91297 17.0526C5.87856 17.498 6.91347 17.7273 7.95862 17.7273L7.95862 0Z"
+                    fill="white"
+                  />
+                  <path
+                    d="M4.832 26C3.10522 26 1.70539 24.5449 1.70539 22.75C1.70539 20.9551 3.10522 19.5 4.832 19.5C6.55878 19.5 7.95862 20.9551 7.95862 22.75C7.95862 24.5449 6.55878 26 4.832 26Z"
+                    fill="white"
+                  />
+                  <path d="M15 22L9.45322 19V26H22L15 22Z" fill="white" />
+                </svg>
               </motion.span>
             </Link>
           </div>
@@ -67,7 +77,7 @@ export default function Navbar() {
                 >
                   Product
                 </NavLink>
-                 <NavLink
+                <NavLink
                   href="/news"
                   className="text-white text-sm xl:text-base transition-transform duration-200 ease-in-out hover:scale-110 "
                 >
@@ -136,9 +146,9 @@ export default function Navbar() {
             <Button
               asChild
               variant="ghost"
-              className="text-gray-300 hover:text-white hover:bg-blue-600 bg-blue-600 hover:scale-110 text-xs md:text-sm lg:text-base px-3 md:px-4 lg:px-6 py-1 md:py-2"
+              className="text-gray-300 hover:text-white hover:scale-110 text-xs md:text-sm lg:text-base px-3 md:px-4 lg:px-6 py-1 md:py-2 bg-[linear-gradient(top_bottom,_#FFFFFF,_#8B8B8B)] border-1 border-white "
             >
-              <Link href="/signin">Go for demo</Link>
+              <Link href="/signin">Request Demo</Link>
             </Button>
           </div>
 
