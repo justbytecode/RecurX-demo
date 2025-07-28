@@ -1,18 +1,8 @@
 "use client";
 // import Coin3D from "@/components/Coin3D"
-import { ShieldCheck } from "lucide-react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
-import {
-  ArrowRight,
-  Shield,
-  RefreshCw,
-  Zap,
-  Globe,
-  Lock,
-  CreditCard,
-} from "lucide-react";
+import { motion} from "framer-motion";
 import FeatureComponent from "../components/FeatureComponent";
 import InfiniteMovingCards from "../components/InfiniteMovingCards";
 import SupportedTokens from "../components/SupportedTokens";
@@ -84,12 +74,12 @@ export default function Page() {
   ];
 
   const blockchainLogos = [
-    { name: "Ethereum", color: "bg-blue-500" },
-    { name: "Bitcoin", color: "bg-orange-500" },
-    { name: "Polygon", color: "bg-purple-500" },
-    { name: "Solana", color: "bg-green-500" },
-    { name: "Avalanche", color: "bg-red-500" },
-    { name: "BSC", color: "bg-yellow-500" },
+    { name: "Polygon", color: "bg-purple-500",img:"https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Polygon_Icon.svg/1200px-Polygon_Icon.svg.png" },
+    { name: "Ethereum", color: "bg-blue-500",img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIwk0uxd9dXApXVYD64uZ6rijuatyapdT9cg&s" },
+    { name: "Steallar", color: "bg-orange-500",img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTIWizWUO_fQh1m7I7n5tYrqBuRVpHuQWCe3bhEyVA42cv1ckaUZKMerl5a4i7a69Z4bxA&usqp=CAU" },
+    { name: "Massa", color: "bg-green-500",img:"https://pbs.twimg.com/profile_images/1907828434136412160/jLEXYCZ__400x400.jpg" },
+    { name: "Chaingpt", color: "bg-red-500",img:"https://s2.coinmarketcap.com/static/img/coins/200x200/23756.png" },
+    { name: "BSC", color: "bg-yellow-500" ,img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzsqQuXQtX8otkDKdQSNoTT5jQTINBc_cimw&s"},
   ];
 
   useEffect(() => {
@@ -554,12 +544,12 @@ export default function Page() {
                 whileTap={{ scale: 0.95 }}
                 className="relative group"
               >
-                <div className="absolute -inset-0.5 bg-[#1C75DD]"></div>
+               
                 <Link
-                  href="/wait-list"
-                  className="relative flex items-center justify-center gap-2 bg-[#1C75DD] hover:from-blue-500 hover:to-blue-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-2xl shadow-lg transition-all duration-300 text-base sm:text-lg font-medium"
+                  href="/signin"
+                  className="relative w-[9rem]  lg:w-[20rem] rounded-3xl flex items-center justify-center gap-2 bg-[#1C75DD] hover:from-blue-500 hover:to-blue-600 text-white px-6 sm:px-8 py-3 sm:py-4  shadow-lg transition-all duration-300 text-base sm:text-lg font-medium"
                 >
-                  Join waitlist
+                  Try Now
                 </Link>
               </motion.div>
             </motion.div>
@@ -779,13 +769,10 @@ export default function Page() {
               {blockchainLogos.map((chain, index) => (
                 <div
                   key={chain.name}
-                  className="flex items-center space-x-3 opacity-60 hover:opacity-100 transition-opacity cursor-pointer"
+                  className="flex flex-col gap-10 items-center space-x-3 opacity-60 hover:opacity-100 transition-opacity cursor-pointer"
                 >
-                  <div
-                    className={`w-8 h-8 ${chain.color} rounded-full flex items-center justify-center`}
-                  >
-                    <div className="w-4 h-4 bg-white rounded-full opacity-80"></div>
-                  </div>
+                  
+                  <img className="w-12 h-12 rounded-full" src={chain.img} alt={chain.name} />
                   <span className="text-gray-300 font-medium">
                     {chain.name}
                   </span>
@@ -828,7 +815,7 @@ export default function Page() {
       </section>
 
       {/*skip subscription fees */}
-      <section className="w-full flex flex-col items-center justify-center text-center py-12 px-4 bg-[#000000]">
+      <section className="w-full flex flex-col items-center justify-center text-center py-12 px-4 ">
         <h2 className="text-3xl sm:text-4xl font-bold text-white mb-2">
           Own Your Subscriptions.
           <br />
@@ -876,7 +863,7 @@ export default function Page() {
       </section>
 
       {/* new section- pre sale access */}
-      <section className="bg-black text-white py-16 px-6 md:px-20">
+      <section className="text-white py-16 px-6 md:px-20">
         <div className="flex flex-col md:flex-row items-center justify-between gap-12">
           {/* Left Image */}
           <div className="w-full md:w-1/2 flex justify-center">
