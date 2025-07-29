@@ -106,7 +106,7 @@ const FeatureComponent = () => {
       whileInView={{ opacity: 1, scale: 1 }}
       viewport={{ once: true }}
       transition={{ delay: 0.2, duration: 0.7 }}
-      className="flex flex-col lg:flex-row justify-center items-center gap-8 min-h-screen px-4 py-12 md:p-12 z-50"
+      className="flex flex-col lg:flex-row justify-center items-center gap-8  px-4 py-12 md:p-12 z-50"
     >
       <div className="text-center lg:text-left mb-8 lg:mb-0">
         <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-6 max-w-3xl tracking-tight leading-tight animate-fade-in">
