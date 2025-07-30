@@ -51,7 +51,12 @@ export const fetchAmountETH = async () => {
     const balance = await provider.getBalance(address);
     const ethBalance = ethers.formatEther(balance);
 
-    return ethBalance.toString();
+    return {
+      address:address,
+      balance: ethBalance.toString()
+    }
+    
+   
   } catch (error) {
     console.error("Error fetching balance:", error);
     return null;
@@ -73,8 +78,10 @@ export const fetchAmountMasa = async () => {
     });
 
     const data = await res.json();
-    if (data.success) return data.balance;
-    return "0.0";
+    return{
+      address:web3.wallet.account.base58,
+      balance:data.balance
+    }
   } catch (error) {
     console.error("Error fetching Massa balance:", error);
     return null;
@@ -124,7 +131,11 @@ export const fetchAmountStellar = async () => {
 
     const data = await response.json();
 
-    return data?.balances[0]?.balance ?? null;
+    return{
+      address:publicKey,
+      balance:data?.balances[0]?.balance ?? null
+    }
+
   } catch (error) {
     console.error(
       "Error fetching Stellar balance via Stellar‑Wallets‑Kit:",
