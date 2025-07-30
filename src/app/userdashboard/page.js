@@ -34,18 +34,28 @@ export default function Page() {
   const [selectedChain, setSelectedChain] = useState("polygon");
   const [isFounded, setIsFounded] = useState("");
   const { themeClasses } = useTheme(); // ✅ theme hook
+  const [address, setAddress] = useState("");
 
   const fetchBalances = async (chain = selectedChain) => {
     try {
       if (chain === "polygon") {
         const data = await fetchAmountETH();
-        if (data) setBalance(data);
+        if (data) {
+          setBalance(data.balance);
+          setAddress(data.address);
+        }
       } else if (chain === "massa") {
         const data = await fetchAmountMasa();
-        if (data) setBalance(data);
+        if (data) {
+          setBalance(data.balance);
+          setAddress(data.address);
+        }
       } else if (chain === "stellar") {
         const data = await fetchAmountStellar();
-        if (data) setBalance(data);
+        if (data) {
+          setBalance(data.balance);
+          setAddress(data.address);
+        }
       }
     } catch (error) {
       console.error("Failed to fetch balance", error);
@@ -71,7 +81,6 @@ export default function Page() {
         ),
       });
       const result = await res.json();
-      console.log(result);
       if (res.status == 404) {
         setIsFounded(result.message);
         setData("");
@@ -158,7 +167,7 @@ export default function Page() {
 
               <div className="flex flex-col items-center justify-center sm:flex-row gap-10">
                 <SendToken address={""} />
-                <RecieveTokens />
+                <RecieveTokens address={address} />
               </div>
             </CardContent>
           </Card>

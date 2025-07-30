@@ -7,8 +7,6 @@ import {
   Dialog,
   DialogTrigger,
   DialogContent,
-  DialogHeader,
-  DialogTitle,
   DialogFooter,
 } from "./ui/dialog";
 import { TrendingUp } from "lucide-react";
@@ -28,7 +26,7 @@ export default function SendToken({ address }) {
   const [amount, setAmount] = useState("");
   const [blockchain, setBlockchain] = useState("polygon");
   const [loading, setLoading] = useState(false);
-  const { authenticated } = usePrivy();
+  // const { authenticated } = usePrivy();
 
   useEffect(() => {
     if (address) {
@@ -60,7 +58,7 @@ export default function SendToken({ address }) {
     }
   };
 
-  if (!authenticated) return null;
+  // if (!authenticated) return null;
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
