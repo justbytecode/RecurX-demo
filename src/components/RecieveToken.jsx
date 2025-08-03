@@ -12,12 +12,10 @@ import {
 } from "./ui/dialog";
 import { Copy, QrCode } from "lucide-react";
 import { toast } from "sonner";
-import { usePrivy } from "@privy-io/react-auth";
 
-export default function RecieveTokens({address}) {
+export default function RecieveTokens({ address }) {
   const [open, setOpen] = useState(false);
   const qrRef = useRef(null);
-  const { authenticated, user } = usePrivy();
 
   const handleCopy = async () => {
     try {
@@ -28,7 +26,6 @@ export default function RecieveTokens({address}) {
     }
   };
 
- 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -46,13 +43,14 @@ export default function RecieveTokens({address}) {
           <DialogTitle>Wallet QR Code</DialogTitle>
         </DialogHeader>
 
-        <QRCodeCanvas value={address} size={200} includeMargin />
+        <QRCodeCanvas value={address ? address : ""} size={200} includeMargin />
 
         <div className="flex items-center gap-2">
-          <span className="text-sm font-mono">{`${address.slice(
-            0,
-            6
-          )}...${address.slice(-4)}`}</span>
+          <span className="text-sm font-mono">
+            {address
+              ? `${address?.slice(0, 6)}...${address?.slice(-4)}`
+              : "Connect Wallet"}
+          </span>
           <Button variant="ghost" size="icon" onClick={handleCopy}>
             <Copy className="w-4 h-4" />
           </Button>
