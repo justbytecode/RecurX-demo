@@ -85,6 +85,11 @@ export default function Page() {
       color: "bg-blue-500",
       img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIwk0uxd9dXApXVYD64uZ6rijuatyapdT9cg&s",
     },
+     {
+      name: "ChainGPT",
+      color: "bg-blue-500",
+      img: "https://s2.coinmarketcap.com/static/img/coins/200x200/23756.png",
+    },
     {
       name: "Stellar",
       color: "bg-orange-500",
