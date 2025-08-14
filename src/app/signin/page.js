@@ -1,6 +1,6 @@
 "use client";
 
-import { signIn } from "next-auth/react";
+// import { signIn } from "next-auth/react";
 import { useState, useEffect } from "react";
 import { Button } from "../../components/ui/button";
 import {
@@ -90,7 +90,7 @@ export default function SignIn() {
               
               Sign in as a user
             </Button>
-            <Button
+            {/* <Button
               onClick={() => {
                 signIn("google", {
                   callbackUrl: "/dashboard",
@@ -106,7 +106,7 @@ export default function SignIn() {
                 height={20}
               />
               Sign in as a Merchant
-            </Button>
+            </Button> */}
             <div className="text-center text-sm text-slate-300">
               Don&apos;t have an account?{" "}
               <span
