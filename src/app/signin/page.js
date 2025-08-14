@@ -82,21 +82,13 @@ export default function SignIn() {
             )}
             <Button
               onClick={() => {
-                handleRole("user");
-                signIn("google", {
-                  callbackUrl: "/userdashboard",
-                });
+                router.replace('https://www.users.recurx.xyz/')
               }}
               className="w-full bg-slate-700  text-white border border-purple-500/40 flex items-center justify-center gap-2 transition-all duration-200 hover:border-purple-400/60"
               variant="outline"
             >
-              <Image
-                src="https://www.svgrepo.com/show/303108/google-icon-logo.svg"
-                alt="Google"
-                width={20}
-                height={20}
-              />
-              Sign in with Google
+              
+              Sign in as a user
             </Button>
             <Button
               onClick={() => {
