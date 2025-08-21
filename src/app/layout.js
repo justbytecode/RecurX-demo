@@ -47,7 +47,6 @@ export default async function RootLayout({ children }) {
             <ToastProvider>
               <ToastContainer />
               <ToastContainer />
-              {!session && <Navbar />}
               <Providers>
                 <PrivyContext>{children}</PrivyContext>
               </Providers>

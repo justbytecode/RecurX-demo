@@ -107,16 +107,7 @@ export default function SignIn() {
               />
               Sign in as a Merchant
             </Button> */}
-            <div className="text-center text-sm text-slate-300">
-              Don&apos;t have an account?{" "}
-              <span
-                className="text-purple-400 cursor-pointer hover:text-purple-300 hover:underline inline-flex items-center gap-1 transition-colors duration-200"
-                onClick={() => router.push("/signup")}
-              >
-                <UserPlus size={14} />
-                Sign up
-              </span>
-            </div>
+           
           </CardContent>
           <div className="px-6 py-3 bg-slate-900/60 border-t border-purple-500/20 text-xs text-center text-slate-400">
             By signing in, you agree to our
