@@ -1,14 +1,34 @@
 "use client";
 import React, { useState } from "react";
 import { ChevronDown } from "lucide-react";
+import { handleBuy } from "../../lib/presales";
+import { useWalletClient } from "wagmi";
+import {PreSalesChart} from "../../components/component/pre-sale-char"
 
 export default function Page() {
   const [payAmount, setPayAmount] = useState("0.00");
   const [email, setEmail] = useState("");
   const [promoCode, setPromoCode] = useState("");
+  const { data: walletClient } = useWalletClient();
+
+  // Token config (Ethereum mainnet)
+  const TOKENS = {
+    ETH: { symbol: "ETH", isNative: true },
+    BNB: { symbol: "BNB", isNative: true }, // Only works if user is on BSC
+    USDT: {
+      symbol: "USDT",
+      address: "0xdAC17F958D2ee523a2206206994597C13D831ec7", // Ethereum USDT
+      decimals: 6,
+    },
+    USDC: {
+      symbol: "USDC",
+      address: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48", // Ethereum USDC
+      decimals: 6,
+    },
+  };
 
   return (
-    <div className="w-full p-6 bg-gray-50 min-h-screen">
+    <div className="w-full p-6 bg-gray-50 text-black ">
       {/* Stats Header */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
         <div className="bg-white rounded-lg p-4 flex items-center space-x-3">
@@ -82,30 +102,38 @@ export default function Page() {
               <span>$8,882,160 / $9,275,000</span>
             </div>
           </div>
+          <PreSalesChart/>
         </div>
 
         {/* Buy NEX Section */}
         <div className="bg-white rounded-lg p-6">
-          <h2 className="text-2xl font-bold mb-6">Buy NEX</h2>
+          <h2 className="text-2xl font-bold mb-6">Buy RCX</h2>
 
           {/* You Pay */}
           <div className="mb-6">
             <label className="block text-sm font-medium text-gray-700 mb-2">
               YOU PAY (MIN. 10$)
             </label>
-            <div className="relative">
+            <div className="flex gap-2">
               <input
-                type="text"
+                type="number"
                 value={payAmount}
                 onChange={(e) => setPayAmount(e.target.value)}
                 className="w-full p-3 border border-gray-300 rounded-lg text-lg"
                 placeholder="0.00"
               />
-              <div className="absolute right-3 top-3 flex items-center space-x-2">
-                <div className="w-6 h-6 bg-blue-500 rounded-full"></div>
-                <span className="font-medium">Ethereum</span>
-                <ChevronDown className="w-4 h-4 text-gray-400" />
-              </div>
+
+              <select
+                // value={selectedToken}
+                // onChange={(e) => setSelectedToken(e.target.value)}
+                className="p-3 border border-gray-300 rounded-lg text-lg"
+              >
+                {Object.keys(TOKENS).map((token) => (
+                  <option key={token} value={token}>
+                    {TOKENS[token].symbol}
+                  </option>
+                ))}
+              </select>
             </div>
             <div className="flex justify-between text-sm text-gray-500 mt-1">
               <span>$0.00</span>
@@ -131,13 +159,16 @@ export default function Page() {
               </div>
               <div className="absolute right-3 top-3 flex items-center space-x-2">
                 <div className="w-6 h-6 bg-purple-500 rounded-full"></div>
-                <span className="font-medium">NEX</span>
+                <span className="font-medium">RCX</span>
               </div>
             </div>
           </div>
 
           {/* Buy Button */}
-          <button className="w-full bg-gray-400 text-white py-3 rounded-lg font-semibold mb-6">
+          <button
+            onClick={() => handleBuy(walletClient, "1")}
+            className="w-full bg-black text-white py-3 rounded-lg font-semibold mb-6"
+          >
             Buy NEX
           </button>
 
