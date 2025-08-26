@@ -39,7 +39,7 @@ export default function AirDropSidebar() {
   ];
 
   return (
-    <div className="w-64 bg-white h-screen flex flex-col shadow-lg">
+    <div className="w-64 bg-white  flex flex-col shadow-lg">
       {/* Logo */}
       <div className="p-6 border-b border-gray-100">
         <h1 className="text-2xl font-bold text-gray-800">Recurx</h1>

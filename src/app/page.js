@@ -106,6 +106,11 @@ export default function Page() {
       color: "bg-yellow-500",
       img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzsqQuXQtX8otkDKdQSNoTT5jQTINBc_cimw&s",
     },
+    {
+      name:"Yellow",
+      color:"bg-yellow-600",
+      img:"https://media.licdn.com/dms/image/v2/C4D0BAQF8cY9l-54tcg/company-logo_200_200/company-logo_200_200/0/1645514315211/yellow_com_logo?e=2147483647&v=beta&t=MMpkF7kiwqdZkzOuDIqEPG9j96mNgYygaS-01RZ6yEM"
+    }
   ];
 
   useEffect(() => {
